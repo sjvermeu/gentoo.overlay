@@ -9,7 +9,7 @@ SUPPORT_PYTHON_ABIS="1"
 RESTRICT_PYTHON_ABIS="3.*"
 PYTHON_MODNAME="dbtexmf"
 
-inherit distutils
+inherit distutils eutils
 
 DESCRIPTION="Transform DocBook using TeX macros"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
