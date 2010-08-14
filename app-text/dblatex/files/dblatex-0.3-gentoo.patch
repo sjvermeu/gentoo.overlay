@@ -1,0 +1,12 @@
+--- scripts.orig/dblatex	2010-08-14 08:39:51.000000000 +0200
++++ scripts/dblatex	2010-08-14 08:55:50.157421000 +0200
+@@ -2,7 +2,8 @@
+ import sys
+ import os
+ 
+-package_base = os.path.join(os.path.dirname(sys.argv[0]), "..")
++#package_base = os.path.join(os.path.dirname(sys.argv[0]), "..")
++package_base = "/usr/share/dblatex"
+ sys.path.append(os.path.realpath(os.path.join(package_base, "lib")))
+ 
+ from dbtexmf.dblatex import dblatex
