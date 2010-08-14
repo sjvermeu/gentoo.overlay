@@ -35,6 +35,7 @@ src_prepare() {
 
 src_compile() {
 	distutils_src_compile
+	epatch "${FILESDIR}"/${P}-gentoo.patch
 }
 
 src_install() {
