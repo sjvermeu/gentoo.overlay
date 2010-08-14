@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE repositories SYSTEM "/dtd/repositories.dtd">
+<repositories xmlns="" version="1.0">
+  <repo quality="experimental" status="unofficial">
+    <name>sjvermeu</name>
+    <description>experimental ebuilds from sjvermeu</description>
+    <homepage>http://github.com/sjvermeu/gentoo.overlay</homepage>
+    <owner>
+      <email>sven.vermeulen@siphos.be</email>
+      <name>Sven Vermeulen</name>
+    </owner>
+    <source type="git">git://github.com/sjvermeu/gentoo.overlay.git</source>
+    <source type="git">http://github.com/sjvermeu/gentoo.overlay.git</source>
+    <feed>http://github.com/feeds/sjvermeu/commits/gentoo.overlay/master</feed>
+  </repo>
+</repositories>
