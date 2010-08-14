@@ -1,0 +1,189 @@
+# ChangeLog for app-editors/xxe
+# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/app-editors/xxe/ChangeLog,v 1.39 2009/11/21 12:36:16 patrick Exp $
+
+*xxe-4.5.0 (21 Nov 2009)
+
+  21 Nov 2009; Patrick Lauer <patrick@gentoo.org> xxe-4.3.0.ebuild,
+  +xxe-4.5.0.ebuild:
+  Fixing 4.3 src_uri, bumping to 4.5.0
+
+  24 Apr 2009; Patrick Lauer <patrick@gentoo.org> Manifest:
+  Upstream likes changing tarballs, eh?
+
+  24 Apr 2009; Patrick Lauer <patrick@gentoo.org> Manifest:
+  Manifest fix, upstream seems to have changed xfc_foprocessor-4_3_0.zip
+
+*xxe-4.3.0 (23 Apr 2009)
+
+  23 Apr 2009; Patrick Lauer <patrick@gentoo.org> +xxe-4.3.0.ebuild:
+  Bump to 4.3.0, fixes #180270
+
+  21 Apr 2008; Christian Heim <phreak@gentoo.org> metadata.xml:
+  Fix up metadata.xml. If there's no maintainer for the package, the metadata
+  also needs to contain m-needed@g.o.
+
+  02 Jul 2007; Piotr Jaroszyński <peper@gentoo.org> xxe-3.5.1.ebuild:
+  (QA) RESTRICT clean up.
+
+  11 May 2007; Thilo Bangert <bangert@gentoo.org> metadata.xml:
+  fix herd
+
+  24 Jan 2007; Marius Mauch <genone@gentoo.org> xxe-3.5.1.ebuild:
+  Replacing einfo with elog
+
+  19 Jan 2007; Charlie Shepherd <masterdriverz@gentoo.org> xxe-3.5.1.ebuild:
+  QA: remove invalid RESTRICT="mirror"
+
+*xxe-3.5.1 (01 Jan 2007)
+
+  01 Jan 2007; Charlie Shepherd <masterdriverz@gentoo.org>
+  -xxe-3.4.0.ebuild, -xxe-3.5.0.ebuild, +xxe-3.5.1.ebuild:
+  Bump to 3.5.1; remove old versions that can no longer be downloaded; thanks
+  to Konrad Karczewski for reporting; bug 159619
+
+*xxe-3.5.0 (26 Dec 2006)
+
+  26 Dec 2006; Charlie Shepherd <masterdriverz@gentoo.org>
+  +xxe-3.5.0.ebuild:
+  Bump to 2.5 and add doc support. Bug 154963; thanks to Gioele Barabucci
+
+*xxe-3.4.0 (15 Aug 2006)
+
+  15 Aug 2006; Stefan Schweizer <genstef@gentoo.org> metadata.xml,
+  -xxe-3.0_p1.ebuild, +xxe-3.4.0.ebuild:
+  version bump thanks to Gioele Barabucci <dev@gioelebarabucci.com>, Sascha
+  Teske <gentoo@slasha.de>, Alexander Skwar <askwar@digitalprojects.com>,
+  Benigno B. Junior <bbj@gentoo.org>, Almad <bugs@almad.net>, CJ Kucera
+  <gentoo@apocalyptech.com> and Sergey Belyashov <b-s-a@narod.ru> in bug
+  124618
+
+*xxe-3.0_p1 (20 Jan 2006)
+
+  20 Jan 2006; Marcelo Goes <vanquirius@gentoo.org> -xxe-3.0.ebuild,
+  +xxe-3.0_p1.ebuild:
+  3.0_p1 version bump for bug 118553. Removing previous version as it is gone
+  from upstream/mirrors. Thanks to marcus bueschleb <marcus dot bueschleb at
+  googlemail dot com>.
+
+*xxe-3.0 (12 Nov 2005)
+
+  12 Nov 2005; Don Seiler <rizzo@gentoo.org> -xxe-2.11.ebuild,
+  +xxe-3.0.ebuild:
+  Another version bump
+
+  23 Aug 2005; Diego Pettenò <flameeyes@gentoo.org> xxe-2.11.ebuild:
+  Don't use cp -a.
+
+*xxe-2.11 (21 Jul 2005)
+
+  21 Jul 2005; Don Seiler <rizzo@gentoo.org> files/xxe.desktop,
+  -xxe-2.9_p1.ebuild, +xxe-2.11.ebuild:
+  Version bump, moved files around this time
+
+*xxe-2.9_p1 (05 Apr 2005)
+
+  05 Apr 2005; Don Seiler <rizzo@gentoo.org> -xxe-2.9.ebuild,
+  +xxe-2.9_p1.ebuild:
+  Version bump, old version no longer available
+
+*xxe-2.9 (15 Feb 2005)
+
+  15 Feb 2005; Don Seiler <rizzo@gentoo.org> -xxe-2.8_p1.ebuild,
+  +xxe-2.9.ebuild:
+  Version bump, closes bug #82085
+
+  25 Jan 2005; Don Seiler <rizzo@gentoo.org> xxe-2.8_p1.ebuild:
+  Adding postinst note about setting LANG for special characters. Closes Bug
+  #78479.
+
+  17 Dec 2004; Tom Martin <slarti@gentoo.org> xxe-2.8_p1.ebuild:
+  Marked ~amd64, resolves bug 74461.
+
+*xxe-2.8_p1 (14 Dec 2004)
+
+  14 Dec 2004; Don Seiler <rizzo@gentoo.org> -xxe-2.8.ebuild,
+  +xxe-2.8_p1.ebuild:
+  Version bump, old version removed upstream
+
+*xxe-2.8 (10 Nov 2004)
+
+  10 Nov 2004; Don Seiler <rizzo@gentoo.org> -xxe-2.7_p1.ebuild,
+  +xxe-2.8.ebuild:
+  XXE updated and removed old version.  Closes bug #69079
+
+*xxe-2.7_p1 (27 Sep 2004)
+
+  27 Sep 2004; Don Seiler <rizzo@gentoo.org> -xxe-2.7.ebuild,
+  +xxe-2.7_p1.ebuild:
+  Version bump, old version unavailable.  Closes bug #64845
+
+*xxe-2.7 (31 Aug 2004)
+
+  31 Aug 2004; Don Seiler <rizzo@gentoo.org> files/xxe.desktop,
+  -xxe-2.6_p1.ebuild, +xxe-2.7.ebuild:
+  Version bump and old version removed upstream.  Fixes bug 61690, thanks Jose Gonzalez Gomez.
+
+*xxe-2.6_p1 (06 Jul 2004)
+
+  06 Jul 2004; Don Seiler <rizzo@gentoo.org> -xxe-2.6.ebuild,
+  +xxe-2.6_p1.ebuild:
+  Version bump, upstream removed old files.  Fixed Bug #56238, Thanks Lukas Linhart.
+
+*xxe-2.6 (01 Jun 2004)
+
+  01 Jun 2004; Don Seiler <rizzo@gentoo.org>; -xxe-2.5_p4.ebuild,
+  +xxe-2.6.ebuild:
+  Version bump, old version no longer available.
+
+  05 May 2004; <SeJo@gentoo.org> xxe-2.5_p4.ebuild:
+  added ~ppc keyword
+
+  30 Mar 2004; Don Seiler <rizzo@gentoo.org>; xxe-2.5_p4.ebuild:
+  Added xxe.desktop and some other cosmetic changes.  Thanks to Keith Lea.
+
+  26 Mar 2004; David Holm <dholm@gentoo.org> xxe-2.5_p4.ebuild:
+  Backed out of ~ppc while waiting for portage upgrade.
+
+*xxe-2.5_p4 (25 Mar 2004)
+
+  25 Mar 2004; Don Seiler <rizzo@gentoo.org>; xxe-2.5_p4.ebuild:
+  Version bump.  Thanks to Niklas Neumann for notice.
+
+  25 Mar 2004; Don Seiler <rizzo@gentoo.org>; xxe-2.5_p3.ebuild:
+  Removing obsolete ebuilds
+
+  22 Mar 2004; David Holm <dholm@gentoo.org> xxe-2.5_p3.ebuild:
+  Added to ~ppc.
+
+*xxe-2.5_p3 (14 Mar 2004)
+
+  14 Mar 2004; Don Seiler <rizzo@gentoo.org>; xxe-2.5_p2.ebuild,
+  xxe-2.5_p3.ebuild:
+  Version bump.  As before, previous distfiles removed so pulling _p2
+
+*xxe-2.5_p2 (26 Feb 2004)
+
+  26 Feb 2004; Don Seiler <rizzo@gentoo.org>; xxe-2.3_p1.ebuild,
+  xxe-2.4.ebuild, xxe-2.5.ebuild, xxe-2.5_p2.ebuild:
+  Patch version bump upstream. Upstream has also pulled all older files, so it's
+  pointless for us to keep them.  Thanks Pascal Roussel for notification.
+
+*xxe-2.5 (11 Nov 2003)
+
+  11 Nov 2003; Don Seiler <rizzo@gentoo.org>; xxe-2.5.ebuild:
+  Version bump.
+
+*xxe-2.4 (21 Aug 2003)
+
+  21 Aug 2003; Don Seiler <rizzo@gentoo.org>; xxe-2.4.ebuild:
+  Version bump.
+
+  16 Jul 2003; Don Seiler <rizzo@gentoo.org>; xxe-2.3_p1.ebuild:
+  fixing missing RESTRICT
+
+*xxe-2.3_p1 (16 Jul 2003)
+
+  16 Jul 2003; Don Seiler <rizzo@gentoo.org>; xxe-2.3_p1.ebuild:
+  Initial import.  Submitted by me
+

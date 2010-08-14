@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Exec=/opt/xxe/bin/xxe
+Icon=/opt/xxe/bin/icon/xxe.gif
+Name=XMLmind XML Editor
+GenericName=XML Editor
+Comment=XML file editor
+Categories=Development;
