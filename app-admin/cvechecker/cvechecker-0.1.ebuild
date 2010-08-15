@@ -2,7 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-text/lv/lv-4.51-r1.ebuild,v 1.7 2010/01/23 11:29:38 aballier Exp $
 
-inherit eutils toolchain-funcs
+EAPI=3
+
+inherit eutils
 
 DESCRIPTION="Tool to match installed software against the list of CVE entries"
 HOMEPAGE="http://cvechecker.sourceforge.net"
@@ -13,47 +15,26 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND=">=dev-db/sqlite-3.6.23.1"
+DEPEND=">=dev-db/sqlite-3.6.23.1
+	dev-libs/libconfig"
 RDEPEND="${DEPEND}"
-
-S="${WORKDIR}/${PN}"
 
 pkg_setup() {
 	enewgroup cvechecker
 	enewuser cvechecker -1 -1 -1 cvechecker
 }
 
-src_unpack() {
-	unpack ${A}
-}
-
-src_compile() {
-	cd ${P}
-	econf || die "econf failed"
-	emake CC="$(tc-getCC)" || die
-}
-
 src_install() {
-	cd ${P}
-	dobin cvechecker || die
-	dobin pullcves || die
+	dobin cvechecker pullcves || die
 	doman cvechecker.1 || die
+
+	diropts -p -m775 -o cvechecker -g cvechecker
 	dodir /var/lib/cvechecker
-	dodir /var/db
-	dodir /var/db/cvechecker
-	dodir /var/db/cvechecker/local
-	dodir /var/db/cvechecker/cache
+	dodir /var/db/cvechecker{,/{local,cache}}
+
 	insinto /etc
 	doins cvechecker.conf || die
-	insinto /var/lib/cvechecker
-	doins nvdcve2simple.xsl
-}
 
-pkg_postinst() {
-	chown cvechecker:cvechecker /var/db/cvechecker
-	chmod g+w /var/db/cvechecker
-	chown cvechecker:cvechecker /var/db/cvechecker/local
-	chmod g+w /var/db/cvechecker/local
-	chown cvechecker:cvechecker /var/db/cvechecker/cache
-	chmod g+w /var/db/cvechecker/cache
+	insinto /var/lib/cvechecker
+	doins nvdcve2simple.xsl || die
 }
