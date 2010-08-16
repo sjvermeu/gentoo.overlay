@@ -16,7 +16,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND=">=dev-db/sqlite-3.6.23.1
-	dev-libs/libconfig"
+	>=dev-libs/libconfig-1.3.2"
 RDEPEND="${DEPEND}"
 
 pkg_setup() {
@@ -25,9 +25,10 @@ pkg_setup() {
 
 src_install() {
 	emake DESTDIR="${D}" install || die
-	diropts -g cvechecker -m0775
-	chgrp cvechecker "${D}"/var/lib/cvechecker{,/{local,cache}}
-	chmod 0775 "${D}"/var/lib/cvechecker{,/{local,cache}}
+
+	chgrp cvechecker "${D}"/var/lib/cvechecker{,/{local,cache}} || die
+	chmod 0775 "${D}"/var/lib/cvechecker{,/{local,cache}} || die
+
 	# Changing settings in cvechecker.conf. Config file protection
 	# should ensure that we will not automatically overwrite a user preference
 	# here

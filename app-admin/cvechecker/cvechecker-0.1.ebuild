@@ -16,7 +16,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND=">=dev-db/sqlite-3.6.23.1
-	dev-libs/libconfig"
+	>=dev-libs/libconfig-1.3.2"
 RDEPEND="${DEPEND}"
 
 pkg_setup() {
