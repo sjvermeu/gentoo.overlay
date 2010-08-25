@@ -8,12 +8,7 @@ inherit eutils
 
 DESCRIPTION="Tool to match installed software against the list of CVE entries"
 HOMEPAGE="http://cvechecker.sourceforge.net"
-if [[ $PV == 9999 ]]; then
-	ESVN_REPO_URI="https://cvechecker.svn.sourceforge.net/svnroot/cvechecker"
-	inherit autotools subversion
-else
-	SRC_URI="mirror://sourceforge/${PN}/development/${P}.tar.gz"
-fi
+SRC_URI="mirror://sourceforge/${PN}/development/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -27,12 +22,6 @@ RDEPEND="${DEPEND}
 
 pkg_setup() {
 	enewgroup cvechecker
-}
-
-src_prepare() {
-	if [[ $PV == 9999 ]]; then
-		eautoreconf
-	fi
 }
 
 src_install() {
