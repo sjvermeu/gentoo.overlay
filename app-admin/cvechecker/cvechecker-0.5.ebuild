@@ -17,7 +17,8 @@ IUSE=""
 
 DEPEND=">=dev-db/sqlite-3.6.23.1
 	>=dev-libs/libconfig-1.3.2"
-RDEPEND="${DEPEND}"
+RDEPEND="${DEPEND}
+	>=dev-libs/libxslt-1.1.26"
 
 pkg_setup() {
 	enewgroup cvechecker
@@ -25,13 +26,5 @@ pkg_setup() {
 
 src_install() {
 	emake DESTDIR="${D}" install || die
-
-	chgrp cvechecker "${D}"/var/lib/cvechecker{,/{local,cache}} || die
-	chmod 0775 "${D}"/var/lib/cvechecker{,/{local,cache}} || die
-
-	# Changing settings in cvechecker.conf. Config file protection
-	# should ensure that we will not automatically overwrite a user preference
-	# here
-	sed -i -e "s:/usr/local/var/:/var/lib/:g" "${D}"/etc/cvechecker.conf
-	sed -i -e "s:/usr/local/share/:/usr/share/:g" "${D}"/etc/cvechecker.conf
+	emake DESTDIR="${D}" postinstall || die
 }
