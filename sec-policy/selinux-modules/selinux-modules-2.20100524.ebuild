@@ -26,7 +26,6 @@ src_unpack() {
 	local modfiles
 
 	[ -z "${POLICY_TYPES}" ] && local POLICY_TYPES="strict targeted"
-	MOD_CONF_VER="20100524"
 
 	unpack ${A}
 
