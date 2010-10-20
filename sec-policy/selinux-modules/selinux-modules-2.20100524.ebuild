@@ -81,7 +81,7 @@ pkg_postinst() {
 			einfo "Inserting the following modules into ${i} module store: ${SELINUX_MODULES}"
 
 			cd "/usr/share/selinux/${i}"
-			semodule -s "${i}" ${COMMAND} || die "Failed to install SELinux module ${i}"
+			semodule -s "${i}" ${COMMAND} || die "Failed to install SELinux modules ${SELINUX_MODULES}"
 		done
 	else
 		echo
