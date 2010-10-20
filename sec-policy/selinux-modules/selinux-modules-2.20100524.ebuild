@@ -31,13 +31,13 @@ src_unpack() {
 	unpack ${A}
 
 	for i in ${SELINUX_MODULES}; do
-		modfiles="`find ${S}/policy/modules -iname $i.te` $modfiles"
-		modfiles="`find ${S}/policy/modules -iname $i.fc` $modfiles"
+		modfiles="`find ${S}/refpolicy/policy/modules -iname $i.te` $modfiles"
+		modfiles="`find ${S}/refpolicy/policy/modules -iname $i.fc` $modfiles"
 	done
 
 	for i in ${POLICY_TYPES}; do
 		mkdir "${S}"/../${i}
-		cp "${S}"/doc/Makefile.example "${S}"/../${i}/Makefile
+		cp "${S}"/refpolicy/doc/Makefile.example "${S}"/../${i}/Makefile
 
 		cp ${modfiles} "${S}"/../${i}
 
