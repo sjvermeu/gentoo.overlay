@@ -36,7 +36,7 @@ src_unpack() {
 	done
 
 	for i in ${POLICY_TYPES}; do
-		mkdir "${S}"/../${i}
+		#mkdir "${S}"/../${i}
 		cp "${S}"/refpolicy/doc/Makefile.example "${S}"/../${i}/Makefile
 
 		cp ${modfiles} "${S}"/../${i}
@@ -81,7 +81,7 @@ pkg_postinst() {
 			einfo "Inserting the following modules into ${i} module store: ${SELINUX_MODULES}"
 
 			cd "/usr/share/selinux/${i}"
-			semodule -s "${i}" ${COMMAND}
+			semodule -s "${i}" ${COMMAND} || die "Failed to install SELinux module ${i}"
 		done
 	else
 		echo
