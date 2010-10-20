@@ -36,7 +36,7 @@ src_unpack() {
 	done
 
 	for i in ${POLICY_TYPES}; do
-		#mkdir "${S}"/../${i}
+		mkdir "${S}"/../${i}
 		cp "${S}"/refpolicy/doc/Makefile.example "${S}"/../${i}/Makefile
 
 		cp ${modfiles} "${S}"/../${i}
