@@ -54,6 +54,7 @@ src_unpack() {
 		echo "mcs = base" >> "${S}/${i}/policy/modules.conf"
 		echo "mls = base" >> "${S}/${i}/policy/modules.conf"
 		echo "selinux = base" >> "${S}/${i}/policy/modules.conf"
+		echo "selinuxutil = base" >> "${S}/${i}/policy/modules.conf"
 		echo "terminal = base" >> "${S}/${i}/policy/modules.conf"
 
 		sed -i -e '/^QUIET/s/n/y/' -e '/^MONOLITHIC/s/y/n/' \
