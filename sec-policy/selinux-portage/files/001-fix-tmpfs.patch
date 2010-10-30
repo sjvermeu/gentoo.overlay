@@ -1,5 +1,5 @@
 --- policy/modules/admin/portage.te.orig	2010-10-30 20:28:16.966000061 +0200
-+++ policy/modules/admin/portage.te	2010-10-30 20:46:12.460000063 +0200
++++ policy/modules/admin/portage.te	2010-10-30 20:58:16.412000061 +0200
 @@ -40,6 +40,9 @@
  type portage_fetch_tmp_t;
  files_tmp_file(portage_fetch_tmp_t)
@@ -18,11 +18,12 @@
  
  # merging baselayout will need this:
  kernel_write_proc_files(portage_t)
-@@ -218,11 +222,17 @@
+@@ -218,11 +222,18 @@
  manage_files_pattern(portage_fetch_t, portage_fetch_tmp_t, portage_fetch_tmp_t)
  files_tmp_filetrans(portage_fetch_t, portage_fetch_tmp_t, { file dir })
  
 +manage_dirs_pattern(portage_fetch_t, portage_fetch_tmpfs_t, portage_fetch_tmpfs_t)
++manage_dirs_pattern(portage_fetch_t, tmpfs_t, tmpfs_t)
 +manage_files_pattern(portage_fetch_t, portage_fetch_tmpfs_t, portage_fetch_tmpfs_t)
 +#files_tmp_filetrans(portage_fetch_t, portage_fetch_tmp_t, { file dir })
 +
