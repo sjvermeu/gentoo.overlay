@@ -51,7 +51,8 @@ src_unpack() {
 		echo "mls = base" >> "${S}/${i}/policy/modules.conf"
 		echo "selinux = base" >> "${S}/${i}/policy/modules.conf"
 		echo "terminal = base" >> "${S}/${i}/policy/modules.conf"
-		echo "ubac = base" >> "${S}/${i}/policy/modules.conf"
+		echo "libraries = base" >> "${S}/${i}/policy/modules.conf"
+		echo "logging = base" >> "${S}/${i}/policy/modules.conf"
 
 		sed -i -e '/^QUIET/s/n/y/' -e '/^MONOLITHIC/s/y/n/' \
 			-e "/^NAME/s/refpolicy/$i/" "${S}/${i}/build.conf" \

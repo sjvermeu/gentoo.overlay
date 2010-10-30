@@ -24,9 +24,7 @@ RDEPEND="~sec-policy/selinux-application-${PV}
 		 ~sec-policy/selinux-hotplug-${PV}
 		 ~sec-policy/selinux-init-${PV}
 		 ~sec-policy/selinux-iptables-${PV}
-		 ~sec-policy/selinux-libraries-${PV}
 		 ~sec-policy/selinux-locallogin-${PV}
-		 ~sec-policy/selinux-logging-${PV}
 		 ~sec-policy/selinux-lvm-${PV}
 		 ~sec-policy/selinux-miscfiles-${PV}
 		 ~sec-policy/selinux-modutils-${PV}
