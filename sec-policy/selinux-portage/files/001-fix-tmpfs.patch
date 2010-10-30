@@ -1,0 +1,38 @@
+--- policy/modules/admin/portage.te.orig	2010-10-30 20:28:16.966000061 +0200
++++ policy/modules/admin/portage.te	2010-10-30 20:30:48.558000061 +0200
+@@ -40,6 +40,9 @@
+ type portage_fetch_tmp_t;
+ files_tmp_file(portage_fetch_tmp_t)
+ 
++type portage_fetch_tmpfs_t;
++files_tmpfs_file(portage_fetch_tmpfs_t)
++
+ type portage_db_t;
+ files_type(portage_db_t)
+ 
+@@ -149,6 +152,7 @@
+ 
+ # run scripts out of the build directory
+ can_exec(portage_t, portage_tmp_t)
++can_exec(portage_t, portage_tmpfs_t)
+ 
+ # merging baselayout will need this:
+ kernel_write_proc_files(portage_t)
+@@ -218,11 +222,17 @@
+ manage_files_pattern(portage_fetch_t, portage_fetch_tmp_t, portage_fetch_tmp_t)
+ files_tmp_filetrans(portage_fetch_t, portage_fetch_tmp_t, { file dir })
+ 
++manage_dirs_pattern(portage_fetch_t, portage_fetch_tmpfs_t, portage_fetch_tmpfs_t)
++manage_files_pattern(portage_fetch_t, portage_fetch_tmpfs_t, portage_fetch_tmpfs_t)
++files_tmp_filetrans(portage_fetch_t, portage_fetch_tmpfs_t, { file dir })
++
+ # portage makes home dir the portage tmp dir, so
+ # wget looks for .wgetrc there
+ dontaudit portage_fetch_t portage_tmp_t:dir search_dir_perms;
++dontaudit portage_fetch_t portage_tmpfs_t:dir search_dir_perms;
+ # rsync server timestamp check
+ allow portage_fetch_t portage_tmp_t:file { read_file_perms delete_file_perms };
++allow portage_fetch_t portage_tmpfs_t:file { read_file_perms delete_file_perms };
+ 
+ kernel_read_system_state(portage_fetch_t)
+ kernel_read_kernel_sysctls(portage_fetch_t)
