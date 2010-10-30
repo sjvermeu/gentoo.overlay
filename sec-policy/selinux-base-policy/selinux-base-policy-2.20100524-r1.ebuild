@@ -40,6 +40,8 @@ src_unpack() {
 	for i in ${POLICY_TYPES}; do
 		cp -a "${S}/refpolicy" "${S}/${i}"
 
+		rm  "${S}/${i}/policy/modules.conf" && echo "# empty" > "${S}/${i}/policy/modules.conf"
+
 		sed -i -e '/^QUIET/s/n/y/' -e '/^MONOLITHIC/s/y/n/' \
 			-e "/^NAME/s/refpolicy/$i/" "${S}/${i}/build.conf" \
 			|| die "build.conf setup failed."
