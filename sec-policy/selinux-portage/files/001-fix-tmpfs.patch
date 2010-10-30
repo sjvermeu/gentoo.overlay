@@ -1,5 +1,5 @@
 --- policy/modules/admin/portage.te.orig	2010-10-30 20:28:16.966000061 +0200
-+++ policy/modules/admin/portage.te	2010-10-30 21:01:07.068000061 +0200
++++ policy/modules/admin/portage.te	2010-10-30 21:07:06.785000061 +0200
 @@ -40,6 +40,9 @@
  type portage_fetch_tmp_t;
  files_tmp_file(portage_fetch_tmp_t)
@@ -18,15 +18,13 @@
  
  # merging baselayout will need this:
  kernel_write_proc_files(portage_t)
-@@ -218,11 +222,19 @@
+@@ -218,11 +222,17 @@
  manage_files_pattern(portage_fetch_t, portage_fetch_tmp_t, portage_fetch_tmp_t)
  files_tmp_filetrans(portage_fetch_t, portage_fetch_tmp_t, { file dir })
  
 +manage_dirs_pattern(portage_fetch_t, portage_fetch_tmpfs_t, portage_fetch_tmpfs_t)
-+manage_dirs_pattern(portage_fetch_t, tmpfs_t, tmpfs_t)
 +manage_files_pattern(portage_fetch_t, portage_fetch_tmpfs_t, portage_fetch_tmpfs_t)
-+manage_files_pattern(portage_fetch_t, tmpfs_t, tmpfs_t)
-+#files_tmp_filetrans(portage_fetch_t, portage_fetch_tmp_t, { file dir })
++fs_tmpfs_filetrans(portage_fetch_t, portage_fetch_tmp_t, file)
 +
  # portage makes home dir the portage tmp dir, so
  # wget looks for .wgetrc there
