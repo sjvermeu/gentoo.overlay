@@ -43,7 +43,7 @@ src_unpack() {
 		echo "corecommands = base" > "${S}/${i}/policy/modules.conf"
 		echo "corenetwork = base" >> "${S}/${i}/policy/modules.conf"
 		echo "devices = base" >> "${S}/${i}/policy/modules.conf"
-		echo "dmoain = base" >> "${S}/${i}/policy/modules.conf"
+		echo "domain = base" >> "${S}/${i}/policy/modules.conf"
 		echo "files = base" >> "${S}/${i}/policy/modules.conf"
 		echo "filesystem = base" >> "${S}/${i}/policy/modules.conf"
 		echo "kernel = base" >> "${S}/${i}/policy/modules.conf"
