@@ -1,5 +1,5 @@
 --- policy/modules/admin/portage.te.orig	2010-10-30 20:28:16.966000061 +0200
-+++ policy/modules/admin/portage.te	2010-10-30 20:30:48.558000061 +0200
++++ policy/modules/admin/portage.te	2010-10-30 20:42:48.760000061 +0200
 @@ -40,6 +40,9 @@
  type portage_fetch_tmp_t;
  files_tmp_file(portage_fetch_tmp_t)
@@ -24,7 +24,7 @@
  
 +manage_dirs_pattern(portage_fetch_t, portage_fetch_tmpfs_t, portage_fetch_tmpfs_t)
 +manage_files_pattern(portage_fetch_t, portage_fetch_tmpfs_t, portage_fetch_tmpfs_t)
-+files_tmp_filetrans(portage_fetch_t, portage_fetch_tmpfs_t, { file dir })
++files_tmpfs_filetrans(portage_fetch_t, portage_fetch_tmpfs_t, { file dir })
 +
  # portage makes home dir the portage tmp dir, so
  # wget looks for .wgetrc there
