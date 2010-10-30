@@ -40,6 +40,7 @@ src_unpack() {
 	for i in ${POLICY_TYPES}; do
 		cp -a "${S}/refpolicy" "${S}/${i}"
 
+		echo "application = base" > "${S}/${i}/policy/modules.conf"
 		echo "corecommands = base" > "${S}/${i}/policy/modules.conf"
 		echo "corenetwork = base" >> "${S}/${i}/policy/modules.conf"
 		echo "devices = base" >> "${S}/${i}/policy/modules.conf"
