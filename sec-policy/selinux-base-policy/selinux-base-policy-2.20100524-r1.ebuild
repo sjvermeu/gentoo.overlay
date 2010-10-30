@@ -43,17 +43,19 @@ src_unpack() {
 		echo "application = base" > "${S}/${i}/policy/modules.conf"
 		echo "corecommands = base" >> "${S}/${i}/policy/modules.conf"
 		echo "corenetwork = base" >> "${S}/${i}/policy/modules.conf"
+		echo "daemon = base" >> "${S}/${i}/policy/modules.conf"
 		echo "devices = base" >> "${S}/${i}/policy/modules.conf"
 		echo "domain = base" >> "${S}/${i}/policy/modules.conf"
 		echo "files = base" >> "${S}/${i}/policy/modules.conf"
 		echo "filesystem = base" >> "${S}/${i}/policy/modules.conf"
+		echo "init = base" >> "${S}/${i}/policy/modules.conf"
 		echo "kernel = base" >> "${S}/${i}/policy/modules.conf"
+		echo "libraries = base" >> "${S}/${i}/policy/modules.conf"
+		echo "logging = base" >> "${S}/${i}/policy/modules.conf"
 		echo "mcs = base" >> "${S}/${i}/policy/modules.conf"
 		echo "mls = base" >> "${S}/${i}/policy/modules.conf"
 		echo "selinux = base" >> "${S}/${i}/policy/modules.conf"
 		echo "terminal = base" >> "${S}/${i}/policy/modules.conf"
-		echo "libraries = base" >> "${S}/${i}/policy/modules.conf"
-		echo "logging = base" >> "${S}/${i}/policy/modules.conf"
 
 		sed -i -e '/^QUIET/s/n/y/' -e '/^MONOLITHIC/s/y/n/' \
 			-e "/^NAME/s/refpolicy/$i/" "${S}/${i}/build.conf" \
