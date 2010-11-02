@@ -8,7 +8,7 @@ inherit eutils
 
 DESCRIPTION="Tool to match installed software against the list of CVE entries"
 HOMEPAGE="http://cvechecker.sourceforge.net"
-SRC_URI="mirror://sourceforge/${PN}/development/${P}.tar.gz"
+SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
