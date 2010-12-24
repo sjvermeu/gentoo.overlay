@@ -26,6 +26,9 @@ src_unpack() {
 	[ -z "${POLICY_TYPES}" ] && local POLICY_TYPES="strict targeted"
 
 	unpack ${A}
+	epatch ${FILESDIR}/fix-udev.patch
+	epatch ${FILESDIR}/fix-sysadm.patch
+	epatch ${FILESDIR}/fix-networkmanager.patch
 
 	if ! use peer_perms; then
 		sed -i -e '/network_peer_controls/d' \
@@ -101,6 +104,7 @@ src_unpack() {
 			|| die "targeted seusers setup failed."
 		fi
 	done
+
 }
 
 src_compile() {
@@ -142,24 +146,10 @@ src_install() {
 pkg_postinst() {
 	[ -z "${POLICY_TYPES}" ] && local POLICY_TYPES="strict targeted"
 
-	if has "loadpolicy" $FEATURES ; then
-		for i in ${POLICY_TYPES}; do
-			einfo "Inserting base module into ${i} module store."
+	for i in ${POLICY_TYPES}; do
+		einfo "Inserting base module into ${i} module store."
 
-			cd "/usr/share/selinux/${i}"
-			semodule -s "${i}" -b base.pp
-		done
-	else
-		echo
-		echo
-		eerror "Policy has not been loaded.  It is strongly suggested"
-		eerror "that the policy be loaded before continuing!!"
-		echo
-		einfo "Automatic policy loading can be enabled by adding"
-		einfo "\"loadpolicy\" to the FEATURES in make.conf."
-		echo
-		echo
-		ebeep 4
-		epause 4
-	fi
+		cd "/usr/share/selinux/${i}"
+		semodule -s "${i}" -b base.pp
+	done
 }
