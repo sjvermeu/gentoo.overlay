@@ -1,5 +1,5 @@
 --- refpolicy.orig/policy/modules/services/networkmanager.te	2010-12-20 20:39:58.518000002 +0100
-+++ refpolicy/policy/modules/services/networkmanager.te	2010-12-24 14:34:58.462000063 +0100
++++ refpolicy/policy/modules/services/networkmanager.te	2010-12-28 16:22:46.593000059 +0100
 @@ -28,6 +28,9 @@
  type wpa_cli_exec_t;
  init_system_domain(wpa_cli_t, wpa_cli_exec_t)
@@ -40,6 +40,15 @@
  ########################################
  #
  # wpa_cli local policy
+@@ -276,7 +288,7 @@
+ allow wpa_cli_t NetworkManager_t:unix_dgram_socket sendto;
+ 
+ manage_sock_files_pattern(wpa_cli_t, NetworkManager_tmp_t, NetworkManager_tmp_t)
+-files_tmp_filetrans(wpa_cli_t, NetworkManager_tmp_t, sock_file)
++#files_tmp_filetrans(wpa_cli_t, NetworkManager_tmp_t, sock_file)
+ 
+ list_dirs_pattern(wpa_cli_t, NetworkManager_var_run_t, NetworkManager_var_run_t)
+ rw_sock_files_pattern(wpa_cli_t, NetworkManager_var_run_t, NetworkManager_var_run_t)
 --- refpolicy.orig/policy/modules/services/networkmanager.if	2010-12-20 20:39:58.529000002 +0100
 +++ refpolicy/policy/modules/services/networkmanager.if	2010-12-20 22:50:34.558000007 +0100
 @@ -191,3 +191,48 @@

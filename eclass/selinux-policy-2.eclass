@@ -32,7 +32,7 @@ selinux-policy-2_src_unpack() {
 	for i in ${MODS}; do
 		modfiles="`find ${S}/refpolicy/policy/modules -iname $i.te` $modfiles"
 		modfiles="`find ${S}/refpolicy/policy/modules -iname $i.fc` $modfiles"
-		# use .if from headers
+		modfiles="`find ${S}/refpolicy/policy/modules -iname $i.if` $modfiles"
 	done
 
 	for i in ${POLICY_TYPES}; do
@@ -43,7 +43,8 @@ selinux-policy-2_src_unpack() {
 
 		if [ -n "${POLICY_PATCH}" ]; then
 			cd "${S}"/${i}
-			epatch "${POLICY_PATCH}" || die "failed patch ${i}"
+			einfo "Patching from within ${S}/${i}."
+			epatch "${POLICY_PATCH}" || die "failed patch ${POLICY_PATCH} in ${S}/${i}"
 		fi
 
 	done
@@ -78,26 +79,12 @@ selinux-policy-2_pkg_postinst() {
 	done
 	[ -z "${POLICY_TYPES}" ] && local POLICY_TYPES="strict targeted"
 
-	if has "loadpolicy" $FEATURES ; then
-		for i in ${POLICY_TYPES}; do
-			einfo "Inserting the following modules into the $i module store: ${MODS}"
+	for i in ${POLICY_TYPES}; do
+		einfo "Inserting the following modules into the $i module store: ${MODS}"
 
-			cd /usr/share/selinux/${i}
-			semodule -s ${i} ${COMMAND} || die "failed installing module"
-		done
-	else
-		echo
-		echo
-		eerror "Policy has not been loaded.  It is strongly suggested"
-		eerror "that the policy be loaded before continuing!!"
-		echo
-		einfo "Automatic policy loading can be enabled by adding"
-		einfo "\"loadpolicy\" to the FEATURES in make.conf."
-		echo
-		echo
-		ebeep 4
-		epause 4
-	fi
+		cd /usr/share/selinux/${i}
+		semodule -s ${i} ${COMMAND}
+	done
 }
 
 EXPORT_FUNCTIONS src_unpack src_compile src_install pkg_postinst
