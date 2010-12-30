@@ -25,7 +25,9 @@ COMMON_DEPS=">=sys-libs/libselinux-${SELNX_VER}
 	>=sys-process/audit-1.5.1
 	>=sys-libs/libcap-1.10-r10
 	sys-libs/pam
-	>=sys-libs/libsemanage-${SEMNG_VER}"
+	>=sys-libs/libsemanage-${SEMNG_VER}
+	sys-libs/libcap-ng
+	>=sys-libs/libsepol-2.0.42"
 
 # pax-utils for scanelf used by rlpkg
 RDEPEND="${COMMON_DEPS}
@@ -46,23 +48,10 @@ src_unpack() {
 		|| die "fixfiles sed 1 failed"
 	sed -i -e '/fixfiles/d' "${S}/scripts/Makefile" \
 		|| die "fixfiles sed 2 failed"
-
-	local SUBDIRS="`cd ${S} && find -type d | cut -d/ -f2`"
-
-	if ! useq nls; then
-		for i in ${SUBDIRS}; do
-			# disable locale stuff
-			sed -i -e s/-DUSE_NLS// "${S}/${i}/Makefile" \
-				|| die "${i} NLS sed failed"
-		done
-	fi
-
-	# Gentoo Fixes
-	for i in ${SUBDIRS}; do
-		# add in CFLAGS
-		sed -i -e "s:-Wall:-Wall ${CFLAGS}:g" "${S}/${i}/Makefile" \
-			|| die "${i} Makefile CFLAGS fix failed."
-	done
+	# removing sandbox for the time being, need to
+	# rename in future to sesandbox?
+	sed -i -e 's/sandbox //' "${S}/Makefile" \
+		|| die "failed removing sandbox"
 }
 
 src_compile() {
