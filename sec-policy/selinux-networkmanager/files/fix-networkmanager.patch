@@ -1,5 +1,5 @@
---- services/networkmanager.te	2010-12-20 20:39:58.518000002 +0100
-+++ ../../../refpolicy/policy/modules/services/networkmanager.te	2010-12-28 21:34:17.336000006 +0100
+--- services/networkmanager.te	2010-09-10 17:05:45.000000000 +0200
++++ ../../../refpolicy/policy/modules/services/networkmanager.te	2010-12-30 19:42:12.232000149 +0100
 @@ -28,6 +28,9 @@
  type wpa_cli_exec_t;
  init_system_domain(wpa_cli_t, wpa_cli_exec_t)
@@ -59,61 +59,11 @@
 +	sysnet_domtrans_dhcpc(wpa_cli_t)
 +	allow wpa_cli_t etc_t:file { getattr };
 +')
---- services/networkmanager.if	2010-12-20 20:39:58.529000002 +0100
-+++ ../../../refpolicy/policy/modules/services/networkmanager.if	2010-12-20 22:50:34.558000007 +0100
-@@ -191,3 +191,48 @@
- 	files_search_pids($1)
- 	allow $1 NetworkManager_var_run_t:file read_file_perms;
- ')
-+
-+########################################
-+## <summary>
-+##      Execute wpa_cli in the wpa_cli domain.
-+## </summary>
-+## <param name="domain">
-+##      <summary>
-+##      Domain allowed to transition.
-+##      </summary>
-+## </param>
-+#
-+interface(`networkmanager_domtrans_wpa_cli',`
-+        gen_require(`
-+                type wpa_cli_t, wpa_cli_exec_t;
-+        ')
-+
-+        corecmd_search_bin($1)
-+        domtrans_pattern($1, wpa_cli_exec_t, wpa_cli_t)
-+')
-+
-+########################################
-+## <summary>
-+##      Execute wpa cli in the wpa_cli domain, and
-+##      allow the specified role the wpa_cli domain.
-+## </summary>
-+## <param name="domain">
-+##      <summary>
-+##      Domain allowed to transition.
-+##      </summary>
-+## </param>
-+## <param name="role">
-+##      <summary>
-+##      Role allowed access.
-+##      </summary>
-+## </param>
-+## <rolecap/>
-+#
-+interface(`networkmanager_run_wpa_cli',`
-+        gen_require(`
-+                type wpa_cli_exec_t;
-+        ')
-+
-+        networkmanager_domtrans_wpa_cli($1)
-+        role $2 types wpa_cli_t;
-+')
---- services/networkmanager.fc	2010-12-20 20:39:58.494000002 +0100
-+++ ../../../refpolicy/policy/modules/services/networkmanager.fc	2010-12-28 21:31:16.935000008 +0100
-@@ -24,3 +24,4 @@
+--- services/networkmanager.fc	2010-08-03 15:11:06.000000000 +0200
++++ ../../../refpolicy/policy/modules/services/networkmanager.fc	2011-01-02 15:16:15.559000003 +0100
+@@ -24,3 +24,5 @@
  /var/run/nm-dhclient.*			gen_context(system_u:object_r:NetworkManager_var_run_t,s0)
  /var/run/wpa_supplicant(/.*)?		gen_context(system_u:object_r:NetworkManager_var_run_t,s0)
  /var/run/wpa_supplicant-global	-s	gen_context(system_u:object_r:NetworkManager_var_run_t,s0)
 +/etc/wpa_supplicant/wpa_cli.sh	--	gen_context(system_u:object_r:bin_t,s0)
++/usr/bin/wpa_cli		--	gen_context(system_u:object_r:wpa_cli_exec_t,s0)
