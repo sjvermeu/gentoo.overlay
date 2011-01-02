@@ -1,11 +1,11 @@
 --- services/networkmanager.te	2010-09-10 17:05:45.000000000 +0200
-+++ ../../../refpolicy/policy/modules/services/networkmanager.te	2010-12-30 19:42:12.232000149 +0100
++++ ../../../refpolicy/policy/modules/services/networkmanager.te	2011-01-02 15:40:48.781999979 +0100
 @@ -28,6 +28,9 @@
  type wpa_cli_exec_t;
  init_system_domain(wpa_cli_t, wpa_cli_exec_t)
  
-+#type wpa_cli_var_run_t;
-+#files_pid_file(wpa_cli_var_run_t)
++type wpa_cli_var_run_t;
++files_pid_file(wpa_cli_var_run_t)
 +
  ########################################
  #
@@ -14,15 +14,15 @@
  manage_sock_files_pattern(NetworkManager_t, NetworkManager_var_run_t, NetworkManager_var_run_t)
  files_pid_filetrans(NetworkManager_t, NetworkManager_var_run_t, { dir file sock_file })
  
-+#manage_dirs_pattern(wpa_cli_t, wpa_cli_var_run_t, wpa_cli_var_run_t)
-+#manage_files_pattern(wpa_cli_t, wpa_cli_var_run_t, wpa_cli_var_run_t)
-+#manage_sock_files_pattern(wpa_cli_t, wpa_cli_var_run_t, wpa_cli_var_run_t)
-+#files_pid_filetrans(wpa_cli_t, wpa_cli_var_run_t, { dir file sock_file })
++manage_dirs_pattern(wpa_cli_t, wpa_cli_var_run_t, wpa_cli_var_run_t)
++manage_files_pattern(wpa_cli_t, wpa_cli_var_run_t, wpa_cli_var_run_t)
++manage_sock_files_pattern(wpa_cli_t, wpa_cli_var_run_t, wpa_cli_var_run_t)
++files_pid_filetrans(wpa_cli_t, wpa_cli_var_run_t, { dir file sock_file })
 +
  kernel_read_system_state(NetworkManager_t)
  kernel_read_network_state(NetworkManager_t)
  kernel_read_kernel_sysctls(NetworkManager_t)
-@@ -125,6 +133,7 @@
+@@ -125,10 +133,12 @@
  init_read_utmp(NetworkManager_t)
  init_dontaudit_write_utmp(NetworkManager_t)
  init_domtrans_script(NetworkManager_t)
@@ -30,7 +30,12 @@
  
  auth_use_nsswitch(NetworkManager_t)
  
-@@ -149,6 +158,7 @@
+ logging_send_syslog_msg(NetworkManager_t)
++logging_send_syslog_msg(wpa_cli_t)
+ 
+ miscfiles_read_localization(NetworkManager_t)
+ miscfiles_read_generic_certs(NetworkManager_t)
+@@ -149,6 +159,7 @@
  
  userdom_dontaudit_use_unpriv_user_fds(NetworkManager_t)
  userdom_dontaudit_use_user_ttys(NetworkManager_t)
@@ -38,7 +43,7 @@
  # Read gnome-keyring
  userdom_read_user_home_content_files(NetworkManager_t)
  
-@@ -287,3 +297,20 @@
+@@ -287,3 +298,20 @@
  miscfiles_read_localization(wpa_cli_t)
  
  term_dontaudit_use_console(wpa_cli_t)
@@ -60,10 +65,12 @@
 +	allow wpa_cli_t etc_t:file { getattr };
 +')
 --- services/networkmanager.fc	2010-08-03 15:11:06.000000000 +0200
-+++ ../../../refpolicy/policy/modules/services/networkmanager.fc	2011-01-02 15:16:15.559000003 +0100
-@@ -24,3 +24,5 @@
++++ ../../../refpolicy/policy/modules/services/networkmanager.fc	2011-01-02 15:32:58.885000014 +0100
+@@ -24,3 +24,7 @@
  /var/run/nm-dhclient.*			gen_context(system_u:object_r:NetworkManager_var_run_t,s0)
  /var/run/wpa_supplicant(/.*)?		gen_context(system_u:object_r:NetworkManager_var_run_t,s0)
  /var/run/wpa_supplicant-global	-s	gen_context(system_u:object_r:NetworkManager_var_run_t,s0)
++/var/run/wpa_cli-.*		--	gen_context(system_u:object_r:wpa_cli_var_run_t,s0)
 +/etc/wpa_supplicant/wpa_cli.sh	--	gen_context(system_u:object_r:bin_t,s0)
++/bin/wpa_cli			-l	gen_context(system_u:object_r:wpa_cli_exec_t,s0)
 +/usr/bin/wpa_cli		--	gen_context(system_u:object_r:wpa_cli_exec_t,s0)
