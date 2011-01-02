@@ -30,6 +30,7 @@ src_unpack() {
 	epatch ${FILESDIR}/fix-sysadm.patch
 	epatch ${FILESDIR}/fix-networkmanager.patch
 	epatch ${FILESDIR}/fix-raid.patch
+	epatch ${FILESDIR}/fix-modutils.patch
 
 	if ! use peer_perms; then
 		sed -i -e '/network_peer_controls/d' \
