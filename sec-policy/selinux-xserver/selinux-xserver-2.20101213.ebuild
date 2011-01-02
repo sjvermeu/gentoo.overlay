@@ -11,3 +11,5 @@ inherit selinux-policy-2
 DESCRIPTION="SELinux policy for general applications"
 
 KEYWORDS="~amd64 ~x86"
+
+POLICY_PATCH="${FILESDIR}/fix-xserver.patch"
