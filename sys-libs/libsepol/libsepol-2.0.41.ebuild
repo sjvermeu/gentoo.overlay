@@ -8,7 +8,7 @@ inherit multilib eutils
 
 DESCRIPTION="SELinux binary policy representation library"
 HOMEPAGE="http://userspace.selinuxproject.org"
-SRC_URI="http://userspace.selinuxproject.org/releases/20101221/devel/${P}.tar.gz"
+SRC_URI="http://userspace.selinuxproject.org/releases/20100525/devel/${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"

@@ -6,13 +6,13 @@ IUSE="debug"
 
 inherit eutils
 
-SEPOL_VER="2.0.42"
-SEMNG_VER="2.0.46"
+SEPOL_VER="2.0.41"
+SEMNG_VER="2.0.45"
 
 
 DESCRIPTION="SELinux policy compiler"
 HOMEPAGE="http://userspace.selinuxproject.org"
-SRC_URI="http://userspace.selinuxproject.org/releases/20101221/devel/${P}.tar.gz"
+SRC_URI="http://userspace.selinuxproject.org/releases/20100525/devel/${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"

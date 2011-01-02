@@ -7,14 +7,15 @@ IUSE="nls"
 inherit eutils python
 
 EXTRAS_VER="1.20"
-SEMNG_VER="2.0.46"
-SELNX_VER="2.0.98"
+SEMNG_VER="2.0.45"
+SELNX_VER="2.0.94"
+SEPOL_VER="2.0.41"
 
 #BUGFIX_PATCH="${FILESDIR}/policycoreutils-2.0.62-po.diff"
 
 DESCRIPTION="SELinux core utilities"
 HOMEPAGE="http://userspace.selinuxproject.org"
-SRC_URI="http://userspace.selinuxproject.org/releases/20101221/devel/${P}.tar.gz
+SRC_URI="http://userspace.selinuxproject.org/releases/20100525/devel/${P}.tar.gz
 	mirror://gentoo/policycoreutils-extra-${EXTRAS_VER}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
@@ -27,7 +28,7 @@ COMMON_DEPS=">=sys-libs/libselinux-${SELNX_VER}
 	sys-libs/pam
 	>=sys-libs/libsemanage-${SEMNG_VER}
 	sys-libs/libcap-ng
-	>=sys-libs/libsepol-2.0.42"
+	>=sys-libs/libsepol-${SEPOL_VER}"
 
 # pax-utils for scanelf used by rlpkg
 RDEPEND="${COMMON_DEPS}

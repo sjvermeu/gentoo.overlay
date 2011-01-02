@@ -7,11 +7,11 @@ RUBY_OPTIONAL="yes"
 
 inherit eutils multilib python ruby
 
-SEPOL_VER="2.0.42"
+SEPOL_VER="2.0.41"
 
 DESCRIPTION="SELinux userland library"
 HOMEPAGE="http://userspace.selinuxproject.org"
-SRC_URI="http://userspace.selinuxproject.org/releases/20101221/devel/${P}.tar.gz"
+SRC_URI="http://userspace.selinuxproject.org/releases/20100525/devel/${P}.tar.gz"
 LICENSE="public-domain"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"

@@ -6,12 +6,12 @@ IUSE=""
 
 inherit eutils multilib python
 
-SEPOL_VER="2.0.42"
-SELNX_VER="2.0.98"
+SEPOL_VER="2.0.41"
+SELNX_VER="2.0.94"
 
 DESCRIPTION="SELinux kernel and policy management library"
 HOMEPAGE="http://userspace.selinuxproject.org"
-SRC_URI="http://userspace.selinuxproject.org/releases/20101221/devel/${P}.tar.gz"
+SRC_URI="http://userspace.selinuxproject.org/releases/20100525/devel/${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"

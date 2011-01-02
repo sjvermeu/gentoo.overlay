@@ -32,7 +32,6 @@ selinux-policy-2_src_unpack() {
 	for i in ${MODS}; do
 		modfiles="`find ${S}/refpolicy/policy/modules -iname $i.te` $modfiles"
 		modfiles="`find ${S}/refpolicy/policy/modules -iname $i.fc` $modfiles"
-		modfiles="`find ${S}/refpolicy/policy/modules -iname $i.if` $modfiles"
 	done
 
 	for i in ${POLICY_TYPES}; do
@@ -43,8 +42,8 @@ selinux-policy-2_src_unpack() {
 
 		if [ -n "${POLICY_PATCH}" ]; then
 			cd "${S}"/${i}
-			einfo "Patching from within ${S}/${i}."
-			epatch "${POLICY_PATCH}" || die "failed patch ${POLICY_PATCH} in ${S}/${i}"
+			einfo "Patching ${i}"
+			epatch "${POLICY_PATCH}" || die "failed patch ${POLICY_PATCH}"
 		fi
 
 	done
