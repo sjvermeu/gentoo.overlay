@@ -1,0 +1,27 @@
+--- apps/links.te	1970-01-01 01:00:00.000000000 +0100
++++ apps/links.te	2011-01-16 11:25:46.107999993 +0100
+@@ -0,0 +1,19 @@
++policy_module(links, 1.0.0)
++
++############################
++# 
++# Declarations
++#
++
++type links_t;
++type links_exec_t;
++application_domain(links_t, links_exec_t)
++
++type links_home_t;
++typealias links_home_t alias { user_links_home_t staff_links_home_t sysadm_links_home_t };
++userdom_user_home_content(links_home_t)
++
++type links_tmpfs_t;
++typealias links_tmpfs_t alias { user_links_tmpfs_t staff_links_tmpfs_t sysadm_links_tmpfs_t };
++files_tmpfs_file(links_tmpfs_t)
++ubac_constrained(links_tmpfs_t)
+--- apps/links.fc	1970-01-01 01:00:00.000000000 +0100
++++ apps/links.fc	2011-01-16 10:50:48.058999501 +0100
+@@ -0,0 +1,2 @@
++/usr/bin/links         -- gen_context(system_u:object_r:links_exec_t,s0)
++HOME_DIR/\.links(/.*)?    gen_context(system_u:object_r:links_home_t,s0)
