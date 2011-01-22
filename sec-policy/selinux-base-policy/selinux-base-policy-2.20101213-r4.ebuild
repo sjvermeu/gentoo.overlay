@@ -44,6 +44,7 @@ src_unpack() {
 	epatch "${FILESDIR}"/add-apps-links-r4.patch
 	epatch "${FILESDIR}"/add-apps-mutt-r4.patch
 	epatch "${FILESDIR}"/add-services-gorg-r4.patch
+	epatch "${FILESDIR}"/add-services-vde-r4.patch
 	cd "${S}/refpolicy"
 
 	if ! use peer_perms; then
