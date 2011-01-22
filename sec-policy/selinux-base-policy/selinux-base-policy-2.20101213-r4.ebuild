@@ -38,6 +38,8 @@ src_unpack() {
 	epatch "${FILESDIR}"/fix-roles-sysadm-r4.patch
 	epatch "${FILESDIR}"/fix-udev.patch
 	epatch "${FILESDIR}"/fix-sudo.patch
+	epatch "${FILESDIR}"/fix-apps-qemu-r4.patch
+	epatch "${FILESDIR}"/fix-admin-portage-r4.patch
 	epatch "${FILESDIR}"/add-apps-skype-r4.patch
 	epatch "${FILESDIR}"/add-apps-links-r4.patch
 	epatch "${FILESDIR}"/add-apps-mutt-r4.patch
