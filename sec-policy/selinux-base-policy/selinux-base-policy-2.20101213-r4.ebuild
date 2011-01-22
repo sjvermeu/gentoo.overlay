@@ -30,7 +30,7 @@ src_unpack() {
 
 	cd "${S}"
 	epatch "${FILESDIR}"/fix-modutils.patch
-	epatch "${FILESDIR}"/fix-networkmanager.patch
+	epatch "${FILESDIR}"/fix-services-networkmanager-r4.patch
 	epatch "${FILESDIR}"/fix-raid.patch
 	epatch "${FILESDIR}"/fix-roles-unprivuser-r4.patch
 	epatch "${FILESDIR}"/fix-system-init-r4.patch
@@ -43,7 +43,7 @@ src_unpack() {
 	epatch "${FILESDIR}"/add-apps-skype-r4.patch
 	epatch "${FILESDIR}"/add-apps-links-r4.patch
 	epatch "${FILESDIR}"/add-apps-mutt-r4.patch
-	epatch "${FILESDIR}"/add-gorg-r3.patch
+	epatch "${FILESDIR}"/add-services-gorg-r4.patch
 	cd "${S}/refpolicy"
 
 	if ! use peer_perms; then
