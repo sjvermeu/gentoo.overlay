@@ -29,6 +29,7 @@ add-services-vde-r4.patch
 fix-admin-portage-r5.patch
 	Enable setfscreate, needed to deploy java-config
 	Generate the gentoo_try_dontaudit tunable boolean
+	Introduce the necessary dontaudit statements (covered by gentoo_try_dontaudit)
 
 fix-apps-qemu-r4.patch
 	Disable an optional policy as it contains errors (build failure)
