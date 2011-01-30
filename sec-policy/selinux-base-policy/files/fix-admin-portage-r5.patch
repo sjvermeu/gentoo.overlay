@@ -1,11 +1,26 @@
 --- refpolicy.orig/policy/modules/admin/portage.te	2010-08-03 15:11:03.000000000 +0200
-+++ refpolicy/policy/modules/admin/portage.te	2011-01-22 16:59:32.543000067 +0100
-@@ -1,4 +1,4 @@
++++ refpolicy/policy/modules/admin/portage.te	2011-01-30 15:28:20.403000157 +0100
+@@ -1,10 +1,19 @@
 -policy_module(portage, 1.10.0)
 +policy_module(portage, 1.10.0.r1)
  
  ########################################
  #
+ # Declarations
+ #
+ 
++## <desc>
++## <p>
++##   Set dontaudit statements where Gentoo developers believe they are indeed
++##   cosmetic
++## </p>
++## </desc>
++gen_tunable(gentoo_try_dontaudit, false)
++
++
+ type gcc_config_t;
+ type gcc_config_exec_t;
+ application_domain(gcc_config_t, gcc_config_exec_t)
 --- refpolicy.orig/policy/modules/admin/portage.if	2010-08-05 14:46:44.000000000 +0200
 +++ refpolicy/policy/modules/admin/portage.if	2011-01-22 13:47:40.623000044 +0100
 @@ -77,8 +77,8 @@
