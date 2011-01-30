@@ -32,6 +32,9 @@ src_unpack() {
 	cd "${S}"
 	epatch "${PATCHBUNDLE}"
 	cd "${S}/refpolicy"
+	# Fix bug 257111
+	sed -i -e 's:system_crond_t:system_cronjob_t:g' \
+		"${S}/refpolicy/config/appconfig-standard/default_contexts"
 
 	if ! use peer_perms; then
 		sed -i -e '/network_peer_controls/d' \
