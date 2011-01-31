@@ -58,8 +58,8 @@
 +
 +logging_send_syslog_msg(vde_t)
 --- refpolicy.orig/policy/modules/services/vde.if	1970-01-01 01:00:00.000000000 +0100
-+++ refpolicy/policy/modules/services/vde.if	2011-01-22 22:20:47.912000221 +0100
-@@ -0,0 +1,63 @@
++++ refpolicy/policy/modules/services/vde.if	2011-01-31 20:30:10.753000085 +0100
+@@ -0,0 +1,65 @@
 +## <summary>Virtual Distributed Ethernet switch service</summary>
 +
 +########################################
@@ -121,7 +121,9 @@
 +	allow $1 vde_tmp_t:sock_file manage_sock_file_perms;
 +	files_tmp_filetrans($1, vde_tmp_t, sock_file)
 +
-+
++	tunable_policy(`gentoo_try_dontaudit',`
++		dontaudit $1 vde_var_run_t:sock_file { setattr };
++	')
 +')
 --- refpolicy.orig/policy/modules/services/vde.fc	1970-01-01 01:00:00.000000000 +0100
 +++ refpolicy/policy/modules/services/vde.fc	2011-01-22 21:23:05.129000146 +0100
