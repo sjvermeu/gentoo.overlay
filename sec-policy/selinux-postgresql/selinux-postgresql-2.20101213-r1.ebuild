@@ -10,3 +10,5 @@ inherit selinux-policy-2
 DESCRIPTION="SELinux policy for PostgreSQL"
 
 KEYWORDS="~amd64 ~x86"
+
+POLICY_PATCH="${FILESDIR}/fix-services-postgresql-r1.patch"
