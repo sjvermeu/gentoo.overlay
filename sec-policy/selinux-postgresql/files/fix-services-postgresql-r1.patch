@@ -1,10 +1,10 @@
 --- services/postgresql.fc	2010-08-03 15:11:07.000000000 +0200
-+++ services/postgresql.fc	2011-02-13 12:42:28.552905044 +0100
++++ services/postgresql.fc	2011-02-13 12:52:13.044905046 +0100
 @@ -5,6 +5,11 @@
  /etc/rc\.d/init\.d/(se)?postgresql --	gen_context(system_u:object_r:postgresql_initrc_exec_t,s0)
  /etc/sysconfig/pgsql(/.*)? 		gen_context(system_u:object_r:postgresql_etc_t,s0)
  
-+ifdef(`distro_gentoo',`
++ifdef(`distro_gentoo', `
 +/etc/postgresql-.*(/.*)?		gen_context(system_u:object_r:postgresql_etc_t,s0)
 +/etc/init\.d/(se)?postgresql-.*	--	gen_context(system_u:object_r:postgresql_initrc_exec_t,s0)
 +')
