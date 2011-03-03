@@ -1,5 +1,5 @@
 --- services/postfix.te	2010-08-03 15:11:07.000000000 +0200
-+++ services/postfix.te	2011-03-03 14:37:41.519999997 +0100
++++ services/postfix.te	2011-03-03 17:48:25.952999995 +0100
 @@ -93,7 +93,7 @@
  #
  
@@ -9,6 +9,14 @@
  allow postfix_master_t self:fifo_file rw_fifo_file_perms;
  allow postfix_master_t self:tcp_socket create_stream_socket_perms;
  allow postfix_master_t self:udp_socket create_socket_perms;
+@@ -589,6 +589,7 @@
+ # for OpenSSL certificates
+ files_read_usr_files(postfix_smtpd_t)
+ mta_read_aliases(postfix_smtpd_t)
++mta_read_config(postfix_smtpd_t)
+ 
+ optional_policy(`
+ 	dovecot_stream_connect_auth(postfix_smtpd_t)
 --- services/postfix.fc	2010-08-03 15:11:07.000000000 +0200
 +++ services/postfix.fc	2011-03-03 15:12:19.081999996 +0100
 @@ -16,24 +16,27 @@
