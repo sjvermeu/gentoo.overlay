@@ -10,14 +10,42 @@
  allow postfix_master_t self:tcp_socket create_stream_socket_perms;
  allow postfix_master_t self:udp_socket create_socket_perms;
 --- services/postfix.fc	2010-08-03 15:11:07.000000000 +0200
-+++ services/postfix.fc	2011-03-03 14:46:12.399999997 +0100
-@@ -32,8 +32,13 @@
- /usr/lib/postfix/virtual --	gen_context(system_u:object_r:postfix_virtual_exec_t,s0)
++++ services/postfix.fc	2011-03-03 15:12:19.081999996 +0100
+@@ -16,24 +16,27 @@
+ /usr/libexec/postfix/pipe --	gen_context(system_u:object_r:postfix_pipe_exec_t,s0)
+ /usr/libexec/postfix/virtual --	gen_context(system_u:object_r:postfix_virtual_exec_t,s0)
+ ', `
+-/usr/lib/postfix/.*	--	gen_context(system_u:object_r:postfix_exec_t,s0)
+-/usr/lib/postfix/cleanup --	gen_context(system_u:object_r:postfix_cleanup_exec_t,s0)
+-/usr/lib/postfix/local	--	gen_context(system_u:object_r:postfix_local_exec_t,s0)
+-/usr/lib/postfix/master	--	gen_context(system_u:object_r:postfix_master_exec_t,s0)
+-/usr/lib/postfix/pickup	--	gen_context(system_u:object_r:postfix_pickup_exec_t,s0)
+-/usr/lib/postfix/(n)?qmgr --	gen_context(system_u:object_r:postfix_qmgr_exec_t,s0)
+-/usr/lib/postfix/showq	--	gen_context(system_u:object_r:postfix_showq_exec_t,s0)
+-/usr/lib/postfix/smtp	--	gen_context(system_u:object_r:postfix_smtp_exec_t,s0)
+-/usr/lib/postfix/lmtp	--	gen_context(system_u:object_r:postfix_smtp_exec_t,s0)
+-/usr/lib/postfix/scache	--	gen_context(system_u:object_r:postfix_smtp_exec_t,s0)
+-/usr/lib/postfix/smtpd	--	gen_context(system_u:object_r:postfix_smtpd_exec_t,s0)
+-/usr/lib/postfix/bounce	--	gen_context(system_u:object_r:postfix_bounce_exec_t,s0)
+-/usr/lib/postfix/pipe	--	gen_context(system_u:object_r:postfix_pipe_exec_t,s0)
+-/usr/lib/postfix/virtual --	gen_context(system_u:object_r:postfix_virtual_exec_t,s0)
++/usr/lib(64)?/postfix/.*	--	gen_context(system_u:object_r:postfix_exec_t,s0)
++/usr/lib(64)?/postfix/cleanup --	gen_context(system_u:object_r:postfix_cleanup_exec_t,s0)
++/usr/lib(64)?/postfix/local	--	gen_context(system_u:object_r:postfix_local_exec_t,s0)
++/usr/lib(64)?/postfix/master	--	gen_context(system_u:object_r:postfix_master_exec_t,s0)
++/usr/lib(64)?/postfix/pickup	--	gen_context(system_u:object_r:postfix_pickup_exec_t,s0)
++/usr/lib(64)?/postfix/(n)?qmgr --	gen_context(system_u:object_r:postfix_qmgr_exec_t,s0)
++/usr/lib(64)?/postfix/showq	--	gen_context(system_u:object_r:postfix_showq_exec_t,s0)
++/usr/lib(64)?/postfix/smtp	--	gen_context(system_u:object_r:postfix_smtp_exec_t,s0)
++/usr/lib(64)?/postfix/lmtp	--	gen_context(system_u:object_r:postfix_smtp_exec_t,s0)
++/usr/lib(64)?/postfix/scache	--	gen_context(system_u:object_r:postfix_smtp_exec_t,s0)
++/usr/lib(64)?/postfix/smtpd	--	gen_context(system_u:object_r:postfix_smtpd_exec_t,s0)
++/usr/lib(64)?/postfix/bounce	--	gen_context(system_u:object_r:postfix_bounce_exec_t,s0)
++/usr/lib(64)?/postfix/pipe	--	gen_context(system_u:object_r:postfix_pipe_exec_t,s0)
++/usr/lib(64)?/postfix/virtual --	gen_context(system_u:object_r:postfix_virtual_exec_t,s0)
++/usr/lib(64)?/postfix/postfix-script.*	--	gen_context(system_u:object_r:postfix_exec_t,s0)
  ')
  /etc/postfix/postfix-script.* -- gen_context(system_u:object_r:postfix_exec_t,s0)
-+ifdef(`distro_gentoo',`
-+/usr/lib(64)?/postfix/[^\.]*	--	gen_context(system_u:object_r:bin_t,s0)
-+')
  /etc/postfix/prng_exch	--	gen_context(system_u:object_r:postfix_prng_t,s0)
 +ifndef(`distro_gentoo',`
  /usr/sbin/postalias	--	gen_context(system_u:object_r:postfix_master_exec_t,s0)
@@ -25,12 +53,3 @@
  /usr/sbin/postcat	--	gen_context(system_u:object_r:postfix_master_exec_t,s0)
  /usr/sbin/postdrop	--	gen_context(system_u:object_r:postfix_postdrop_exec_t,s0)
  /usr/sbin/postfix	--	gen_context(system_u:object_r:postfix_master_exec_t,s0)
-@@ -48,7 +53,7 @@
- 
- /var/spool/postfix(/.*)?		gen_context(system_u:object_r:postfix_spool_t,s0)
- /var/spool/postfix/maildrop(/.*)? gen_context(system_u:object_r:postfix_spool_maildrop_t,s0)
--/var/spool/postfix/pid/.*	gen_context(system_u:object_r:postfix_var_run_t,s0)
-+/var/spool/postfix/pid(/.*)?	gen_context(system_u:object_r:postfix_var_run_t,s0)
- /var/spool/postfix/private(/.*)? gen_context(system_u:object_r:postfix_private_t,s0)
- /var/spool/postfix/public(/.*)? gen_context(system_u:object_r:postfix_public_t,s0)
- /var/spool/postfix/bounce(/.*)? gen_context(system_u:object_r:postfix_spool_bounce_t,s0)
