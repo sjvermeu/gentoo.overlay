@@ -1,3 +1,14 @@
+--- services/postfix.te	2010-08-03 15:11:07.000000000 +0200
++++ services/postfix.te	2011-03-03 14:37:41.519999997 +0100
+@@ -93,7 +93,7 @@
+ #
+ 
+ # chown is to set the correct ownership of queue dirs
+-allow postfix_master_t self:capability { chown dac_override kill setgid setuid net_bind_service sys_tty_config };
++allow postfix_master_t self:capability { chown dac_override kill setgid setuid net_bind_service sys_tty_config dac_read_search };
+ allow postfix_master_t self:fifo_file rw_fifo_file_perms;
+ allow postfix_master_t self:tcp_socket create_stream_socket_perms;
+ allow postfix_master_t self:udp_socket create_socket_perms;
 --- services/postfix.fc	2010-08-03 15:11:07.000000000 +0200
 +++ services/postfix.fc	2011-03-03 14:34:09.114999995 +0100
 @@ -32,8 +32,13 @@
