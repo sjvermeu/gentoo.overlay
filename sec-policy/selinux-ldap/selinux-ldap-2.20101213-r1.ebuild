@@ -13,3 +13,5 @@ RDEPEND="!<=sec-policy/selinux-openldap-2.20101213
 		>=sec-policy/selinux-base-policy-${PV}"
 
 KEYWORDS="~amd64 ~x86"
+
+POLICY_PATCH="${FILESDIR}/fix-services-ldap-r1.patch"
