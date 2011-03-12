@@ -1,0 +1,13 @@
+--- services/ldap.fc	2010-08-03 15:11:06.000000000 +0200
++++ services/ldap.fc	2011-03-12 16:36:09.543999997 +0100
+@@ -8,6 +8,10 @@
+ /usr/lib/slapd		--	gen_context(system_u:object_r:slapd_exec_t,s0)
+ ')
+ 
++ifdef(`distro_gentoo',`
++/usr/lib(64)?/openldap/slapd	--	gen_context(system_u:object_r:slapd_exec_t,s0)
++')
++
+ /var/lib/ldap(/.*)?		gen_context(system_u:object_r:slapd_db_t,s0)
+ /var/lib/ldap/replog(/.*)?	gen_context(system_u:object_r:slapd_replog_t,s0)
+ 
