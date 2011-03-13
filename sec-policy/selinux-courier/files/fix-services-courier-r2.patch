@@ -37,7 +37,7 @@
 +	mysql_stream_connect(courier_authdaemon_t)
 +')
 --- services/courier.fc	2010-08-03 15:11:05.000000000 +0200
-+++ services/courier.fc	2011-03-13 12:15:07.430999999 +0100
++++ services/courier.fc	2011-03-13 13:22:40.122000000 +0100
 @@ -5,8 +5,10 @@
  /usr/sbin/courierlogger			--	gen_context(system_u:object_r:courier_exec_t,s0)
  /usr/sbin/courierldapaliasd		--	gen_context(system_u:object_r:courier_exec_t,s0)
@@ -51,7 +51,7 @@
  /usr/lib(64)?/courier/courier/.*	--	gen_context(system_u:object_r:courier_exec_t,s0)
  /usr/lib(64)?/courier/courier/courierpop.* --	gen_context(system_u:object_r:courier_pop_exec_t,s0)
  /usr/lib(64)?/courier/courier/imaplogin --	gen_context(system_u:object_r:courier_pop_exec_t,s0)
-@@ -16,9 +18,13 @@
+@@ -16,9 +18,14 @@
  /usr/lib(64)?/courier/rootcerts(/.*)?		gen_context(system_u:object_r:courier_etc_t,s0)
  /usr/lib(64)?/courier/sqwebmail/cleancache\.pl -- gen_context(system_u:object_r:sqwebmail_cron_exec_t,s0)
  
@@ -62,7 +62,8 @@
 +/var/run/courier(/.*)?				gen_context(system_u:object_r:courier_var_run_t,s0)
 +# Courier authdaemon config file has this location, but sais not to touch it!
 +ifdef(`distro_gentoo',`
-+/var/lib/courier/authdaemon(/.*)?		gen_context(system_u:object_r:courier_var_run_t,s)
++/var/lib/courier/authdaemon(/.*)?		gen_context(system_u:object_r:courier_var_run_t,s0)
++/usr/sbin/imaplogin			--	gen_context(system_u:object_r:courier_authdaemon_exec_t,s0)
 +')
  
  /var/spool/authdaemon(/.*)?			gen_context(system_u:object_r:courier_spool_t,s0)
