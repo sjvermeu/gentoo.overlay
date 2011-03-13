@@ -1,5 +1,5 @@
 --- services/courier.te	2010-12-13 15:11:02.000000000 +0100
-+++ services/courier.te	2011-03-03 16:27:16.660999997 +0100
++++ services/courier.te	2011-03-13 12:29:52.793000000 +0100
 @@ -37,7 +37,7 @@
  #
  
@@ -19,6 +19,14 @@
  files_search_spool(courier_authdaemon_t)
  
  corecmd_search_bin(courier_authdaemon_t)
+@@ -133,6 +135,7 @@
+ miscfiles_read_localization(courier_tcpd_t)
+ 
+ courier_domtrans_pop(courier_tcpd_t)
++courier_authdaemon_stream_connect(courier_tcpd_t)
+ 
+ ########################################
+ #
 --- services/courier.fc	2010-08-03 15:11:05.000000000 +0200
 +++ services/courier.fc	2011-03-13 12:15:07.430999999 +0100
 @@ -5,8 +5,10 @@
