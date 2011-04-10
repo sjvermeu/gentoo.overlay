@@ -18,9 +18,10 @@ fi
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="sqlite mysql"
 
-DEPEND=">=dev-db/sqlite-3.6.23.1
+DEPEND="sqlite? ( >=dev-db/sqlite-3.6.23.1 )
+	mysql? ( >=dev-db/mysql-5.1.51 )
 	>=dev-libs/libconfig-1.3.2"
 RDEPEND="${DEPEND}
 	>=dev-libs/libxslt-1.1.26"
@@ -33,6 +34,14 @@ src_prepare() {
 	if [[ $PV == 9999 ]]; then
 		eautoreconf
 	fi
+}
+
+src_compile() {
+	econf \
+		$(use_enable sqlite sqlite3) \
+		$(use_enable mysql) || die "./configure failed"
+
+	emake || die "compile failed"
 }
 
 src_install() {
