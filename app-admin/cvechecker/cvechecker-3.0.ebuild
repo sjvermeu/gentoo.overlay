@@ -25,11 +25,13 @@ pkg_setup() {
 	enewgroup cvechecker
 }
 
-src_compile() {
+src_configure() {
 	econf \
 		$(use_enable sqlite sqlite3) \
 		$(use_enable mysql) || die "./configure failed"
+}
 
+src_compile() {
 	emake || die "compile failed"
 }
 
