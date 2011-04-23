@@ -1,0 +1,7 @@
+# Copyright 1999-2011 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: /var/cvsroot/gentoo-x86/profiles/selinux/package.use.force,v 1.1 2011/02/18 19:44:13 arfrever Exp $
+
+# Arfrever Frehtes Taifersar Arahesis <arfrever@gentoo.org> (18 Feb 2011)
+# sys-apps/portage depends on sys-libs/libselinux, which currently does not support Python 3.
+sys-apps/portage python2
