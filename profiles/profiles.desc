@@ -1,0 +1,3 @@
+amd64	hardened/linux/amd64/selinux			dev
+amd64	hardened/linux/amd64/no-multilib/selinux	dev
+x86	hardened/linux/x86/selinux			dev
