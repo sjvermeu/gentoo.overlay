@@ -1,2 +1,2 @@
-../../../../features/selinux
-../
+/usr/portage/profiles/hardened/linux/amd64/no-multilib
+../../../../../features/selinux
