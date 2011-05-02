@@ -2,6 +2,17 @@
 # Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-base-policy/ChangeLog,v 1.72 2011/04/16 13:02:44 blueness Exp $
 
+*selinux-base-policy-2.20101213-r13 (02 May 2011)
+
+  02 May 2011; <swift@gentoo.org>
+  +selinux-base-policy-2.20101213-r13.ebuild,
+  +files/patchbundle-selinux-base-policy-2.20101213-r13.tar.bz2,
+  +files/config, +files/modules.conf.strict,
+  +files/modules.conf.strict.20090730, +files/modules.conf.targeted,
+  +files/modules.conf.targeted.20090730, +metadata.xml:
+  Make UBAC optional (#257111 and #306393), use portage_srcrepo_t for live
+  ebuilds and match mdadm policy with upstream
+
 *selinux-base-policy-2.20101213-r12 (16 Apr 2011)
 *selinux-base-policy-2.20101213-r11 (16 Apr 2011)
 
