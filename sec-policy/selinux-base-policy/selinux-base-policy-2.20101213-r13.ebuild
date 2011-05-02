@@ -123,7 +123,7 @@ pkg_postinst() {
 		cd "/usr/share/selinux/${i}"
 		semodule -s "${i}" -b base.pp
 	done
-	elog "If you have any live ebuilds installed, you need to run the followig command"
-	elog "to fix the SELinux labels within that location:"
-	elog "  restorecon -R /usr/portage/distfiles"
+	elog "Updates on policies might require you to relabel files. If you, after installing"
+	elog "new SELinux policies, get 'permission denied' errors, relabelling your system"
+	elog "using 'rlpkg -a -r' might resolve the issues."
 }
