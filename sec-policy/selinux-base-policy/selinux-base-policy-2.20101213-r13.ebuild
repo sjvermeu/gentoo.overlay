@@ -3,7 +3,7 @@
 # $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-base-policy/selinux-base-policy-2.20101213-r12.ebuild,v 1.1 2011/04/16 13:02:44 blueness Exp $
 
 EAPI="1"
-IUSE="+peer_perms open_perms"
+IUSE="+peer_perms open_perms ubac"
 
 inherit eutils
 
@@ -59,6 +59,10 @@ src_unpack() {
 		sed -i -e '/^QUIET/s/n/y/' -e '/^MONOLITHIC/s/y/n/' \
 			-e "/^NAME/s/refpolicy/$i/" "${S}/${i}/build.conf" \
 			|| die "build.conf setup failed."
+
+		if ! use ubac; then
+			sed -i -e 's:^UBAC = y:UBAC = n:g' "${S}/${i}/build.conf"
+		fi
 
 		echo "DISTRO = gentoo" >> "${S}/${i}/build.conf"
 
