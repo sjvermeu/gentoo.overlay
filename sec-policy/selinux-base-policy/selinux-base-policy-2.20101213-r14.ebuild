@@ -64,6 +64,10 @@ src_unpack() {
 			sed -i -e 's:^UBAC = y:UBAC = n:g' "${S}/${i}/build.conf"
 		fi
 
+		if ! use authinit; then
+			sed -i -e 's:^DIRECT_INITRC = n:DIRECT_INITRC = y:g' "${S}/${i}/build.conf"
+		fi
+
 		echo "DISTRO = gentoo" >> "${S}/${i}/build.conf"
 
 		if [ "${i}" == "targeted" ]; then
