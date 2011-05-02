@@ -105,6 +105,11 @@ src_install() {
 	doins "${FILESDIR}/config"
 }
 
+pkg_preinst() {
+	has_version "<${CATEGORY}/${PN}-2.20101213-r13"
+	previous_less_than_r13=$?
+}
+
 pkg_postinst() {
 	[ -z "${POLICY_TYPES}" ] && local POLICY_TYPES="strict targeted"
 
@@ -114,4 +119,6 @@ pkg_postinst() {
 		cd "/usr/share/selinux/${i}"
 		semodule -s "${i}" -b base.pp
 	done
+	elog "If you have any live ebuilds installed, you need to run"
+	elog "'restorecon -R ${DISTDIR}' to fix the SELinux labels within that location."
 }
