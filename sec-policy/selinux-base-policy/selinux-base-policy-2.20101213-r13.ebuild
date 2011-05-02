@@ -119,6 +119,7 @@ pkg_postinst() {
 		cd "/usr/share/selinux/${i}"
 		semodule -s "${i}" -b base.pp
 	done
-	elog "If you have any live ebuilds installed, you need to run"
-	elog "'restorecon -R ${DISTDIR}' to fix the SELinux labels within that location."
+	elog "If you have any live ebuilds installed, you need to run the followig command"
+	elog "to fix the SELinux labels within that location:"
+	elog "  restorecon -R /usr/portage/distfiles"
 }
