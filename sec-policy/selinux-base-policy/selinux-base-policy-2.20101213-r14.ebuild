@@ -121,7 +121,7 @@ pkg_postinst() {
 		einfo "Inserting base module into ${i} module store."
 
 		cd "/usr/share/selinux/${i}"
-		semodule -s "${i}" -b base.pp
+		semodule -s "${i}" -b base.pp || die "Could not load in new base policy"
 	done
 	elog "Updates on policies might require you to relabel files. If you, after installing"
 	elog "new SELinux policies, get 'permission denied' errors, relabelling your system"
