@@ -123,7 +123,7 @@ pkg_postinst() {
 		cd "/usr/share/selinux/${i}"
 		semodule -s "${i}" -b base.pp || die "Could not load in new base policy"
 	done
-	elog "Updates on policies might require you to relabel files. If you, after installing"
-	elog "new SELinux policies, get 'permission denied' errors, relabelling your system"
-	elog "using 'rlpkg -a -r' might resolve the issues."
+	elog "Updates on policies might require you to relabel files. If you, after"
+	elog "installing new SELinux policies, get 'permission denied' errors,"
+	elog "relabelling your system using 'rlpkg -a -r' might resolve the issues."
 }
