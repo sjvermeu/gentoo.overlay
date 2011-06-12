@@ -1,5 +1,5 @@
 --- services/zabbix.te	2010-12-13 15:11:02.000000000 +0100
-+++ services/zabbix.te	2011-06-12 21:27:13.503002705 +0200
++++ services/zabbix.te	2011-06-12 21:31:48.648002721 +0200
 @@ -9,9 +9,16 @@
  type zabbix_exec_t;
  init_daemon_domain(zabbix_t, zabbix_exec_t)
@@ -39,7 +39,7 @@
  
  # log files
  allow zabbix_t zabbix_log_t:dir setattr;
-@@ -39,14 +53,76 @@
+@@ -39,14 +53,78 @@
  manage_files_pattern(zabbix_t, zabbix_var_run_t, zabbix_var_run_t)
  files_pid_filetrans(zabbix_t, zabbix_var_run_t, { dir file })
  
@@ -101,6 +101,8 @@
 +corenet_tcp_bind_generic_node(zabbix_agent_t)
 +corenet_tcp_bind_zabbix_client_port(zabbix_agent_t)
 +corenet_tcp_connect_all_ports(zabbix_agent_t)
++dev_getattr_all_blk_files(zabbix_agent_t)
++dev_getattr_all_chr_files(zabbix_agent_t)
 +files_read_etc_files(zabbix_agent_t)
 +files_getattr_all_dirs(zabbix_agent_t)
 +files_getattr_all_files(zabbix_agent_t)
