@@ -1,10 +1,10 @@
 --- services/zabbix.te	2010-12-13 15:11:02.000000000 +0100
-+++ services/zabbix.te	2011-06-12 09:36:06.560000210 +0200
++++ services/zabbix.te	2011-06-12 09:38:04.377000217 +0200
 @@ -28,6 +28,7 @@
  allow zabbix_t self:capability { setuid setgid };
  allow zabbix_t self:fifo_file rw_file_perms;
  allow zabbix_t self:unix_stream_socket create_stream_socket_perms;
-+allow zabbix_t self:sem { create unix_write unix_read read write associate }; #mutex requirement for log file
++allow zabbix_t self:sem { create unix_write unix_read read write associate destroy }; #mutex requirement for log file
  
  # log files
  allow zabbix_t zabbix_log_t:dir setattr;
