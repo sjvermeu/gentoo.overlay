@@ -79,6 +79,7 @@ src_compile() {
 
 	for i in ${POLICY_TYPES}; do
 		cd "${S}/${i}"
+		make generate || die "${i} generation failed"
 		make base || die "${i} compile failed"
 	done
 }
