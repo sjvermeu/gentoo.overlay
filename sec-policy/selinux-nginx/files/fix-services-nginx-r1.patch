@@ -139,8 +139,8 @@
 +
 +
 --- services/nginx.fc	1970-01-01 01:00:00.000000000 +0100
-+++ services/nginx.fc	2011-06-13 21:31:49.384001348 +0200
-@@ -0,0 +1,57 @@
++++ services/nginx.fc	2011-06-13 21:39:32.678001362 +0200
+@@ -0,0 +1,59 @@
 +###############################################################################
 +# SELinux module for the NGINX Web Server
 +#
@@ -188,13 +188,15 @@
 +# MLS sensitivity: s0
 +# MCS categories: <none>
 +
++/usr/sbin/nginx				--	gen_context(system_u:object_r:nginx_exec_t,s0)
 +/etc/nginx(/.*)?				gen_context(system_u:object_r:nginx_conf_t,s0)
++/etc/rc\.d/init\.d/nginx		--	gen_context(system_u:object_r:nginx_initrc_exec_t,s0)
 +
-+/usr/local/nginx/sbin/nginx		--	gen_context(system_u:object_r:nginx_exec_t,s0)
-+/usr/local/nginx/logs/nginx.pid			gen_context(system_u:object_r:nginx_var_run_t,s0)
-+/usr/local/nginx/logs(/.*)?			gen_context(system_u:object_r:nginx_var_log_t,s0)
-+/usr/local/nginx/proxy_temp(/.*)?			gen_context(system_u:object_r:nginx_var_lib_t,s0)
-+/usr/local/nginx/fastcgi_temp(/.*)?                   gen_context(system_u:object_r:nginx_var_lib_t,s0)
-+/usr/local/nginx/client_body_temp(/.*)?               gen_context(system_u:object_r:nginx_var_lib_t,s0)
-+/usr/local/nginx/html(/.*)?               gen_context(user_u:object_r:httpd_sys_content_t,s0)
-+/usr/local/nginx/conf(/.*)?		    gen_context(system_u:object_r:etc_t,s0)
++#/usr/local/nginx/sbin/nginx		--	gen_context(system_u:object_r:nginx_exec_t,s0)
++#/usr/local/nginx/logs/nginx.pid			gen_context(system_u:object_r:nginx_var_run_t,s0)
++#/usr/local/nginx/logs(/.*)?			gen_context(system_u:object_r:nginx_var_log_t,s0)
++#/usr/local/nginx/proxy_temp(/.*)?			gen_context(system_u:object_r:nginx_var_lib_t,s0)
++#/usr/local/nginx/fastcgi_temp(/.*)?                   gen_context(system_u:object_r:nginx_var_lib_t,s0)
++#/usr/local/nginx/client_body_temp(/.*)?               gen_context(system_u:object_r:nginx_var_lib_t,s0)
++#/usr/local/nginx/html(/.*)?               gen_context(user_u:object_r:httpd_sys_content_t,s0)
++#/usr/local/nginx/conf(/.*)?		    gen_context(system_u:object_r:etc_t,s0)
