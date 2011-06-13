@@ -1,5 +1,5 @@
 --- services/zabbix.te	2010-12-13 15:11:02.000000000 +0100
-+++ services/zabbix.te	2011-06-12 22:09:59.608002855 +0200
++++ services/zabbix.te	2011-06-13 08:50:17.607000042 +0200
 @@ -9,9 +9,16 @@
  type zabbix_exec_t;
  init_daemon_domain(zabbix_t, zabbix_exec_t)
@@ -53,9 +53,9 @@
  
  miscfiles_read_localization(zabbix_t)
 +corenet_tcp_bind_generic_node(zabbix_t)
-+corenet_tcp_bind_zabbix_server_port(zabbix_t)
++corenet_tcp_bind_zabbix_port(zabbix_t)
 +
-+zabbix_client_tcp_connect(zabbix_t)
++zabbix_agent_tcp_connect(zabbix_t)
  
  optional_policy(`
 +	# Support MySQL connectivity both local (stream) and through network (tcp)
@@ -88,7 +88,7 @@
 +manage_files_pattern(zabbix_agent_t, zabbix_var_run_t, zabbix_var_run_t)
 +files_pid_filetrans(zabbix_agent_t, zabbix_var_run_t, file)
 +# Port access
-+zabbix_server_tcp_connect(zabbix_agent_t) 
++zabbix_tcp_connect(zabbix_agent_t) 
 +zabbix_read_proc_files(zabbix_agent_t) 
 +# Shared memory
 +rw_files_pattern(zabbix_agent_t, zabbix_tmpfs_t, zabbix_tmpfs_t)
@@ -96,11 +96,11 @@
 +## kernel layer module calls
 +kernel_read_all_sysctls(zabbix_agent_t)
 +kernel_read_system_state(zabbix_agent_t)
-+corecmd_exec_bin(zabbix_agent_t)
-+corecmd_exec_shell(zabbix_agent_t)
++#corecmd_exec_bin(zabbix_agent_t)
++#corecmd_exec_shell(zabbix_agent_t)
 +corecmd_read_all_executables(zabbix_agent_t)
 +corenet_tcp_bind_generic_node(zabbix_agent_t)
-+corenet_tcp_bind_zabbix_client_port(zabbix_agent_t)
++corenet_tcp_bind_zabbix_agent_port(zabbix_agent_t)
 +corenet_tcp_connect_all_ports(zabbix_agent_t)
 +dev_getattr_all_blk_files(zabbix_agent_t)
 +dev_getattr_all_chr_files(zabbix_agent_t)
@@ -119,7 +119,7 @@
 +sysnet_dns_name_resolve(zabbix_agent_t)
 +
 +## other modules
-+ssh_exec(zabbix_agent_t)
++#ssh_exec(zabbix_agent_t)
 --- services/zabbix.fc	2010-08-03 15:11:09.000000000 +0200
 +++ services/zabbix.fc	2011-06-12 20:12:49.376002444 +0200
 @@ -1,6 +1,8 @@
