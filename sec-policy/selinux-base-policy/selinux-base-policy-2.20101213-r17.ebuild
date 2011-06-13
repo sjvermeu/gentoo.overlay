@@ -51,7 +51,6 @@ src_unpack() {
 		cp -a "${S}/refpolicy" "${S}/${i}"
 
 		cd "${S}/${i}";
-		make bare || die "Make bare in ${i} failed"
 		make conf || die "Make conf in ${i} failed"
 
 		cp "${FILESDIR}/modules.conf.${i}.${MOD_CONF_VER}" \
