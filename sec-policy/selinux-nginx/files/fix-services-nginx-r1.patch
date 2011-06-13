@@ -139,8 +139,8 @@
 +
 +
 --- services/nginx.fc	1970-01-01 01:00:00.000000000 +0100
-+++ services/nginx.fc	2011-06-13 21:39:32.678001362 +0200
-@@ -0,0 +1,59 @@
++++ services/nginx.fc	2011-06-13 21:46:06.049001374 +0200
+@@ -0,0 +1,60 @@
 +###############################################################################
 +# SELinux module for the NGINX Web Server
 +#
@@ -190,6 +190,7 @@
 +
 +/usr/sbin/nginx				--	gen_context(system_u:object_r:nginx_exec_t,s0)
 +/etc/nginx(/.*)?				gen_context(system_u:object_r:nginx_conf_t,s0)
++/etc/ssl/nginx(/.*)?				gen_context(system_u:object_r:nginx_conf_t,s0)
 +/etc/rc\.d/init\.d/nginx		--	gen_context(system_u:object_r:nginx_initrc_exec_t,s0)
 +
 +#/usr/local/nginx/sbin/nginx		--	gen_context(system_u:object_r:nginx_exec_t,s0)
