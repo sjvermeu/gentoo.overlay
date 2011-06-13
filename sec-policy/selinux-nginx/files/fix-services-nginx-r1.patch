@@ -1,6 +1,6 @@
 --- services/nginx.te	1970-01-01 01:00:00.000000000 +0100
-+++ services/nginx.te	2011-06-13 21:52:36.685001384 +0200
-@@ -0,0 +1,140 @@
++++ services/nginx.te	2011-06-13 22:03:04.055001402 +0200
+@@ -0,0 +1,149 @@
 +###############################################################################
 +# SELinux module for the NGINX Web Server
 +#
@@ -73,6 +73,10 @@
 +type nginx_var_run_t;
 +files_pid_file(nginx_var_run_t)
 +
++# tmp files
++type nginx_tmp_t;
++files_tmp_file(nginx_tmp_t)
++
 +########################################
 +#
 +# nginx local policy
@@ -100,6 +104,11 @@
 +
 +# conf files
 +read_files_pattern(nginx_t, nginx_conf_t, nginx_conf_t)
++
++# tmp files
++manage_files_pattern(nginx_t, nginx_tmp_t, nginx_tmp_t)
++manage_dirs_pattern(nginx_t, nginx_tmp_t, nginx_tmp_t)
++files_tmp_filetrans(nginx_t, nginx_tmp_t, dir)
 +
 +# various
 +allow nginx_t nginx_var_lib_t:file create_file_perms;
