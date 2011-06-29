@@ -55,6 +55,10 @@ src_prepare() {
 	# rename in future to sesandbox?
 	sed -i -e 's/sandbox //' "${S}/Makefile" \
 		|| die "failed removing sandbox"
+	# Overwrite gl.po, id.po and et.po with valid PO file
+	cp ${S}/po/sq.po ${S}/po/gl.po || die "failed to copy ${S}/po/sq.po to gl.po"
+	cp ${S}/po/sq.po ${S}/po/id.po || die "failed to copy ${S}/po/sq.po to id.po"
+	cp ${S}/po/sq.po ${S}/po/et.po || die "failed to copy ${S}/po/sq.po to et.po"
 }
 
 src_compile() {

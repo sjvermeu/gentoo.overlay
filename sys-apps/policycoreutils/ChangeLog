@@ -2,6 +2,9 @@
 # Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/sys-apps/policycoreutils/ChangeLog,v 1.84 2011/06/16 01:36:00 blueness Exp $
 
+  29 Jun 2011; <swift@gentoo.org> policycoreutils-2.0.82.ebuild:
+  Overwrite invalid .po files with valid ones, fixes bug #372807
+
   16 Jun 2011; Anthony G. Basile <blueness@gentoo.org>
   policycoreutils-2.0.82.ebuild:
   Drop use_nls dependency on gettext. Its mandatory. See bug #299681.
