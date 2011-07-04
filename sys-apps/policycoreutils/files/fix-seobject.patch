@@ -1,0 +1,11 @@
+--- semanage/seobject.py.orig	2011-07-04 20:29:23.859999603 +0200
++++ semanage/seobject.py	2011-07-04 20:29:34.750002012 +0200
+@@ -144,7 +144,7 @@
+               desc = i.find("desc").find("p").text.strip("\n")
+               desc = re.sub("\n", " ", desc)
+               booleans_dict[i.get('name')] = (_("global"), i.get('dftval'), desc)
+-except IOError, e:
++except IOError as e:
+        #print _("Failed to translate booleans.\n%s") % e
+        pass
+ 
