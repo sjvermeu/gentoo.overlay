@@ -64,10 +64,10 @@ src_prepare() {
 src_compile() {
 	building() {
 		einfo "Compiling policycoreutils"
-		emake -C "${S}" AUDIT_LOG_PRIV="y" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" swigify
+		#emake -C "${S}" AUDIT_LOG_PRIV="y" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" swigify
 		emake -C "${S}" AUDIT_LOG_PRIV="y" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)"
 		einfo "Compiling policycoreutils-extra"
-		emake -C "${S2}" AUDIT_LOG_PRIV="y" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" swigify
+		#emake -C "${S2}" AUDIT_LOG_PRIV="y" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" swigify
 		emake -C "${S2}" AUDIT_LOG_PRIV="y" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)"
 	}
 	python_execute_function -s --source-dir src building
