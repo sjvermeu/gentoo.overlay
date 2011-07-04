@@ -881,7 +881,7 @@ class portRecords(semanageRecords):
 		if rc < 0:
 			raise ValueError(_("Could not check if port %(proto)s/%(port)s is defined") % {"proto":proto, "port":port})
 		if not exists:
-			raise ValueError(_("Port %(proto)s/%(port)s is defined in policy, cannot be deleted") % {"proto:"proto, "port":port})
+			raise ValueError(_("Port %(proto)s/%(port)s is defined in policy, cannot be deleted") % {"proto":proto, "port":port})
 
 		rc = semanage_port_del_local(self.sh, k)
 		if rc < 0:
