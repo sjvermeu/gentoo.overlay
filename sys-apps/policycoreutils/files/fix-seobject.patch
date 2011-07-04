@@ -1,5 +1,5 @@
 --- semanage/seobject.py.orig	2011-07-04 20:29:23.859999603 +0200
-+++ semanage/seobject.py	2011-07-04 20:53:39.607999414 +0200
++++ semanage/seobject.py	2011-07-04 20:56:04.752000291 +0200
 @@ -4,20 +4,20 @@
  #
  # semanage is a tool for managing SELinux configuration files
@@ -420,7 +420,7 @@
  
  class loginRecords(semanageRecords):
  	def __init__(self, store = ""):
-@@ -344,46 +344,46 @@
+@@ -344,132 +344,132 @@
  			raise ValueError(_("Could not check if login mapping for %s is defined") % name)
  		if exists:
  			raise ValueError(_("Login mapping for %s is already defined") % name)
@@ -499,9 +499,11 @@
 +			self.__add(name, sename, serange)
 +			self.commit()
  
- 		except ValueError, error:
+-		except ValueError, error:
++		except ValueError as error:
  			mylog.log(0, _("add SELinux user mapping"), name, sename, "", serange);
-@@ -392,82 +392,82 @@
+ 			raise error
+ 		
  		mylog.log(1, _("add SELinux user mapping"), name, sename, "", serange);
  
  	def __modify(self, name, sename = "", serange = ""):
@@ -586,7 +588,8 @@
 +			self.__modify(name, sename, serange)
 +			self.commit()
  
- 		except ValueError, error:
+-		except ValueError, error:
++		except ValueError as error:
  			mylog.log(0, "modify selinux user mapping", name, sename, "", serange, "", "", "");
  			raise error
  		
@@ -642,8 +645,11 @@
 +			self.__delete(name)
 +			self.commit()
  
- 		except ValueError, error:
+-		except ValueError, error:
++		except ValueError as error:
  			mylog.log(0, "delete SELinux user mapping", name);
+ 			raise error
+ 		
 @@ -477,10 +477,10 @@
  
  	def get_all(self, locallist = 0):
@@ -782,11 +788,12 @@
 -                       self.begin()
 -                       self.__add( name, roles, selevel, serange, prefix)
 -                       self.commit()
+-		except ValueError, error:
 +		try:
 +			self.begin()
 +			self.__add( name, roles, selevel, serange, prefix)
 +			self.commit()
- 		except ValueError, error:
++		except ValueError as error:
  			mylog.log(0,"add SELinux user record", name, name, seroles, serange)
  			raise error
  		
@@ -892,7 +899,7 @@
  
  		semanage_user_key_free(k)
  		semanage_user_free(u)
-@@ -639,42 +639,42 @@
+@@ -639,44 +639,44 @@
  
  	def modify(self, name, roles = [], selevel = "", serange = "", prefix = ""):
  		try:
@@ -903,7 +910,8 @@
 +			self.__modify(name, roles, selevel, serange, prefix)
 +			self.commit()
  
- 		except ValueError, error:
+-		except ValueError, error:
++		except ValueError as error:
  			mylog.log(0,"modify SELinux user record", name, "", " ".join(roles), serange, "", "", "")
  			raise error
  
@@ -959,8 +967,11 @@
 +			self.__delete(name)
 +			self.commit()
  
- 		except ValueError, error:
+-		except ValueError, error:
++		except ValueError as error:
  			mylog.log(0,"delete SELinux user record", name)
+ 			raise error
+ 		
 @@ -684,10 +684,10 @@
  
  	def get_all(self, locallist = 0):
