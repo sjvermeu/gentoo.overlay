@@ -165,7 +165,7 @@ def validate_level(raw):
 def translate(raw, prepend = 1):
 	filler = "a:b:c:"
 	if prepend == 1:
-		context = "%s%s" % (filler, raw)
+		context = "%(filler)s%(raw)s" % {"filler":filler, "raw":raw}
 	else:
 		context = raw
 	(rc, trans) = selinux.selinux_raw_to_trans_context(context)
@@ -181,7 +181,7 @@ def translate(raw, prepend = 1):
 def untranslate(trans, prepend = 1):
 	filler = "a:b:c:"
 	if prepend == 1:
-		context = "%s%s" % (filler, trans)
+		context = "%(filler)s%(trans)s" % {"filler":filler, "trans":trans}
 	else:
 		context = trans
 
@@ -275,14 +275,14 @@ class permissiveRecords(semanageRecords):
 		os.chdir(dirname)
 		filename = "%s.te" % name
 		modtxt = """
-module %s 1.0;
+module %(name)s 1.0;
 
 require {
-	type %s;
+	type %(type1)s;
 }
 
-permissive %s;
-""" % (name, type, type)
+permissive %(type2)s;
+""" % {"name":name, "type1":type, "type2":type}
 		fd = open(filename, 'w')
 		fd.write(modtxt)
 		fd.close()
@@ -497,12 +497,12 @@ class loginRecords(semanageRecords):
 			if heading:
 				print("\n%-25s %-25s %-25s\n" % (_("Login Name"), _("SELinux User"), _("MLS/MCS Range")))
 			for k in keys:
-				print("%-25s %-25s %-25s" % (k, ddict[k][0], translate(ddict[k][1])))
+				print("%-25(one)s %-25(two)s %-25(three)s" % {"one":k, "two":ddict[k][0], "three":translate(ddict[k][1])})
 		else:
 			if heading:
 				print("\n%-25s %-25s\n" % (_("Login Name"), _("SELinux User")))
 			for k in keys:
-				print("%-25s %-25s" % (k, ddict[k][0]))
+				print("%-25(one)s %-25(two)s" % {"one":k, "two":ddict[k][0]})
 
 class seluserRecords(semanageRecords):
 	def __init__(self, store = ""):
@@ -556,7 +556,7 @@ class seluserRecords(semanageRecords):
 				raise ValueError(_("Could not set MLS level for %s") % name)
 		rc = semanage_user_set_prefix(self.sh, u, prefix)
 		if rc < 0:
-			raise ValueError(_("Could not add prefix %s for %s") % (r, prefix))
+			raise ValueError(_("Could not add prefix %(r)s for %(prefix)s") % {"r":r, "prefix":prefix})
 		(rc, key) = semanage_user_key_extract(self.sh,u)
 		if rc < 0:
 			raise ValueError(_("Could not extract key for %s") % name)
@@ -711,12 +711,12 @@ class seluserRecords(semanageRecords):
 				print("\n%-15s %-10s %-10s %-30s" % ("", _("Labeling"), _("MLS/"), _("MLS/")))
 				print("%-15s %-10s %-10s %-30s %s\n" % (_("SELinux User"), _("Prefix"), _("MCS Level"), _("MCS Range"), _("SELinux Roles")))
 			for k in keys:
-				print("%-15s %-10s %-10s %-30s %s" % (k, ddict[k][0], translate(ddict[k][1]), translate(ddict[k][2]), ddict[k][3]))
+				print("%-15(one)s %-10(two)s %-10(three)s %-30(four)s %s" % {"one":k, "two":ddict[k][0], "three":translate(ddict[k][1]), "four":translate(ddict[k][2]), ddict[k][3]})
 		else:
 			if heading:
 				print("%-15s %s\n" % (_("SELinux User"), _("SELinux Roles")))
 			for k in keys:
-				print("%-15s %s" % (k, ddict[k][3]))
+				print("%-15(k)s %(d)s" % {"k":k, "d":ddict[k][3]})
 
 class portRecords(semanageRecords):
 	def __init__(self, store = ""):
@@ -742,7 +742,7 @@ class portRecords(semanageRecords):
 
 		(rc, k) = semanage_port_key_create(self.sh, low, high, proto_d)
 		if rc < 0:
-			raise ValueError(_("Could not create a key for %s/%s") % (proto, port))
+			raise ValueError(_("Could not create a key for %(proto)s/%(port)s") % {"proto":proto, "port":port})
 		return ( k, proto_d, low, high )
 
 	def __add(self, port, proto, serange, type):
@@ -759,44 +759,44 @@ class portRecords(semanageRecords):
 
 		(rc, exists) = semanage_port_exists(self.sh, k)
 		if rc < 0:
-			raise ValueError(_("Could not check if port %s/%s is defined") % (proto, port))
+			raise ValueError(_("Could not check if port %(proto)s/%(port)s is defined") % {"proto":proto, "port":port})
 		if exists:
-			raise ValueError(_("Port %s/%s already defined") % (proto, port))
+			raise ValueError(_("Port %(proto)s/%(port)s already defined") % {"proto":proto, "port":port})
 
 		(rc, p) = semanage_port_create(self.sh)
 		if rc < 0:
-			raise ValueError(_("Could not create port for %s/%s") % (proto, port))
+			raise ValueError(_("Could not create port for %(proto)s/%(port)s") % {"proto":proto, "port":port})
 		
 		semanage_port_set_proto(p, proto_d)
 		semanage_port_set_range(p, low, high)
 		(rc, con) = semanage_context_create(self.sh)
 		if rc < 0:
-			raise ValueError(_("Could not create context for %s/%s") % (proto, port))
+			raise ValueError(_("Could not create context for %(proto)s/%(port)s") % {"proto":proto, "port":port})
 
 		rc = semanage_context_set_user(self.sh, con, "system_u")
 		if rc < 0:
-			raise ValueError(_("Could not set user in port context for %s/%s") % (proto, port))
+			raise ValueError(_("Could not set user in port context for %(proto)s/%(port)s") % {"proto":proto, "port":port})
 
 		rc = semanage_context_set_role(self.sh, con, "object_r")
 		if rc < 0:
-			raise ValueError(_("Could not set role in port context for %s/%s") % (proto, port))
+			raise ValueError(_("Could not set role in port context for %(proto)s/%(port)s") % {"proto":proto, "port":port})
 
 		rc = semanage_context_set_type(self.sh, con, type)
 		if rc < 0:
-			raise ValueError(_("Could not set type in port context for %s/%s") % (proto, port))
+			raise ValueError(_("Could not set type in port context for %(proto)s/%(port)s") % {"proto":proto, "port":port})
 
 		if serange != "":
 			rc = semanage_context_set_mls(self.sh, con, serange)
 			if rc < 0:
-				raise ValueError(_("Could not set mls fields in port context for %s/%s") % (proto, port))
+				raise ValueError(_("Could not set mls fields in port context for %(proto)s/%(port)s") % {"proto":proto, "port":port})
 
 		rc = semanage_port_set_con(self.sh, p, con)
 		if rc < 0:
-			raise ValueError(_("Could not set port context for %s/%s") % (proto, port))
+			raise ValueError(_("Could not set port context for %(proto)s/%(port)s") % {"proto":proto, "port":port})
 
 		rc = semanage_port_modify_local(self.sh, k, p)
 		if rc < 0:
-			raise ValueError(_("Could not add port %s/%s") % (proto, port))
+			raise ValueError(_("Could not add port %(proto)s/%(port)s") % {"proto":proto, "port":port})
 	
 		semanage_context_free(con)
 		semanage_port_key_free(k)
@@ -818,13 +818,13 @@ class portRecords(semanageRecords):
 
 		(rc, exists) = semanage_port_exists(self.sh, k)
 		if rc < 0:
-			raise ValueError(_("Could not check if port %s/%s is defined") % (proto, port))
+			raise ValueError(_("Could not check if port %(proto)s/%(port)s is defined") % {"proto":proto, "port":port})
 		if not exists:
-			raise ValueError(_("Port %s/%s is not defined") % (proto,port))
+			raise ValueError(_("Port %(proto)s/%(port)s is not defined") % {"proto":proto,"port":port})
 	
 		(rc, p) = semanage_port_query(self.sh, k)
 		if rc < 0:
-			raise ValueError(_("Could not query port %s/%s") % (proto, port))
+			raise ValueError(_("Could not query port %(proto)s/%(port)s") % {"proto":proto, "port":port})
 
 		con = semanage_port_get_con(p)
 			
@@ -835,7 +835,7 @@ class portRecords(semanageRecords):
 
 		rc = semanage_port_modify_local(self.sh, k, p)
 		if rc < 0:
-			raise ValueError(_("Could not modify port %s/%s") % (proto, port))
+			raise ValueError(_("Could not modify port %(proto)s/%(port)s") % {"proto":proto, "port":port})
 
 		semanage_port_key_free(k)
 		semanage_port_free(p)
@@ -857,7 +857,7 @@ class portRecords(semanageRecords):
 			proto_str = semanage_port_get_proto_str(proto)
 			low = semanage_port_get_low(port)
 			high = semanage_port_get_high(port)
-			port_str = "%s-%s" % (low, high)
+			port_str = "%(low)s-%(high)s" % {"low":low, "high":high}
 			( k, proto_d, low, high ) = self.__genkey(port_str , proto_str)
 			if rc < 0:
 				raise ValueError(_("Could not create a key for %s") % port_str)
@@ -873,19 +873,19 @@ class portRecords(semanageRecords):
 		( k, proto_d, low, high ) = self.__genkey(port, proto)
 		(rc, exists) = semanage_port_exists(self.sh, k)
 		if rc < 0:
-			raise ValueError(_("Could not check if port %s/%s is defined") % (proto, port))
+			raise ValueError(_("Could not check if port %(proto)s/%(port)s is defined") % {"proto":proto, "port":port})
 		if not exists:
-			raise ValueError(_("Port %s/%s is not defined") % (proto, port))
+			raise ValueError(_("Port %(proto)s/%(port)s is not defined") % {"proto":proto, "port":port})
 		
 		(rc, exists) = semanage_port_exists_local(self.sh, k)
 		if rc < 0:
-			raise ValueError(_("Could not check if port %s/%s is defined") % (proto, port))
+			raise ValueError(_("Could not check if port %(proto)s/%(port)s is defined") % {"proto":proto, "port":port})
 		if not exists:
-			raise ValueError(_("Port %s/%s is defined in policy, cannot be deleted") % (proto, port))
+			raise ValueError(_("Port %(proto)s/%(port)s is defined in policy, cannot be deleted") % {"proto:"proto, "port":port})
 
 		rc = semanage_port_del_local(self.sh, k)
 		if rc < 0:
-			raise ValueError(_("Could not delete port %s/%s") % (proto, port))
+			raise ValueError(_("Could not delete port %(proto)s/%(port)s") % {"proto":proto, "port":port})
 
 		semanage_port_key_free(k)
 
@@ -939,7 +939,7 @@ class portRecords(semanageRecords):
 			if low == high:
 				ddict[(ctype,proto_str)].append("%d" % low)
 			else:
-				ddict[(ctype,proto_str)].append("%d-%d" % (low, high))
+				ddict[(ctype,proto_str)].append("%(low)d-%(high)d" % {"low":low, "high":high})
 		return ddict
 
 	def list(self, heading = 1, locallist = 0):
@@ -1165,10 +1165,10 @@ class nodeRecords(semanageRecords):
 				val = ''
 				for fields in k:
 					val = val + '\t' + str(fields)
-				print("%-18s %-18s %-5s %s:%s:%s:%s " % (k[0],k[1],k[2],ddict[k][0], ddict[k][1],ddict[k][2], translate(ddict[k][3], False)))
+				print("%-18(a)s %-18(b)s %-5(c)s %(d)s:%(e)s:%(f)s:%(g)s " % {"a":k[0],"b":k[1],"c":k[2],"d":ddict[k][0], "e":ddict[k][1],"f":ddict[k][2], "g":translate(ddict[k][3], False)})
 		else:
 			for k in keys:
-				print("%-18s %-18s %-5s %s:%s:%s " % (k[0],k[1],k[2],ddict[k][0], ddict[k][1],ddict[k][2]))
+				print("%-18(a)s %-18(b)s %-5(c)s %(d)s:%(e)s:%(f)s " % {"a":k[0],"b":k[1],"c":k[2],"d":ddict[k][0], "e":ddict[k][1],"f":ddict[k][2]})
 
 
 class interfaceRecords(semanageRecords):
@@ -1330,10 +1330,10 @@ class interfaceRecords(semanageRecords):
 		keys.sort()
 		if is_mls_enabled:
 			for k in keys:
-				print("%-30s %s:%s:%s:%s " % (k,ddict[k][0], ddict[k][1],ddict[k][2], translate(ddict[k][3], False)))
+				print("%-30(a)s %(b)s:%(c)s:%(d)s:%(e)s " % {"a":k,"b":ddict[k][0], "c":ddict[k][1],"d":ddict[k][2], "e":translate(ddict[k][3], False)})
 		else:
 			for k in keys:
-				print("%-30s %s:%s:%s " % (k,ddict[k][0], ddict[k][1],ddict[k][2]))
+				print("%-30(a)s %(b)s:%(c)s:%(d)s " % {"a":k,"b":ddict[k][0], "c":ddict[k][1],"d":ddict[k][2]})
 			
 class fcontextRecords(semanageRecords):
 	def __init__(self, store = ""):
@@ -1570,11 +1570,11 @@ class fcontextRecords(semanageRecords):
 		for k in keys:
 			if fcon_dict[k]:
 				if is_mls_enabled:
-					print("%-50s %-18s %s:%s:%s:%s " % (k[0], k[1], fcon_dict[k][0], fcon_dict[k][1], fcon_dict[k][2], translate(fcon_dict[k][3],False)))
+					print("%-50(a)s %-18(b)s %(c)s:%(d)s:%(e)s:%(f)s " % {"a":k[0], "b":k[1], "c":fcon_dict[k][0], "d":fcon_dict[k][1], "e":fcon_dict[k][2], "f":translate(fcon_dict[k][3],False)})
 				else:
-					print("%-50s %-18s %s:%s:%s " % (k[0], k[1], fcon_dict[k][0], fcon_dict[k][1],fcon_dict[k][2]))
+					print("%-50(a)s %-18(b)s %(c)s:%(d)s:%(e)s " % {"a":k[0], "b":k[1], "c":fcon_dict[k][0], "d":fcon_dict[k][1],"e":fcon_dict[k][2]})
 			else:
-				print("%-50s %-18s <<None>>" % (k[0], k[1]))
+				print("%-50(a)s %-18(b)s <<None>>" % {"a":k[0], "b":k[1]})
 				
 class booleanRecords(semanageRecords):
 	def __init__(self, store = ""):
@@ -1629,7 +1629,7 @@ class booleanRecords(semanageRecords):
 				try:
 					boolname, val = b.split("=")
 				except ValueError:
-					raise ValueError(_("Bad format %s: Record %s" % ( name, b) ))
+					raise ValueError(_("Bad format %(name)s: Record %(b)s" % { "name":name, "b":b} ))
 				self.__mod(boolname.strip(), val.strip())
 			fd.close()
 		else:
@@ -1713,7 +1713,7 @@ class booleanRecords(semanageRecords):
 			keys = ddict.keys()
 			for k in keys:
 				if ddict[k]:
-					print("%s=%s" %  (k, ddict[k][2]))
+					print("%(a)s=%(b)s" %  {"a":k, "b":ddict[k][2]})
 			return
 		if heading:
 			print("%-40s %s\n" % (_("SELinux boolean"), _("Description")))
@@ -1721,5 +1721,5 @@ class booleanRecords(semanageRecords):
 		keys = ddict.keys()
 		for k in keys:
 			if ddict[k]:
-				print("%-30s -> %-5s %s" %  (k, on_off[ddict[k][2]], self.get_desc(k)))
+				print("%-30(a)s -> %-5(b)s %(c)s" %  {"a":k, "b":on_off[ddict[k][2]], "c":self.get_desc(k)})
 
