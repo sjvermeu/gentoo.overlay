@@ -1,5 +1,5 @@
 --- semanage/seobject.py.orig	2011-07-04 20:29:23.859999603 +0200
-+++ semanage/seobject.py	2011-07-04 20:43:29.484997854 +0200
++++ semanage/seobject.py	2011-07-04 20:47:10.569001564 +0200
 @@ -4,20 +4,20 @@
  #
  # semanage is a tool for managing SELinux configuration files
@@ -183,15 +183,17 @@
  		context = "%s%s" % (filler, raw)
  	else:
  		context = raw
-@@ -179,7 +179,7 @@
+@@ -179,8 +179,8 @@
  		return trans
  	
  def untranslate(trans, prepend = 1):
 -        filler = "a:b:c:"
+- 	if prepend == 1:
 +	filler = "a:b:c:"
-  	if prepend == 1:
++	if prepend == 1:
  		context = "%s%s" % (filler, trans)
  	else:
+ 		context = trans
 @@ -197,129 +197,129 @@
  	
  class semanageRecords:
