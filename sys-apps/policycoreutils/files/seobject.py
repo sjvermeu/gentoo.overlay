@@ -497,12 +497,12 @@ class loginRecords(semanageRecords):
 			if heading:
 				print("\n%-25s %-25s %-25s\n" % (_("Login Name"), _("SELinux User"), _("MLS/MCS Range")))
 			for k in keys:
-				print("%-25(one)s %-25(two)s %-25(three)s" % {"one":k, "two":ddict[k][0], "three":translate(ddict[k][1])})
+				print("%(one)-25s %(two)-25s %(three)-25s" % {"one":k, "two":ddict[k][0], "three":translate(ddict[k][1])})
 		else:
 			if heading:
 				print("\n%-25s %-25s\n" % (_("Login Name"), _("SELinux User")))
 			for k in keys:
-				print("%-25(one)s %-25(two)s" % {"one":k, "two":ddict[k][0]})
+				print("%(one)-25s %(two)-25s" % {"one":k, "two":ddict[k][0]})
 
 class seluserRecords(semanageRecords):
 	def __init__(self, store = ""):
