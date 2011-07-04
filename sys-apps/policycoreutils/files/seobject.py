@@ -104,7 +104,7 @@ except:
 				message = "Successful: "
 			else:
 				message = "Failed: "
-			message += " %s name=%s" % (msg, name)
+			message += " %(msg)s name=%(name)s" % ("msg":msg, "name":name)
 			if sename != "":
 				message += " sename=" + sename
 			if old_sename != "":
@@ -544,7 +544,7 @@ class seluserRecords(semanageRecords):
 		for r in roles:
 			rc = semanage_user_add_role(self.sh, u, r)
 			if rc < 0:
-				raise ValueError(_("Could not add role %s for %s") % (r, name))
+				raise ValueError(_("Could not add role %(role)s for %(name)s") % ("role":r, "name":name))
 
 		if is_mls_enabled == 1:
 			rc = semanage_user_set_mlsrange(self.sh, u, serange)
