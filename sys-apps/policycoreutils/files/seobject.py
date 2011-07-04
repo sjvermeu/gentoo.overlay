@@ -711,7 +711,7 @@ class seluserRecords(semanageRecords):
 				print("\n%-15s %-10s %-10s %-30s" % ("", _("Labeling"), _("MLS/"), _("MLS/")))
 				print("%-15s %-10s %-10s %-30s %s\n" % (_("SELinux User"), _("Prefix"), _("MCS Level"), _("MCS Range"), _("SELinux Roles")))
 			for k in keys:
-				print("%-15(one)s %-10(two)s %-10(three)s %-30(four)s %s" % {"one":k, "two":ddict[k][0], "three":translate(ddict[k][1]), "four":translate(ddict[k][2]), ddict[k][3]})
+				print("%-15(one)s %-10(two)s %-10(three)s %-30(four)s %(five)s" % {"one":k, "two":ddict[k][0], "three":translate(ddict[k][1]), "four":translate(ddict[k][2]), "five":ddict[k][3]})
 		else:
 			if heading:
 				print("%-15s %s\n" % (_("SELinux User"), _("SELinux Roles")))
