@@ -59,8 +59,11 @@ src_prepare() {
 	cp "${S}/po/sq.po" "${S}/po/gl.po" || die "failed to copy ${S}/po/sq.po to gl.po"
 	cp "${S}/po/sq.po" "${S}/po/id.po" || die "failed to copy ${S}/po/sq.po to id.po"
 	cp "${S}/po/sq.po" "${S}/po/et.po" || die "failed to copy ${S}/po/sq.po to et.po"
-	# "Fixed" seobject for python 3
+	# "Fixed" scripts for python 3
 	cp "${FILESDIR}/seobject.py" "${S}/semanage/seobject.py" || die "failed to copy seobject.py"
+	cp "${FILESDIR}/semanage" "${S}/semanage/semanage" || die "failed to copy semanage"
+	cp "${FILESDIR}/chcat" "${S}/scripts/chcat" || die "failed to copy chcat"
+	cp "${FILESDIR}/audit2allow" "${S}/audit2allow/audit2allow" || die "failed to copy audit2allow"
 }
 
 src_compile() {

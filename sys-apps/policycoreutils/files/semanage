@@ -1,0 +1,469 @@
+#! /usr/bin/python -E
+# Copyright (C) 2005, 2006, 2007 Red Hat 
+# see file 'COPYING' for use and warranty information
+#
+# semanage is a tool for managing SELinux configuration files
+#
+#	This program is free software; you can redistribute it and/or
+#	modify it under the terms of the GNU General Public License as
+#	published by the Free Software Foundation; either version 2 of
+#	the License, or (at your option) any later version.
+#
+#	This program is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#	GNU General Public License for more details.
+#
+#	You should have received a copy of the GNU General Public License
+#	along with this program; if not, write to the Free Software
+#	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA	
+#					02111-1307  USA
+#
+#  
+import sys, getopt, re
+import seobject
+import selinux
+PROGNAME="policycoreutils"
+
+import gettext
+gettext.bindtextdomain(PROGNAME, "/usr/share/locale")
+gettext.textdomain(PROGNAME)
+
+try:
+	gettext.install(PROGNAME,
+			localedir="/usr/share/locale",
+			unicode=False,
+			codeset = 'utf-8')
+except IOError:
+	import __builtin__
+	__builtin__.__dict__['_'] = unicode
+
+if __name__ == '__main__':
+
+	def usage(message = ""):
+		text = _("""
+semanage [ -S store ] -i [ input_file | - ]
+
+semanage {boolean|login|user|port|interface|node|fcontext} -{l|D} [-n]
+semanage login -{a|d|m} [-sr] login_name | %groupname
+semanage user -{a|d|m} [-LrRP] selinux_name
+semanage port -{a|d|m} [-tr] [ -p proto ] port | port_range
+semanage interface -{a|d|m} [-tr] interface_spec
+semanage node -{a|d|m} [-tr] [ -p protocol ] [-M netmask] addr
+semanage fcontext -{a|d|m} [-frst] file_spec
+semanage boolean -{d|m} [--on|--off|-1|-0] -F boolean | boolean_file
+semanage permissive -{d|a} type
+semanage dontaudit [ on | off ]
+
+Primary Options:
+
+	-a, --add	Add a OBJECT record NAME
+	-d, --delete	Delete a OBJECT record NAME
+	-m, --modify	Modify a OBJECT record NAME
+	-i, --input	Input multiple semange commands in a transaction 
+	-l, --list	List the OBJECTS
+	-C, --locallist  List OBJECTS local customizations
+	-D, --deleteall  Remove all OBJECTS local customizations
+
+	-h, --help	Display this message
+	-n, --noheading  Do not print heading when listing OBJECTS
+	-S, --store	Select and alternate SELinux store to manage
+
+Object-specific Options (see above):
+
+	-f, --ftype	File Type of OBJECT 
+		"" (all files) 
+		-- (regular file) 
+		-d (directory) 
+		-c (character device) 
+		-b (block device) 
+		-s (socket) 
+		-l (symbolic link) 
+		-p (named pipe) 
+
+	-F, --file	Treat target as an input file for command, change multiple settings
+	-p, --proto	Port protocol (tcp or udp) or internet protocol version of node (ipv4 or ipv6)
+	-M, --mask	Netmask
+	-P, --prefix	Prefix for home directory labeling
+	-L, --level	Default SELinux Level (MLS/MCS Systems only)
+	-R, --roles	SELinux Roles (ex: "sysadm_r staff_r")
+	-s, --seuser	SELinux User Name
+	-t, --type	SELinux Type for the object
+	-r, --range	MLS/MCS Security Range (MLS/MCS Systems only)
+""")
+		raise ValueError("%(a)s\n%(b)s" % {"a":text, "b":message})
+		
+	def errorExit(error):
+		sys.stderr.write("%s: " % sys.argv[0])
+		sys.stderr.write("%s\n" % error)
+		sys.stderr.flush()
+		sys.exit(1)
+
+	def get_options():
+		valid_option={}
+		valid_everyone=[ '-a', '--add', '-d', '--delete', '-m', '--modify', '-l', '--list', '-h', '--help', '-n', '--noheading', '-C', '--locallist', '-D', '--deleteall', '-S', '--store' ]
+		valid_option["login"] = []
+		valid_option["login"] += valid_everyone + [ '-s', '--seuser', '-r', '--range']
+		valid_option["user"] = []
+		valid_option["user"] += valid_everyone + [ '-L', '--level', '-r', '--range', '-R', '--roles', '-P', '--prefix' ] 
+		valid_option["port"] = []
+		valid_option["port"] += valid_everyone + [ '-t', '--type', '-r', '--range', '-p', '--proto' ]
+		valid_option["interface"] = []
+		valid_option["interface"] += valid_everyone + [ '-t', '--type', '-r', '--range']
+		valid_option["node"] = []
+		valid_option["node"] += valid_everyone + [ '-M', '--mask', '-t', '--type', '-r', '--range', '-p', '--protocol']
+		valid_option["fcontext"] = []
+		valid_option["fcontext"] += valid_everyone + [ '-f', '--ftype', '-s', '--seuser',  '-t', '--type', '-r', '--range'] 
+		valid_option["dontaudit"] = [ '-S', '--store' ]
+		valid_option["boolean"] = []
+		valid_option["boolean"] += valid_everyone + [ '--on', "--off", "-1", "-0", "-F", "--file"] 
+		valid_option["permissive"] = []
+		valid_option["permissive"] += [ '-a', '--add', '-d', '--delete', '-l', '--list', '-h', '--help', '-n', '--noheading', '-D', '--deleteall' ]
+		return valid_option
+
+	def mkargv(line):
+		dquote = "\""
+		squote = "\'"
+		l = line.split()
+		ret = []
+		i = 0
+		while i < len(l):
+			cnt = len(re.findall(dquote, l[i]))
+			if cnt > 1:
+				ret.append(l[i].strip(dquote))
+				i = i + 1
+				continue
+			if cnt == 1:
+				quote = [ l[i].strip(dquote) ]
+				i = i + 1
+				
+				while i < len(l) and  dquote not in l[i]:
+					quote.append(l[i])
+					i = i + 1
+				quote.append(l[i].strip(dquote))
+				ret.append(" ".join(quote))
+				i = i + 1
+				continue
+
+			cnt = len(re.findall(squote, l[i]))
+			if cnt > 1:
+				ret.append(l[i].strip(squote))
+				i = i + 1
+				continue
+			if cnt == 1:
+				quote = [ l[i].strip(squote) ]
+				i = i + 1
+				while i < len(l) and  squote not in l[i]:
+					quote.append(l[i])
+					i = i + 1
+
+				quote.append(l[i].strip(squote))
+				ret.append(" ".join(quote))
+				i = i + 1
+				continue
+
+			ret.append(l[i])
+			i = i + 1
+
+		return ret
+
+	def process_args(argv):
+		serange = ""
+		port = ""
+		proto = ""
+		mask = ""
+		selevel = ""
+		setype = ""
+		ftype = ""
+		roles = ""
+		seuser = ""
+		prefix = "user"
+		heading = True
+		value = None
+		add = False
+		modify = False
+		delete = False
+		deleteall = False
+		list = False
+		locallist = False
+		use_file = False
+		store = ""
+			
+		object = argv[0]
+		option_dict=get_options()
+		if object not in option_dict.keys():
+			usage(_("Invalid parameter %s not defined") % object)
+			
+		args = argv[1:]
+
+		gopts, cmds = getopt.getopt(args,
+						'01adf:i:lhmnp:s:FCDR:L:r:t:P:S:M:',
+						['add',
+						'delete',
+						'deleteall',
+						'ftype=',
+						'file',
+						'help',
+						'input=',
+						'list', 
+						'modify',
+						'noheading',
+						'localist',
+						'off', 
+						'on', 
+						'proto=',
+						'seuser=',
+						'store=',
+						'range=',
+						'locallist=',
+						'level=',
+						'roles=',
+						'type=',
+						'prefix=',
+						'mask='
+						])
+		for o, a in gopts:
+			if o not in option_dict[object]:
+				sys.stderr.write(_("%(a)s not valid for %(b)s objects\n") % { "a":o, "b":object} );
+				
+		for o,a in gopts:
+			if o == "-a" or o == "--add":
+				if modify or delete:
+					raise ValueError(_("%s bad option") % o)
+				add = True
+				
+			if o == "-d"  or o == "--delete":
+				if modify or add:
+					raise ValueError(_("%s bad option") % o)
+				delete = True
+			if o == "-D"  or o == "--deleteall":
+				if modify:
+					raise ValueError(_("%s bad option") % o)
+				deleteall = True
+			if o == "-f"  or o == "--ftype":
+				ftype=a
+
+			if o == "-F"  or o == "--file":
+				use_file = True
+
+			if o == "-h" or o == "--help":
+				raise ValueError(_("%s bad option") % o)
+
+			if o == "-n" or o == "--noheading":
+				heading = False
+
+			if o == "-C" or o == "--locallist":
+				locallist = True
+
+			if o == "-m"or o == "--modify":
+				if delete or add:
+					raise ValueError(_("%s bad option") % o)
+				modify = True
+				
+			if o == "-S" or o == '--store':
+				store = a
+
+			if o == "-r" or o == '--range':
+				serange = a
+
+			if o == "-l" or o == "--list":
+				list = True
+
+			if o == "-L" or o == '--level':
+				selevel = a
+
+			if o == "-p" or o == '--proto':
+				proto = a
+
+			if o == "-P" or o == '--prefix':
+				prefix = a
+
+			if o == "-R" or o == '--roles':
+				roles = roles + " " + a
+
+			if o == "-s" or o == "--seuser":
+				seuser = a
+
+			if o == "-M" or o == '--mask':
+				mask = a
+
+			if o == "-t" or o == "--type":
+				setype = a
+
+			if o == "--on" or o == "-1":
+				value = "on"
+			if o == "--off" or o == "-0":
+				value = "off"
+
+		if object == "login":
+			OBJECT = seobject.loginRecords(store)
+
+		if object == "user":
+			OBJECT = seobject.seluserRecords(store)
+
+		if object == "port":
+			OBJECT = seobject.portRecords(store)
+		
+		if object == "interface":
+			OBJECT = seobject.interfaceRecords(store)
+
+		if object == "node":
+			OBJECT = seobject.nodeRecords(store)
+
+		if object == "fcontext":
+			OBJECT = seobject.fcontextRecords(store)
+		
+		if object == "boolean":
+			OBJECT = seobject.booleanRecords(store)
+		
+		if object == "permissive":
+			OBJECT = seobject.permissiveRecords(store)
+		
+		if list:
+			if object == "boolean":
+				OBJECT.list(heading, locallist, use_file)
+			else:
+				OBJECT.list(heading, locallist)
+			return
+			
+		if deleteall:
+			OBJECT.deleteall()
+			return
+			
+		if len(cmds) != 1:
+			raise ValueError(_("%s bad option") % o)
+			
+		target = cmds[0]
+
+
+		if object == "dontaudit":
+			OBJECT = seobject.dontauditClass(store)
+			OBJECT.toggle(target)
+			return
+				
+		if add:
+			if object == "login":
+				OBJECT.add(target, seuser, serange)
+
+			if object == "user":
+				OBJECT.add(target, roles.split(), selevel, serange, prefix)
+
+			if object == "port":
+				OBJECT.add(target, proto, serange, setype)
+
+			if object == "interface":
+				OBJECT.add(target, serange, setype)
+
+			if object == "node":
+				OBJECT.add(target, mask, proto, serange, setype)
+
+			if object == "fcontext":
+				OBJECT.add(target, setype, ftype, serange, seuser)
+			if object == "permissive":
+				OBJECT.add(target)
+
+			return
+			
+		if modify:
+			if object == "boolean":
+				OBJECT.modify(target, value, use_file)
+
+			if object == "login":
+				OBJECT.modify(target, seuser, serange)
+
+			if object == "user":
+				rlist = roles.split()
+				OBJECT.modify(target, rlist, selevel, serange, prefix)
+
+			if object == "port":
+				OBJECT.modify(target, proto, serange, setype)
+
+			if object == "interface":
+				OBJECT.modify(target, serange, setype)
+
+			if object == "node":
+				OBJECT.modify(target, mask, proto, serange, setype)
+
+			if object == "fcontext":
+				OBJECT.modify(target, setype, ftype, serange, seuser)
+
+			return
+
+		if delete:
+			if object == "port":
+				OBJECT.delete(target, proto)
+
+			elif object == "fcontext":
+				OBJECT.delete(target, ftype)
+
+			elif object == "node":
+				OBJECT.delete(target, mask, proto)
+
+			else:
+				OBJECT.delete(target)
+
+			return
+
+		raise ValueError(_("Invalid command") % " ".join(argv))
+
+	#
+	# 
+	#
+	try:
+		input = None
+		store = ""
+
+		if len(sys.argv) < 3:
+			usage(_("Requires 2 or more arguments"))
+		
+		gopts, cmds = getopt.getopt(sys.argv[1:],
+						'01adf:i:lhmnp:s:FCDR:L:r:t:T:P:S:',
+						['add',
+						'delete',
+						'deleteall',
+						'ftype=',
+						'file',
+						'help',
+						'input=',
+						'list', 
+						'modify',
+						'noheading',
+						'localist',
+						'off', 
+						'on', 
+						'proto=',
+						'seuser=',
+						'store=',
+						'range=',
+						'level=',
+						'roles=',
+						'type=',
+						'prefix='
+						])
+		for o, a in gopts:
+			if o == "-S" or o == '--store':
+				store = a
+			if o == "-i" or o == '--input':
+				input = a
+
+		if input != None:
+			if input == "-":
+				fd = sys.stdin
+			else:
+				fd = open(input, 'r')
+			trans = seobject.semanageRecords(store)
+			trans.start()
+			for l in fd.readlines():
+				process_args(mkargv(l))
+			trans.finish()
+		else:
+			process_args(sys.argv[1:])
+			
+	except getopt.error as error:
+		usage(_("Options Error %s ") % error.msg)
+	except ValueError as error:
+		errorExit(error.args[0])
+	except KeyError as error:
+		errorExit(_("Invalid value %s") % error.args[0])
+	except IOError as error:
+		errorExit(error.args[1])
