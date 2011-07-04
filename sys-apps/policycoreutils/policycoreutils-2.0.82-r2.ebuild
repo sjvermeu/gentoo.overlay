@@ -62,6 +62,7 @@ src_prepare() {
 }
 
 src_compile() {
+	python_copy_sources src
 	building() {
 		einfo "Compiling policycoreutils"
 		#emake -C "${S}" AUDIT_LOG_PRIV="y" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" swigify
