@@ -711,12 +711,12 @@ class seluserRecords(semanageRecords):
 				print("\n%-15s %-10s %-10s %-30s" % ("", _("Labeling"), _("MLS/"), _("MLS/")))
 				print("%-15s %-10s %-10s %-30s %s\n" % (_("SELinux User"), _("Prefix"), _("MCS Level"), _("MCS Range"), _("SELinux Roles")))
 			for k in keys:
-				print("%-15(one)s %-10(two)s %-10(three)s %-30(four)s %(five)s" % {"one":k, "two":ddict[k][0], "three":translate(ddict[k][1]), "four":translate(ddict[k][2]), "five":ddict[k][3]})
+				print("%(one)-15s %(two)-10s %(three)-10s %(four)-30s %(five)s" % {"one":k, "two":ddict[k][0], "three":translate(ddict[k][1]), "four":translate(ddict[k][2]), "five":ddict[k][3]})
 		else:
 			if heading:
 				print("%-15s %s\n" % (_("SELinux User"), _("SELinux Roles")))
 			for k in keys:
-				print("%-15(k)s %(d)s" % {"k":k, "d":ddict[k][3]})
+				print("%(k)-15s %(d)s" % {"k":k, "d":ddict[k][3]})
 
 class portRecords(semanageRecords):
 	def __init__(self, store = ""):
@@ -1165,10 +1165,10 @@ class nodeRecords(semanageRecords):
 				val = ''
 				for fields in k:
 					val = val + '\t' + str(fields)
-				print("%-18(a)s %-18(b)s %-5(c)s %(d)s:%(e)s:%(f)s:%(g)s " % {"a":k[0],"b":k[1],"c":k[2],"d":ddict[k][0], "e":ddict[k][1],"f":ddict[k][2], "g":translate(ddict[k][3], False)})
+				print("%(a)-18s %(b)-18s %(c)-5s %(d)s:%(e)s:%(f)s:%(g)s " % {"a":k[0],"b":k[1],"c":k[2],"d":ddict[k][0], "e":ddict[k][1],"f":ddict[k][2], "g":translate(ddict[k][3], False)})
 		else:
 			for k in keys:
-				print("%-18(a)s %-18(b)s %-5(c)s %(d)s:%(e)s:%(f)s " % {"a":k[0],"b":k[1],"c":k[2],"d":ddict[k][0], "e":ddict[k][1],"f":ddict[k][2]})
+				print("%(a)-18s %(b)-18s %(c)-5s %(d)s:%(e)s:%(f)s " % {"a":k[0],"b":k[1],"c":k[2],"d":ddict[k][0], "e":ddict[k][1],"f":ddict[k][2]})
 
 
 class interfaceRecords(semanageRecords):
@@ -1330,10 +1330,10 @@ class interfaceRecords(semanageRecords):
 		keys.sort()
 		if is_mls_enabled:
 			for k in keys:
-				print("%-30(a)s %(b)s:%(c)s:%(d)s:%(e)s " % {"a":k,"b":ddict[k][0], "c":ddict[k][1],"d":ddict[k][2], "e":translate(ddict[k][3], False)})
+				print("%(a)-30s %(b)s:%(c)s:%(d)s:%(e)s " % {"a":k,"b":ddict[k][0], "c":ddict[k][1],"d":ddict[k][2], "e":translate(ddict[k][3], False)})
 		else:
 			for k in keys:
-				print("%-30(a)s %(b)s:%(c)s:%(d)s " % {"a":k,"b":ddict[k][0], "c":ddict[k][1],"d":ddict[k][2]})
+				print("%(a)-30s %(b)s:%(c)s:%(d)s " % {"a":k,"b":ddict[k][0], "c":ddict[k][1],"d":ddict[k][2]})
 			
 class fcontextRecords(semanageRecords):
 	def __init__(self, store = ""):
@@ -1570,11 +1570,11 @@ class fcontextRecords(semanageRecords):
 		for k in keys:
 			if fcon_dict[k]:
 				if is_mls_enabled:
-					print("%-50(a)s %-18(b)s %(c)s:%(d)s:%(e)s:%(f)s " % {"a":k[0], "b":k[1], "c":fcon_dict[k][0], "d":fcon_dict[k][1], "e":fcon_dict[k][2], "f":translate(fcon_dict[k][3],False)})
+					print("%(a)-50s %(b)-18s %(c)s:%(d)s:%(e)s:%(f)s " % {"a":k[0], "b":k[1], "c":fcon_dict[k][0], "d":fcon_dict[k][1], "e":fcon_dict[k][2], "f":translate(fcon_dict[k][3],False)})
 				else:
-					print("%-50(a)s %-18(b)s %(c)s:%(d)s:%(e)s " % {"a":k[0], "b":k[1], "c":fcon_dict[k][0], "d":fcon_dict[k][1],"e":fcon_dict[k][2]})
+					print("%(a)-50s %(b)-18s %(c)s:%(d)s:%(e)s " % {"a":k[0], "b":k[1], "c":fcon_dict[k][0], "d":fcon_dict[k][1],"e":fcon_dict[k][2]})
 			else:
-				print("%-50(a)s %-18(b)s <<None>>" % {"a":k[0], "b":k[1]})
+				print("%(a)-50s %(b)-18s <<None>>" % {"a":k[0], "b":k[1]})
 				
 class booleanRecords(semanageRecords):
 	def __init__(self, store = ""):
