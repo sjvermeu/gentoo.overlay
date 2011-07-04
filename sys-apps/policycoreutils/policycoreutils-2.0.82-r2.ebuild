@@ -59,8 +59,8 @@ src_prepare() {
 	cp "${S}/po/sq.po" "${S}/po/gl.po" || die "failed to copy ${S}/po/sq.po to gl.po"
 	cp "${S}/po/sq.po" "${S}/po/id.po" || die "failed to copy ${S}/po/sq.po to id.po"
 	cp "${S}/po/sq.po" "${S}/po/et.po" || die "failed to copy ${S}/po/sq.po to et.po"
-	# Patch seobject
-	epatch "${FILESDIR}/fix-seobject.patch"
+	# "Fixed" seobject for python 3
+	mv "${FILESDIR}/seobject.py" "${S}/semanage/seobject.py"
 }
 
 src_compile() {
