@@ -8,7 +8,7 @@ PYTHON_USE_WITH="xml"
 SUPPORT_PYTHON_ABIS="1"
 RESTRICT_PYTHON_ABIS="*-jython"
 
-inherit multilib python toolchain-funcs
+inherit multilib python toolchain-funcs eutils
 
 EXTRAS_VER="1.20"
 SEMNG_VER="2.0.45"
