@@ -26,7 +26,7 @@ RDEPEND=">=sys-libs/libsepol-${SEPOL_VER}
 	dev-libs/ustr
 	ruby? ( dev-lang/ruby )"
 DEPEND="${RDEPEND}
-	ruby? ( dev-lang/swig )"
+	dev-lang/swig"
 
 # tests are not meant to be run outside of the
 # full SELinux userland repo
