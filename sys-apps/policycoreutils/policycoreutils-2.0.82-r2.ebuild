@@ -60,7 +60,7 @@ src_prepare() {
 	cp "${S}/po/sq.po" "${S}/po/id.po" || die "failed to copy ${S}/po/sq.po to id.po"
 	cp "${S}/po/sq.po" "${S}/po/et.po" || die "failed to copy ${S}/po/sq.po to et.po"
 	# "Fixed" seobject for python 3
-	mv "${FILESDIR}/seobject.py" "${S}/semanage/seobject.py"
+	cp "${FILESDIR}/seobject.py" "${S}/semanage/seobject.py" || die "failed to copy seobject.py"
 }
 
 src_compile() {
