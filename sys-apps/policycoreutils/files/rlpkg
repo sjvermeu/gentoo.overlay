@@ -253,7 +253,7 @@ def usage(message=""):
 	pgmname = os.path.basename(sys.argv[0])
 
 	print("Usage: %s [OPTIONS] {<pkg1> [<pkg2> ...]}" % (pgmname))
-	print("\n\)
+	print("\n\
   -a, --all	 Relabel the entire filesystem instead of individual packages.\n\
   -r, --reset	 Force reset of context if the file's selinux identity is\n\
 		 different or the file's type is customizable.\n\
@@ -264,7 +264,7 @@ def usage(message=""):
 \n\
 Packages can be specified with a portage package specification, for example,\n\
 \"policycoreutils\" or \">=sys-apps/policycoreutils-1.30\".\n\
-"
+")
 	if message != "":
 		print(pgmname+": "+message)
 		sys.exit(1)
