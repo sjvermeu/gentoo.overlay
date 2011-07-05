@@ -32,16 +32,15 @@ pkg_setup() {
 }
 
 src_prepare() {
+	epatch "${FILESDIR}/libselinux-2.0.94-python3.patch"
 	# fix up paths for multilib
 	sed -i -e "/^LIBDIR/s/lib/$(get_libdir)/" "${S}/src/Makefile" \
 		|| die "Fix for multilib LIBDIR failed."
 	sed -i -e "/^SHLIBDIR/s/lib/$(get_libdir)/" "${S}/src/Makefile" \
 		|| die "Fix for multilib SHLIBDIR failed."
-	epatch "${FILESDIR}/libselinux-2.0.94-python3.patch"
 }
 
 src_compile() {
-
 	if use python; then
 		python_copy_sources src
 		building() {
