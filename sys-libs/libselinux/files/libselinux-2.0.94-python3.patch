@@ -1,3 +1,25 @@
+diff -ur libselinux-2.0.94.orig//src/audit2why.c libselinux-2.0.94/src/audit2why.c
+--- libselinux-2.0.94.orig//src/audit2why.c	2010-03-24 20:40:05.000000000 +0100
++++ libselinux-2.0.94/src/audit2why.c	2011-07-05 21:08:23.371000665 +0200
+@@ -24,6 +24,18 @@
+ #define CONSTRAINT 4
+ #define RBAC 5
+ 
++/*
++ * Python 3 support overrides
++ */
++
++#if PY_VERSION_HEX >= 0x03000000
++#define PyString_Check(x) 0
++#define PyString_AsString(x) PLyUnicode_AsString(x)
++#define PyString_FromString(x) PLyUnicode_FromString(x)
++#define PyInt_FromLong(x) PyLong_FromLong(x)
++#endif
++
++
+ struct boolean_t {
+ 	char *name;
+ 	int active;
 diff -ur libselinux-2.0.94.orig//src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
 --- libselinux-2.0.94.orig//src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
 +++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-05 21:04:34.181000651 +0200
