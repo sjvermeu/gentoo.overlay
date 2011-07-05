@@ -1,7 +1,7 @@
 diff -ur libselinux-2.0.94.orig//src/Makefile libselinux-2.0.94/src/Makefile
 --- libselinux-2.0.94.orig//src/Makefile	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/Makefile	2011-07-05 22:22:18.855000924 +0200
-@@ -1,9 +1,10 @@
++++ libselinux-2.0.94/src/Makefile	2011-07-05 23:38:15.407001190 +0200
+@@ -1,9 +1,11 @@
  # Installation directories.
 +PYTHON ?= python
  PREFIX ?= $(DESTDIR)/usr
@@ -10,10 +10,11 @@ diff -ur libselinux-2.0.94.orig//src/Makefile libselinux-2.0.94/src/Makefile
  INCLUDEDIR ?= $(PREFIX)/include
 -PYLIBVER ?= $(shell python -c 'import sys;print "python%d.%d" % sys.version_info[0:2]')
 +PYLIBVER ?= $(shell $(PYTHON) -c 'import sys;print("python%d.%d" % sys.version_info[0:2])')
++PVH ?= $(shell $(PYTHON) -c 'import sys;print("0%d0%d0000" % sys.version_info[0:2])')
  PYINC ?= /usr/include/$(PYLIBVER)
  PYLIB ?= /usr/lib/$(PYLIBVER)
  PYTHONLIBDIR ?= $(LIBDIR)/$(PYLIBVER)
-@@ -23,13 +24,13 @@
+@@ -23,13 +25,13 @@
  SWIGRUBYIF= selinuxswig_ruby.i
  SWIGCOUT= selinuxswig_wrap.c
  SWIGRUBYCOUT= selinuxswig_ruby_wrap.c
@@ -30,7 +31,16 @@ diff -ur libselinux-2.0.94.orig//src/Makefile libselinux-2.0.94/src/Makefile
  
  ifeq ($(DISABLE_AVC),y)
  	UNUSED_SRCS+=avc.c avc_internal.c avc_sidtab.c mapping.c stringrep.c checkAccess.c
-@@ -91,10 +92,10 @@
+@@ -55,7 +57,7 @@
+ TLSFLAGS += -mno-tls-direct-seg-refs
+ endif
+ 
+-SWIG = swig -Wall -python -o $(SWIGCOUT) -outdir ./
++SWIG = swig -Wall -python -DPY_VERSION_HEX=$(PVH) -o $(SWIGCOUT) -outdir ./
+ 
+ SWIGRUBY = swig -Wall -ruby -o $(SWIGRUBYCOUT) -outdir ./
+ 
+@@ -91,10 +93,10 @@
  selinuxswig_python_exception.i: ../include/selinux/selinux.h
  	bash exception.sh > $@ 
  
@@ -43,7 +53,7 @@ diff -ur libselinux-2.0.94.orig//src/Makefile libselinux-2.0.94/src/Makefile
  	$(CC) $(CFLAGS) $(LDFLAGS) -shared -o $@ $^ -L. -lselinux ${LIBDIR}/libsepol.a -L$(LIBDIR) -Wl,-soname,$@
  
  %.o:  %.c policy.h
-@@ -123,8 +124,8 @@
+@@ -123,8 +125,8 @@
  
  install-pywrap: pywrap
  	test -d $(PYTHONLIBDIR)/site-packages/selinux || install -m 755 -d $(PYTHONLIBDIR)/site-packages/selinux
