@@ -138,14 +138,11 @@ diff -ur libselinux-2.0.94.orig/src/audit2why.c libselinux-2.0.94/src/audit2why.
  }
 diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/selinuxswig_python.i
 --- libselinux-2.0.94.orig/src/selinuxswig_python.i	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-05 23:40:38.547001199 +0200
-@@ -37,7 +37,14 @@
++++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-05 23:45:08.030001214 +0200
+@@ -37,7 +37,11 @@
  	PyObject* list = PyList_New(*$2);
  	int i;
  	for (i = 0; i < *$2; i++) {
-+%ifndef PY_VERSION_HEX
-+  callmealozer
-+%endif
 +#if PY_VERSION_HEX >= 0x03000000
 +		PyList_SetItem(list, i, PLyUnicode_FromString((*$1)[i]));
 +#else
@@ -154,7 +151,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/s
  	}
  	$result = SWIG_Python_AppendOutput($result, list);
  }
-@@ -66,7 +73,15 @@
+@@ -66,7 +70,15 @@
  			len++;
  		plist = PyList_New(len);
  		for (i = 0; i < len; i++) {
@@ -171,7 +168,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/s
  		}
  	} else {
  		plist = PyList_New(0);
-@@ -83,7 +98,16 @@
+@@ -83,7 +95,16 @@
  	if (*$1) {
  		plist = PyList_New(result);
  		for (i = 0; i < result; i++) {
@@ -189,7 +186,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/s
  		}
  	} else {
  		plist = PyList_New(0);
-@@ -138,14 +162,21 @@
+@@ -138,14 +159,21 @@
  	for(i = 0; i < size; i++) {
  		if (!PyString_Check(PySequence_GetItem($input, i))) {
  			PyErr_SetString(PyExc_ValueError, "Sequence must contain only strings");
