@@ -39,7 +39,7 @@ diff -ur libselinux-2.0.94.orig//src/selinuxswig_python.i libselinux-2.0.94/src/
  }
 diff -ur libselinux-2.0.94.orig//src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
 --- libselinux-2.0.94.orig//src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-05 21:45:16.584000794 +0200
++++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-05 21:50:08.467000811 +0200
 @@ -298,6 +298,17 @@
  #  define SWIG_CheckState(r) (SWIG_IsOK(r) ? 1 : 0)
  #endif
@@ -58,21 +58,25 @@ diff -ur libselinux-2.0.94.orig//src/selinuxswig_wrap.c libselinux-2.0.94/src/se
  
  #include <string.h>
  
-@@ -11420,7 +11431,7 @@
+@@ -11420,8 +11431,8 @@
      
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj2, i);
 -      arg3[i] = (char*) malloc(PyString_Size(s) + 1);
+-      strcpy(arg3[i], PyString_AsString(s));
 +      arg3[i] = (char*) malloc(PyBytes_Size(s) + 1);
-       strcpy(arg3[i], PyString_AsString(s));
++      strcpy(arg3[i], Py_String_AsString(s));
      }
      arg3[size] = NULL;
-@@ -11447,7 +11458,7 @@
+   }
+@@ -11447,8 +11458,8 @@
      
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj3, i);
 -      arg4[i] = (char*) malloc(PyString_Size(s) + 1);
+-      strcpy(arg4[i], PyString_AsString(s));
 +      arg4[i] = (char*) malloc(PyBytes_Size(s) + 1);
-       strcpy(arg4[i], PyString_AsString(s));
++      strcpy(arg4[i], Py__String_AsString(s));
      }
      arg4[size] = NULL;
+   }
