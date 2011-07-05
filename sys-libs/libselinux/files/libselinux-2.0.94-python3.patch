@@ -1,78 +1,187 @@
+diff -ur libselinux-2.0.94.orig//src/Makefile libselinux-2.0.94/src/Makefile
+--- libselinux-2.0.94.orig//src/Makefile	2010-03-24 20:40:05.000000000 +0100
++++ libselinux-2.0.94/src/Makefile	2011-07-05 22:16:29.354000903 +0200
+@@ -1,9 +1,10 @@
+ # Installation directories.
++PYTHON ?= python
+ PREFIX ?= $(DESTDIR)/usr
+ LIBDIR ?= $(PREFIX)/lib
+ SHLIBDIR ?= $(DESTDIR)/lib
+ INCLUDEDIR ?= $(PREFIX)/include
+-PYLIBVER ?= $(shell python -c 'import sys;print "python%d.%d" % sys.version_info[0:2]')
++PYLIBVER ?= $(shell $(PYTHON) -c 'import sys;print("python%d.%d" % sys.version_info[0:2])')
+ PYINC ?= /usr/include/$(PYLIBVER)
+ PYLIB ?= /usr/lib/$(PYLIBVER)
+ PYTHONLIBDIR ?= $(LIBDIR)/$(PYLIBVER)
+@@ -23,13 +24,13 @@
+ SWIGRUBYIF= selinuxswig_ruby.i
+ SWIGCOUT= selinuxswig_wrap.c
+ SWIGRUBYCOUT= selinuxswig_ruby_wrap.c
+-SWIGLOBJ:= $(patsubst %.c,%.lo,$(SWIGCOUT)) 
++SWIGLOBJ:= $(patsubst %.c,$(PYPREFIX)%.lo,$(SWIGCOUT)) 
+ SWIGRUBYLOBJ:= $(patsubst %.c,%.lo,$(SWIGRUBYCOUT)) 
+-SWIGSO=_selinux.so
++SWIGSO=$(PYPREFIX)_selinux.so
+ SWIGFILES=$(SWIGSO) selinux.py selinuxswig_python_exception.i
+ SWIGRUBYSO=_rubyselinux.so
+ LIBSO=$(TARGET).$(LIBVERSION)
+-AUDIT2WHYSO=audit2why.so
++AUDIT2WHYSO=$(PYPREFIX)audit2why.so
+ 
+ ifeq ($(DISABLE_AVC),y)
+ 	UNUSED_SRCS+=avc.c avc_internal.c avc_sidtab.c mapping.c stringrep.c checkAccess.c
+@@ -91,10 +92,10 @@
+ selinuxswig_python_exception.i: ../include/selinux/selinux.h
+ 	bash exception.sh > $@ 
+ 
+-audit2why.lo: audit2why.c
++$(PYPREFIX)audit2why.lo: audit2why.c
+ 	$(CC) $(CFLAGS) -I$(PYINC) -fPIC -DSHARED -c -o $@ $<
+ 
+-$(AUDIT2WHYSO): audit2why.lo
++$(AUDIT2WHYSO): $(PYPREFIX)audit2why.lo
+ 	$(CC) $(CFLAGS) $(LDFLAGS) -shared -o $@ $^ -L. -lselinux ${LIBDIR}/libsepol.a -L$(LIBDIR) -Wl,-soname,$@
+ 
+ %.o:  %.c policy.h
+@@ -123,8 +124,8 @@
+ 
+ install-pywrap: pywrap
+ 	test -d $(PYTHONLIBDIR)/site-packages/selinux || install -m 755 -d $(PYTHONLIBDIR)/site-packages/selinux
+-	install -m 755 $(SWIGSO) $(PYTHONLIBDIR)/site-packages/selinux
+-	install -m 755 $(AUDIT2WHYSO) $(PYTHONLIBDIR)/site-packages/selinux
++	install -m 755 $(SWIGSO) $(PYTHONLIBDIR)/site-packages/selinux/_selinux.so
++	install -m 755 $(AUDIT2WHYSO) $(PYTHONLIBDIR)/site-packages/selinux/audit2why.so
+ 	install -m 644  selinux.py $(PYTHONLIBDIR)/site-packages/selinux/__init__.py
+ 
+ install-rubywrap: rubywrap
 diff -ur libselinux-2.0.94.orig//src/audit2why.c libselinux-2.0.94/src/audit2why.c
 --- libselinux-2.0.94.orig//src/audit2why.c	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/audit2why.c	2011-07-05 22:05:41.411000866 +0200
-@@ -24,6 +24,18 @@
- #define CONSTRAINT 4
- #define RBAC 5
- 
-+/*
-+ * Python 3 support overrides
-+ */
++++ libselinux-2.0.94/src/audit2why.c	2011-07-05 22:16:29.354000903 +0200
+@@ -1,3 +1,6 @@
++/* Workaround for http://bugs.python.org/issue4835 */
++#define SIZEOF_SOCKET_T SIZEOF_INT
 +
-+#if PY_VERSION_HEX >= 0x03000000
-+#define PyString_Check(x) 0
-+#define PyString_AsString(x) PLyUnicode_AsString(x)
-+#define PyString_FromString(x) PLyUnicode_FromString(x)
-+#define PyInt_FromLong(x) PyLong_FromLong(x)
+ #include <Python.h>
+ #include <unistd.h>
+ #include <stdlib.h>
+@@ -353,7 +356,11 @@
+ 		strObj = PyList_GetItem(listObj, i); /* Can't fail */
+ 		
+ 		/* make it a string */
++#if PY_MAJOR_VERSION >= 3
++		permstr = _PyUnicode_AsString( strObj );
++#else
+ 		permstr = PyString_AsString( strObj );
 +#endif
+ 		
+ 		perm = string_to_av_perm(tclass, permstr);
+ 		if (!perm) {
+@@ -423,10 +430,39 @@
+     {NULL, NULL, 0, NULL}        /* Sentinel */
+ };
+ 
++#if PY_MAJOR_VERSION >= 3
++/* Module-initialization logic specific to Python 3 */
++struct module_state {
++	/* empty for now */
++};
++static struct PyModuleDef moduledef = {
++	PyModuleDef_HEAD_INIT,
++	"audit2why",
++	NULL,
++	sizeof(struct module_state),
++	audit2whyMethods,
++	NULL,
++	NULL,
++	NULL,
++	NULL
++};
 +
++PyMODINIT_FUNC
++PyInit_audit2why(void)
++#else
+ PyMODINIT_FUNC
+ initaudit2why(void)
++#endif
+ {
+-	PyObject *m = Py_InitModule("audit2why", audit2whyMethods);
++	PyObject *m;
++#if PY_MAJOR_VERSION >= 3
++	m = PyModule_Create(&moduledef);
++	if (m == NULL) {
++		return NULL;
++	}
++#else
++	m  = Py_InitModule("audit2why", audit2whyMethods);
++#endif
+ 	PyModule_AddIntConstant(m,"UNKNOWN", UNKNOWN);
+ 	PyModule_AddIntConstant(m,"BADSCON", BADSCON);
+ 	PyModule_AddIntConstant(m,"BADTCON", BADTCON);
+@@ -440,4 +476,8 @@
+ 	PyModule_AddIntConstant(m,"BOOLEAN", BOOLEAN);
+ 	PyModule_AddIntConstant(m,"CONSTRAINT", CONSTRAINT);
+ 	PyModule_AddIntConstant(m,"RBAC", RBAC);
 +
- struct boolean_t {
- 	char *name;
- 	int active;
++#if PY_MAJOR_VERSION >= 3
++	return m;
++#endif
+ }
 diff -ur libselinux-2.0.94.orig//src/selinuxswig_python.i libselinux-2.0.94/src/selinuxswig_python.i
 --- libselinux-2.0.94.orig//src/selinuxswig_python.i	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-05 22:09:39.296000879 +0200
-@@ -144,8 +144,13 @@
++++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-05 22:16:29.355000903 +0200
+@@ -37,7 +37,7 @@
+ 	PyObject* list = PyList_New(*$2);
+ 	int i;
+ 	for (i = 0; i < *$2; i++) {
+-		PyList_SetItem(list, i, PyString_FromString((*$1)[i]));
++		PyList_SetItem(list, i, PyBytes_FromString((*$1)[i]));
+ 	}
+ 	$result = SWIG_Python_AppendOutput($result, list);
+ }
+@@ -66,7 +66,9 @@
+ 			len++;
+ 		plist = PyList_New(len);
+ 		for (i = 0; i < len; i++) {
+-			PyList_SetItem(plist, i, PyString_FromString((*$1)[i]));
++			PyList_SetItem(plist, i, 
++                                       PyBytes_FromString((*$1)[i])
++                                       );
+ 		}
+ 	} else {
+ 		plist = PyList_New(0);
+@@ -83,7 +85,9 @@
+ 	if (*$1) {
+ 		plist = PyList_New(result);
+ 		for (i = 0; i < result; i++) {
+-			PyList_SetItem(plist, i, PyString_FromString((*$1)[i]));
++			PyList_SetItem(plist, i, 
++                                       PyBytes_FromString((*$1)[i])
++                                       );
+ 		}
+ 	} else {
+ 		plist = PyList_New(0);
+@@ -136,16 +140,20 @@
+ 	$1 = (char**) malloc(size + 1);
+ 
+ 	for(i = 0; i < size; i++) {
+-		if (!PyString_Check(PySequence_GetItem($input, i))) {
+-			PyErr_SetString(PyExc_ValueError, "Sequence must contain only strings");
++		if (!PyBytes_Check(PySequence_GetItem($input, i))) {
++			PyErr_SetString(PyExc_ValueError, "Sequence must contain only bytes");
++
+ 			return NULL;
+ 		}
++
+ 	}
  		
  	for(i = 0; i < size; i++) {
  		s = PySequence_GetItem($input, i);
-+#if PY_VERSION_HEX >= 0x03000000
+-		$1[i] = (char*) malloc(PyString_Size(s) + 1);
+-		strcpy($1[i], PyString_AsString(s));
++
 +		$1[i] = (char*) malloc(PyBytes_Size(s) + 1);
-+		strcpy($1[i], PTyUnicode_AsString(s));
-+#else
- 		$1[i] = (char*) malloc(PyString_Size(s) + 1);
- 		strcpy($1[i], PyString_AsString(s));
-+#endif
++		strcpy($1[i], PyBytes_AsString(s));
++
  	}
  	$1[size] = NULL;
  }
-diff -ur libselinux-2.0.94.orig//src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
---- libselinux-2.0.94.orig//src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-05 22:01:48.603000852 +0200
-@@ -298,6 +298,17 @@
- #  define SWIG_CheckState(r) (SWIG_IsOK(r) ? 1 : 0)
- #endif
- 
-+/*
-+ * Python 3 support overrides
-+ */
-+
-+#if PY_VERSION_HEX >= 0x03000000
-+#define PyString_Check(x) 0
-+#define PyString_AsString(x) PLyUnicode_AsString(x)
-+#define PyString_FromString(x) PLyUnicode_FromString(x)
-+#define PyInt_FromLong(x) PyLong_FromLong(x)
-+#endif
-+
- 
- #include <string.h>
- 
-@@ -11420,7 +11431,7 @@
-     
-     for(i = 0; i < size; i++) {
-       s = PySequence_GetItem(obj2, i);
--      arg3[i] = (char*) malloc(PyString_Size(s) + 1);
-+      arg3[i] = (char*) malloc(PyBytes_Size(s) + 1);
-       strcpy(arg3[i], PyString_AsString(s));
-     }
-     arg3[size] = NULL;
-@@ -11447,7 +11458,7 @@
-     
-     for(i = 0; i < size; i++) {
-       s = PySequence_GetItem(obj3, i);
--      arg4[i] = (char*) malloc(PyString_Size(s) + 1);
-+      arg4[i] = (char*) malloc(PyBytes_Size(s) + 1);
-       strcpy(arg4[i], PyString_AsString(s));
-     }
-     arg4[size] = NULL;
