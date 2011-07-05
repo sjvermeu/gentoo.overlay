@@ -1,6 +1,6 @@
 diff -ur libselinux-2.0.94.orig//src/Makefile libselinux-2.0.94/src/Makefile
 --- libselinux-2.0.94.orig//src/Makefile	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/Makefile	2011-07-05 22:16:29.354000903 +0200
++++ libselinux-2.0.94/src/Makefile	2011-07-05 22:22:18.855000924 +0200
 @@ -1,9 +1,10 @@
  # Installation directories.
 +PYTHON ?= python
@@ -18,15 +18,15 @@ diff -ur libselinux-2.0.94.orig//src/Makefile libselinux-2.0.94/src/Makefile
  SWIGCOUT= selinuxswig_wrap.c
  SWIGRUBYCOUT= selinuxswig_ruby_wrap.c
 -SWIGLOBJ:= $(patsubst %.c,%.lo,$(SWIGCOUT)) 
-+SWIGLOBJ:= $(patsubst %.c,$(PYPREFIX)%.lo,$(SWIGCOUT)) 
++SWIGLOBJ:= $(patsubst %.c,$(PYLIBVER)%.lo,$(SWIGCOUT)) 
  SWIGRUBYLOBJ:= $(patsubst %.c,%.lo,$(SWIGRUBYCOUT)) 
 -SWIGSO=_selinux.so
-+SWIGSO=$(PYPREFIX)_selinux.so
++SWIGSO=$(PYLIBVER)_selinux.so
  SWIGFILES=$(SWIGSO) selinux.py selinuxswig_python_exception.i
  SWIGRUBYSO=_rubyselinux.so
  LIBSO=$(TARGET).$(LIBVERSION)
 -AUDIT2WHYSO=audit2why.so
-+AUDIT2WHYSO=$(PYPREFIX)audit2why.so
++AUDIT2WHYSO=$(PYLIBVER)audit2why.so
  
  ifeq ($(DISABLE_AVC),y)
  	UNUSED_SRCS+=avc.c avc_internal.c avc_sidtab.c mapping.c stringrep.c checkAccess.c
@@ -35,11 +35,11 @@ diff -ur libselinux-2.0.94.orig//src/Makefile libselinux-2.0.94/src/Makefile
  	bash exception.sh > $@ 
  
 -audit2why.lo: audit2why.c
-+$(PYPREFIX)audit2why.lo: audit2why.c
++$(PYLIBVER)audit2why.lo: audit2why.c
  	$(CC) $(CFLAGS) -I$(PYINC) -fPIC -DSHARED -c -o $@ $<
  
 -$(AUDIT2WHYSO): audit2why.lo
-+$(AUDIT2WHYSO): $(PYPREFIX)audit2why.lo
++$(AUDIT2WHYSO): $(PYLIBVER)audit2why.lo
  	$(CC) $(CFLAGS) $(LDFLAGS) -shared -o $@ $^ -L. -lselinux ${LIBDIR}/libsepol.a -L$(LIBDIR) -Wl,-soname,$@
  
  %.o:  %.c policy.h
