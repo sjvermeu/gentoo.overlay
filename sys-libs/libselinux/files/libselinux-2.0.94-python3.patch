@@ -128,7 +128,7 @@ diff -ur libselinux-2.0.94.orig//src/audit2why.c libselinux-2.0.94/src/audit2why
  }
 diff -ur libselinux-2.0.94.orig//src/selinuxswig_python.i libselinux-2.0.94/src/selinuxswig_python.i
 --- libselinux-2.0.94.orig//src/selinuxswig_python.i	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-05 23:07:28.185001082 +0200
++++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-05 23:09:03.460001088 +0200
 @@ -37,7 +37,11 @@
  	PyObject* list = PyList_New(*$2);
  	int i;
@@ -172,7 +172,7 @@ diff -ur libselinux-2.0.94.orig//src/selinuxswig_python.i libselinux-2.0.94/src/
 +                                       PyString_FromString((*$1)[i])
 +                                       );
 +
-+#fi
++#endif
  		}
  	} else {
  		plist = PyList_New(0);
@@ -194,7 +194,7 @@ diff -ur libselinux-2.0.94.orig//src/selinuxswig_python.i libselinux-2.0.94/src/
 +#else
  		$1[i] = (char*) malloc(PyString_Size(s) + 1);
  		strcpy($1[i], PyString_AsString(s));
-+#fi
++#endif
  	}
  	$1[size] = NULL;
  }
