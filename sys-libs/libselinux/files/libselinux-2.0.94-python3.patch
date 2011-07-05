@@ -31,7 +31,7 @@ diff -ur libselinux-2.0.94.orig//src/audit2why.c libselinux-2.0.94/src/audit2why
  		if (!perm) {
 diff -ur libselinux-2.0.94.orig//src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
 --- libselinux-2.0.94.orig//src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-05 21:20:47.380000708 +0200
++++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-05 21:23:37.697000718 +0200
 @@ -298,7 +298,6 @@
  #  define SWIG_CheckState(r) (SWIG_IsOK(r) ? 1 : 0)
  #endif
@@ -40,6 +40,24 @@ diff -ur libselinux-2.0.94.orig//src/selinuxswig_wrap.c libselinux-2.0.94/src/se
  #include <string.h>
  
  #ifdef __cplusplus
+@@ -766,7 +765,7 @@
+   Py_XDECREF(str);
+   return newstr;
+ #else
+-  return PyString_AsString(str);
++  return Py_String_AsString(str);
+ #endif
+ }
+ 
+@@ -2773,7 +2772,7 @@
+     PyBytes_AsStringAndSize(obj, &cstr, &len);
+     if(alloc) *alloc = SWIG_NEWOBJ;
+ #else
+-    PyString_AsStringAndSize(obj, &cstr, &len);
++    Py__String_AsStringAndSize(obj, &cstr, &len);
+ #endif
+     if (cptr) {
+       if (alloc) {
 @@ -11421,7 +11420,7 @@
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj2, i);
