@@ -1,5 +1,5 @@
-diff -ur libselinux-2.0.94.orig/src/audit2why.c libselinux-2.0.94/src/audit2why.c
---- libselinux-2.0.94.orig/src/audit2why.c	2010-03-24 20:40:05.000000000 +0100
+diff -ur libselinux-2.0.94.orig//src/audit2why.c libselinux-2.0.94/src/audit2why.c
+--- libselinux-2.0.94.orig//src/audit2why.c	2010-03-24 20:40:05.000000000 +0100
 +++ libselinux-2.0.94/src/audit2why.c	2011-07-05 20:13:09.766000471 +0200
 @@ -353,7 +353,7 @@
  		strObj = PyList_GetItem(listObj, i); /* Can't fail */
@@ -10,8 +10,8 @@ diff -ur libselinux-2.0.94.orig/src/audit2why.c libselinux-2.0.94/src/audit2why.
  		
  		perm = string_to_av_perm(tclass, permstr);
  		if (!perm) {
-diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/selinuxswig_python.i
---- libselinux-2.0.94.orig/src/selinuxswig_python.i	2010-03-24 20:40:05.000000000 +0100
+diff -ur libselinux-2.0.94.orig//src/selinuxswig_python.i libselinux-2.0.94/src/selinuxswig_python.i
+--- libselinux-2.0.94.orig//src/selinuxswig_python.i	2010-03-24 20:40:05.000000000 +0100
 +++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-05 20:13:26.570000472 +0200
 @@ -145,7 +145,7 @@
  	for(i = 0; i < size; i++) {
@@ -22,10 +22,27 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/s
  	}
  	$1[size] = NULL;
  }
-diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
---- libselinux-2.0.94.orig/src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-05 20:14:13.882000475 +0200
-@@ -766,7 +766,7 @@
+diff -ur libselinux-2.0.94.orig//src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
+--- libselinux-2.0.94.orig//src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
++++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-05 20:43:36.181000578 +0200
+@@ -298,6 +298,16 @@
+ #  define SWIG_CheckState(r) (SWIG_IsOK(r) ? 1 : 0)
+ #endif
+ 
++/*
++ * Python 3 support overrides
++ */
++
++#if PY_MAJOR_VERSION >= 3
++#define PyString_Check(x) 0
++#define PyString_AsString(x) PLyUnicode_AsString(x)
++#define PyString_FromString(x) PLyUnicode_FromString(x)
++#define PyInt_FromLong(x) PyLong_FromLong(x)
++#endif
+ 
+ #include <string.h>
+ 
+@@ -766,7 +776,7 @@
    Py_XDECREF(str);
    return newstr;
  #else
@@ -34,7 +51,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
  #endif
  }
  
-@@ -843,7 +843,7 @@
+@@ -843,7 +853,7 @@
  /* A crude PyString_AsStringAndSize implementation for old Pythons */
  #if PY_VERSION_HEX < 0x02010000
  # ifndef PyString_AsStringAndSize
@@ -43,7 +60,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
  # endif
  #endif
  
-@@ -11421,7 +11421,7 @@
+@@ -11421,7 +11431,7 @@
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj2, i);
        arg3[i] = (char*) malloc(PyString_Size(s) + 1);
@@ -52,7 +69,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
      }
      arg3[size] = NULL;
    }
-@@ -11448,7 +11448,7 @@
+@@ -11448,7 +11458,7 @@
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj3, i);
        arg4[i] = (char*) malloc(PyString_Size(s) + 1);
