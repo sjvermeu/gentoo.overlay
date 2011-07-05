@@ -39,7 +39,7 @@ diff -ur libselinux-2.0.94.orig//src/selinuxswig_python.i libselinux-2.0.94/src/
  }
 diff -ur libselinux-2.0.94.orig//src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
 --- libselinux-2.0.94.orig//src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-05 21:57:47.604000838 +0200
++++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-05 21:59:54.546000845 +0200
 @@ -298,6 +298,17 @@
  #  define SWIG_CheckState(r) (SWIG_IsOK(r) ? 1 : 0)
  #endif
@@ -58,25 +58,39 @@ diff -ur libselinux-2.0.94.orig//src/selinuxswig_wrap.c libselinux-2.0.94/src/se
  
  #include <string.h>
  
-@@ -11420,8 +11431,8 @@
+@@ -766,7 +777,7 @@
+   Py_XDECREF(str);
+   return newstr;
+ #else
+-  return PyString_AsString(str);
++  return Py_String_AsString(str);
+ #endif
+ }
+ 
+@@ -843,7 +854,7 @@
+ /* A crude PyString_AsStringAndSize implementation for old Pythons */
+ #if PY_VERSION_HEX < 0x02010000
+ # ifndef PyString_AsStringAndSize
+-#  define PyString_AsStringAndSize(obj, s, len) {*s = PyString_AsString(obj); *len = *s ? strlen(*s) : 0;}
++#  define PyString_AsStringAndSize(obj, s, len) {*s = Py__String_AsString(obj); *len = *s ? strlen(*s) : 0;}
+ # endif
+ #endif
+ 
+@@ -11420,7 +11431,7 @@
      
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj2, i);
 -      arg3[i] = (char*) malloc(PyString_Size(s) + 1);
--      strcpy(arg3[i], PyString_AsString(s));
 +      arg3[i] = (char*) malloc(PyBytes_Size(s) + 1);
-+      strcpy(arg3[i], Py_String_AsString(s));
+       strcpy(arg3[i], PyString_AsString(s));
      }
      arg3[size] = NULL;
-   }
-@@ -11447,8 +11458,8 @@
+@@ -11447,7 +11458,7 @@
      
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj3, i);
 -      arg4[i] = (char*) malloc(PyString_Size(s) + 1);
--      strcpy(arg4[i], PyString_AsString(s));
 +      arg4[i] = (char*) malloc(PyBytes_Size(s) + 1);
-+      strcpy(arg4[i], Py__String_AsString(s));
+       strcpy(arg4[i], PyString_AsString(s));
      }
      arg4[size] = NULL;
-   }
