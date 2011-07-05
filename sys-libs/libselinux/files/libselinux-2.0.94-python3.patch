@@ -128,14 +128,14 @@ diff -ur libselinux-2.0.94.orig//src/audit2why.c libselinux-2.0.94/src/audit2why
  }
 diff -ur libselinux-2.0.94.orig//src/selinuxswig_python.i libselinux-2.0.94/src/selinuxswig_python.i
 --- libselinux-2.0.94.orig//src/selinuxswig_python.i	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-05 23:22:52.185001136 +0200
++++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-05 23:25:47.091001146 +0200
 @@ -37,7 +37,14 @@
  	PyObject* list = PyList_New(*$2);
  	int i;
  	for (i = 0; i < *$2; i++) {
-+#ifndef PY_VERSION_HEX
++%ifndef PY_VERSION_HEX
 +  callmealozer;
-+#endif
++%endif
 +#if PY_VERSION_HEX >= 0x03000000
 +		PyList_SetItem(list, i, PLyUnicode_FromString((*$1)[i]));
 +#else
