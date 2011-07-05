@@ -1,0 +1,63 @@
+diff -ur libselinux-2.0.94.orig/src/audit2why.c libselinux-2.0.94/src/audit2why.c
+--- libselinux-2.0.94.orig/src/audit2why.c	2010-03-24 20:40:05.000000000 +0100
++++ libselinux-2.0.94/src/audit2why.c	2011-07-05 20:13:09.766000471 +0200
+@@ -353,7 +353,7 @@
+ 		strObj = PyList_GetItem(listObj, i); /* Can't fail */
+ 		
+ 		/* make it a string */
+-		permstr = PyString_AsString( strObj );
++		permstr = PLyUnicode_AsString( strObj );
+ 		
+ 		perm = string_to_av_perm(tclass, permstr);
+ 		if (!perm) {
+diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/selinuxswig_python.i
+--- libselinux-2.0.94.orig/src/selinuxswig_python.i	2010-03-24 20:40:05.000000000 +0100
++++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-05 20:13:26.570000472 +0200
+@@ -145,7 +145,7 @@
+ 	for(i = 0; i < size; i++) {
+ 		s = PySequence_GetItem($input, i);
+ 		$1[i] = (char*) malloc(PyString_Size(s) + 1);
+-		strcpy($1[i], PyString_AsString(s));
++		strcpy($1[i], PLyUnicode_AsString(s));
+ 	}
+ 	$1[size] = NULL;
+ }
+diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
+--- libselinux-2.0.94.orig/src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
++++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-05 20:14:13.882000475 +0200
+@@ -766,7 +766,7 @@
+   Py_XDECREF(str);
+   return newstr;
+ #else
+-  return PyString_AsString(str);
++  return PLyUnicode_AsString(str);
+ #endif
+ }
+ 
+@@ -843,7 +843,7 @@
+ /* A crude PyString_AsStringAndSize implementation for old Pythons */
+ #if PY_VERSION_HEX < 0x02010000
+ # ifndef PyString_AsStringAndSize
+-#  define PyString_AsStringAndSize(obj, s, len) {*s = PyString_AsString(obj); *len = *s ? strlen(*s) : 0;}
++#  define PyString_AsStringAndSize(obj, s, len) {*s = PLyUnicode_AsString(obj); *len = *s ? strlen(*s) : 0;}
+ # endif
+ #endif
+ 
+@@ -11421,7 +11421,7 @@
+     for(i = 0; i < size; i++) {
+       s = PySequence_GetItem(obj2, i);
+       arg3[i] = (char*) malloc(PyString_Size(s) + 1);
+-      strcpy(arg3[i], PyString_AsString(s));
++      strcpy(arg3[i], PLyUnicode_AsString(s));
+     }
+     arg3[size] = NULL;
+   }
+@@ -11448,7 +11448,7 @@
+     for(i = 0; i < size; i++) {
+       s = PySequence_GetItem(obj3, i);
+       arg4[i] = (char*) malloc(PyString_Size(s) + 1);
+-      strcpy(arg4[i], PyString_AsString(s));
++      strcpy(arg4[i], PLyUnicode_AsString(s));
+     }
+     arg4[size] = NULL;
+   }

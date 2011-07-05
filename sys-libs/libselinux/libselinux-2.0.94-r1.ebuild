@@ -7,7 +7,7 @@ PYTHON_DEPEND="python? *"
 SUPPORT_PYTHON_ABIS="1"
 RESTRICT_PYTHON_ABIS="*-jython"
 
-inherit multilib python toolchain-funcs
+inherit multilib python toolchain-funcs eutils
 
 SEPOL_VER="2.0.41"
 
@@ -37,6 +37,7 @@ src_prepare() {
 		|| die "Fix for multilib LIBDIR failed."
 	sed -i -e "/^SHLIBDIR/s/lib/$(get_libdir)/" "${S}/src/Makefile" \
 		|| die "Fix for multilib SHLIBDIR failed."
+	epatch "${FILESDIR}/libselinux-2.0.94-python3.patch"
 }
 
 src_compile() {
