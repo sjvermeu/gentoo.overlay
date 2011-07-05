@@ -22,15 +22,16 @@ diff -ur libselinux-2.0.94.orig//src/audit2why.c libselinux-2.0.94/src/audit2why
  	int active;
 diff -ur libselinux-2.0.94.orig//src/selinuxswig_python.i libselinux-2.0.94/src/selinuxswig_python.i
 --- libselinux-2.0.94.orig//src/selinuxswig_python.i	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-05 21:31:39.586000746 +0200
++++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-05 21:38:41.440000771 +0200
 @@ -145,7 +145,11 @@
  	for(i = 0; i < size; i++) {
  		s = PySequence_GetItem($input, i);
  		$1[i] = (char*) malloc(PyString_Size(s) + 1);
+-		strcpy($1[i], PyString_AsString(s));
 +#if PY_VERSION_HEX >= 0x03000000
 +		strcpy($1[i], PLyUnicode_AsString(s));
 +#else
- 		strcpy($1[i], PyString_AsString(s));
++		strcpy($1[i], PySString_AsString(s));
 +#endif
  	}
  	$1[size] = NULL;
