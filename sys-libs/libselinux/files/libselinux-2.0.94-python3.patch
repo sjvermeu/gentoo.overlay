@@ -138,7 +138,7 @@ diff -ur libselinux-2.0.94.orig/src/audit2why.c libselinux-2.0.94/src/audit2why.
  }
 diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/selinuxswig_python.i
 --- libselinux-2.0.94.orig/src/selinuxswig_python.i	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-05 23:50:08.021001232 +0200
++++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-06 00:03:30.056001279 +0200
 @@ -37,7 +37,11 @@
  	PyObject* list = PyList_New(*$2);
  	int i;
@@ -200,7 +200,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/s
  		s = PySequence_GetItem($input, i);
 +#if PY_VERSION_HEX >= 0x03000000
 +		$1[i] = (char*) malloc(PyBytes_Size(s) + 1);
-+		strcpy($1[i], PyUnicode_AsString(s));
++		strcpy($1[i], PyUnicode_AsUTF8String(s));
 +#else
  		$1[i] = (char*) malloc(PyString_Size(s) + 1);
  		strcpy($1[i], PyString_AsString(s));
@@ -210,14 +210,14 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/s
  }
 diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
 --- libselinux-2.0.94.orig/src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-05 23:50:17.201001232 +0200
++++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-06 00:03:55.812001280 +0200
 @@ -11420,8 +11420,13 @@
      
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj2, i);
 +#if PY_VERSION_HEX >= 0x03000000
 +      arg3[i] = (char*) malloc(PyBytes_Size(s) + 1);
-+      strcpy(arg3[i], PyUnicode_AsString(s));
++      strcpy(arg3[i], PyUnicode_AsUTF8String(s));
 +#else
        arg3[i] = (char*) malloc(PyString_Size(s) + 1);
        strcpy(arg3[i], PyString_AsString(s));
@@ -231,7 +231,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
        s = PySequence_GetItem(obj3, i);
 +#if PY_VERSION_HEX >= 0x03000000
 +      arg4[i] = (char*) malloc(PyBytes_Size(s) + 1);
-+      strcpy(arg4[i], PyUnicode_AsString(s));
++      strcpy(arg4[i], PyUnicode_AsUTF8String(s));
 +#else
        arg4[i] = (char*) malloc(PyString_Size(s) + 1);
        strcpy(arg4[i], PyString_AsString(s));
