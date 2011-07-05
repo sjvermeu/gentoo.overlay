@@ -128,7 +128,7 @@ diff -ur libselinux-2.0.94.orig//src/audit2why.c libselinux-2.0.94/src/audit2why
  }
 diff -ur libselinux-2.0.94.orig//src/selinuxswig_python.i libselinux-2.0.94/src/selinuxswig_python.i
 --- libselinux-2.0.94.orig//src/selinuxswig_python.i	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-05 23:11:03.165001095 +0200
++++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-05 23:12:57.575001101 +0200
 @@ -37,7 +37,11 @@
  	PyObject* list = PyList_New(*$2);
  	int i;
@@ -193,9 +193,35 @@ diff -ur libselinux-2.0.94.orig//src/selinuxswig_python.i libselinux-2.0.94/src/
 +		strcpy($1[i], PLyUnicode_AsString(s));
 +#else
  		$1[i] = (char*) malloc(PyString_Size(s) + 1);
--		strcpy($1[i], PyString_AsString(s));
-+		strcpy($1[i], PySString_AsString(s));
+ 		strcpy($1[i], PyString_AsString(s));
 +#endif
  	}
  	$1[size] = NULL;
  }
+diff -ur libselinux-2.0.94.orig//src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
+--- libselinux-2.0.94.orig//src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
++++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-05 23:14:23.846001107 +0200
+@@ -11420,7 +11420,11 @@
+     
+     for(i = 0; i < size; i++) {
+       s = PySequence_GetItem(obj2, i);
++#if PY_VERSION_HEX >= 0x03000000
++      arg3[i] = (char*) malloc(PyBytes_Size(s) + 1);
++#else
+       arg3[i] = (char*) malloc(PyString_Size(s) + 1);
++#endif
+       strcpy(arg3[i], PyString_AsString(s));
+     }
+     arg3[size] = NULL;
+@@ -11447,7 +11451,11 @@
+     
+     for(i = 0; i < size; i++) {
+       s = PySequence_GetItem(obj3, i);
++#if PY_VERSION_HEX >= 0x03000000
++      arg4[i] = (char*) malloc(PyBytes_Size(s) + 1);
++#else
+       arg4[i] = (char*) malloc(PyString_Size(s) + 1);
++#endif
+       strcpy(arg4[i], PyString_AsString(s));
+     }
+     arg4[size] = NULL;
