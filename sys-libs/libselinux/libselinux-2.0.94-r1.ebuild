@@ -41,7 +41,6 @@ src_prepare() {
 }
 
 src_compile() {
-	emake AR="$(tc-getAR)" CC="$(tc-getCC)" LDFLAGS="-fPIC ${LDFLAGS}" all || die
 
 	if use python; then
 		python_copy_sources src
@@ -51,6 +50,7 @@ src_compile() {
 		python_execute_function -s --source-dir src building -- swigify
 		python_execute_function -s --source-dir src building -- pywrap
 	fi
+	emake AR="$(tc-getAR)" CC="$(tc-getCC)" LDFLAGS="-fPIC ${LDFLAGS}" all || die
 
 	if use ruby; then
 		emake CC="$(tc-getCC)" rubywrap || die
