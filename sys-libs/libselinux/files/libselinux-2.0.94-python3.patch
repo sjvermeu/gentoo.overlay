@@ -216,8 +216,8 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/s
  }
 diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
 --- libselinux-2.0.94.orig/src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-06 21:48:14.986005855 +0200
-@@ -2762,16 +2762,7 @@
++++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-06 21:50:59.547005865 +0200
+@@ -2762,16 +2762,8 @@
    {
      char *cstr; Py_ssize_t len;
  #if PY_VERSION_HEX>=0x03000000
@@ -232,10 +232,11 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
 -    PyBytes_AsStringAndSize(obj, &cstr, &len);
 -    if(alloc) *alloc = SWIG_NEWOBJ;
 +    cstr = PyUnicode_AsUTF8String(obj);
++    len = strlen(cstr);
  #else
      PyString_AsStringAndSize(obj, &cstr, &len);
  #endif
-@@ -2800,16 +2791,10 @@
+@@ -2800,16 +2792,10 @@
  	  *alloc = SWIG_OLDOBJ;
  	}
        } else {
@@ -252,7 +253,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
      return SWIG_OK;
    } else {
      swig_type_info* pchar_descriptor = SWIG_pchar_descriptor();
-@@ -5641,7 +5626,11 @@
+@@ -5641,7 +5627,11 @@
      if (*arg3) {
        plist = PyList_New(result);
        for (i = 0; i < result; i++) {
@@ -264,7 +265,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
        }
      } else {
        plist = PyList_New(0);
-@@ -5714,7 +5703,11 @@
+@@ -5714,7 +5704,11 @@
      if (*arg4) {
        plist = PyList_New(result);
        for (i = 0; i < result; i++) {
@@ -276,7 +277,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
        }
      } else {
        plist = PyList_New(0);
-@@ -9217,7 +9210,11 @@
+@@ -9217,7 +9211,11 @@
        len++;
        plist = PyList_New(len);
        for (i = 0; i < len; i++) {
@@ -288,7 +289,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
        }
      } else {
        plist = PyList_New(0);
-@@ -9288,7 +9285,11 @@
+@@ -9288,7 +9286,11 @@
        len++;
        plist = PyList_New(len);
        for (i = 0; i < len; i++) {
@@ -300,7 +301,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
        }
      } else {
        plist = PyList_New(0);
-@@ -9994,7 +9995,11 @@
+@@ -9994,7 +9996,11 @@
      PyObject* list = PyList_New(*arg2);
      int i;
      for (i = 0; i < *arg2; i++) {
@@ -312,7 +313,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
      }
      resultobj = SWIG_Python_AppendOutput(resultobj, list);
    }
-@@ -11412,7 +11417,11 @@
+@@ -11412,7 +11418,11 @@
      arg3 = (char**) malloc(size + 1);
      
      for(i = 0; i < size; i++) {
@@ -324,7 +325,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
          PyErr_SetString(PyExc_ValueError, "Sequence must contain only strings");
          return NULL;
        }
-@@ -11420,8 +11429,13 @@
+@@ -11420,8 +11430,13 @@
      
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj2, i);
@@ -338,7 +339,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
      }
      arg3[size] = NULL;
    }
-@@ -11439,7 +11453,11 @@
+@@ -11439,7 +11454,11 @@
      arg4 = (char**) malloc(size + 1);
      
      for(i = 0; i < size; i++) {
@@ -350,7 +351,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
          PyErr_SetString(PyExc_ValueError, "Sequence must contain only strings");
          return NULL;
        }
-@@ -11447,8 +11465,13 @@
+@@ -11447,8 +11466,13 @@
      
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj3, i);
