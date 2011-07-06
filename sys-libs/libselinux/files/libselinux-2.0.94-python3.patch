@@ -216,7 +216,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/s
  }
 diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
 --- libselinux-2.0.94.orig/src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-06 21:01:15.082005690 +0200
++++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-06 21:25:01.431005774 +0200
 @@ -6658,10 +6658,11 @@
    int result;
    
@@ -245,7 +245,43 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
    return NULL;
  }
  
-@@ -11420,8 +11423,13 @@
+@@ -9217,7 +9220,11 @@
+       len++;
+       plist = PyList_New(len);
+       for (i = 0; i < len; i++) {
++#if PY_VERSION_HEX >= 0x03000000
++        PyList_SetItem(plist, i, PyUnicode_FromUTF8String((*arg3)[i]));
++#else
+         PyList_SetItem(plist, i, PyString_FromString((*arg3)[i]));
++#endif
+       }
+     } else {
+       plist = PyList_New(0);
+@@ -9288,7 +9295,11 @@
+       len++;
+       plist = PyList_New(len);
+       for (i = 0; i < len; i++) {
++#if PY_VERSION_HEX >= 0x03000000
++        PyList_SetItem(plist, i, PyUnicode_FromUTF8String((*arg3)[i]));
++#else
+         PyList_SetItem(plist, i, PyString_FromString((*arg3)[i]));
++#endif
+       }
+     } else {
+       plist = PyList_New(0);
+@@ -9994,7 +10005,11 @@
+     PyObject* list = PyList_New(*arg2);
+     int i;
+     for (i = 0; i < *arg2; i++) {
++#if PY_VERSION_HEX >= 0x03000000
++      PyList_SetItem(list, i, PyUnicode_FromUTF8String((*arg1)[i]));
++#else
+       PyList_SetItem(list, i, PyString_FromString((*arg1)[i]));
++#endif
+     }
+     resultobj = SWIG_Python_AppendOutput(resultobj, list);
+   }
+@@ -11420,8 +11435,13 @@
      
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj2, i);
@@ -259,7 +295,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
      }
      arg3[size] = NULL;
    }
-@@ -11447,8 +11455,13 @@
+@@ -11447,8 +11467,13 @@
      
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj3, i);
