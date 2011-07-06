@@ -216,17 +216,36 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/s
  }
 diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
 --- libselinux-2.0.94.orig/src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-06 20:37:35.675005607 +0200
-@@ -6659,7 +6659,7 @@
++++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-06 21:01:15.082005690 +0200
+@@ -6658,10 +6658,11 @@
+   int result;
    
    if (!PyArg_ParseTuple(args,(char *)"O:setexeccon",&obj0)) SWIG_fail;
-   res1 = SWIG_AsCharPtrAndSize(obj0, &buf1, NULL, &alloc1);
+-  res1 = SWIG_AsCharPtrAndSize(obj0, &buf1, NULL, &alloc1);
 -  if (!SWIG_IsOK(res1)) {
-+  if (SWIG_IsOK(res1)) {
-     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "setexeccon" "', argument " "1"" of type '" "security_context_t""'");
-   }
+-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "setexeccon" "', argument " "1"" of type '" "security_context_t""'");
+-  }
++  // res1 = SWIG_AsCharPtrAndSize(obj0, &buf1, NULL, &alloc1);
++  // if (!SWIG_IsOK(res1)) {
++  //   SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "setexeccon" "', argument " "1"" of type '" "security_context_t""'");
++  // }
++  buf1 = SWIG_Python_str_AsChar(obj0);
    arg1 = (security_context_t)(buf1);
-@@ -11420,8 +11420,13 @@
+   {
+     result = (int)setexeccon(arg1); 
+@@ -6672,9 +6673,11 @@
+   }
+   resultobj = SWIG_From_int((int)(result));
+   if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
++  SWIG_Python_str_DelForPy3(buf1);
+   return resultobj;
+ fail:
+   if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
++  SWIG_Python_str_DelForPy3(buf1);
+   return NULL;
+ }
+ 
+@@ -11420,8 +11423,13 @@
      
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj2, i);
@@ -240,7 +259,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
      }
      arg3[size] = NULL;
    }
-@@ -11447,8 +11452,13 @@
+@@ -11447,8 +11455,13 @@
      
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj3, i);
