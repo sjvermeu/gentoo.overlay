@@ -216,7 +216,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/s
  }
 diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
 --- libselinux-2.0.94.orig/src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-06 21:31:36.159005797 +0200
++++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-06 21:34:00.536005805 +0200
 @@ -5641,7 +5641,11 @@
      if (*arg3) {
        plist = PyList_New(result);
@@ -305,7 +305,19 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
      }
      resultobj = SWIG_Python_AppendOutput(resultobj, list);
    }
-@@ -11420,8 +11443,13 @@
+@@ -11412,7 +11435,11 @@
+     arg3 = (char**) malloc(size + 1);
+     
+     for(i = 0; i < size; i++) {
++#if PY_VERSION_HEX >= 0x03000000
++      if (!PyUnicode_Check(PySequence_GetItem(obj2, i))) {
++#else
+       if (!PyString_Check(PySequence_GetItem(obj2, i))) {
++#endif
+         PyErr_SetString(PyExc_ValueError, "Sequence must contain only strings");
+         return NULL;
+       }
+@@ -11420,8 +11447,13 @@
      
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj2, i);
@@ -319,7 +331,19 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
      }
      arg3[size] = NULL;
    }
-@@ -11447,8 +11475,13 @@
+@@ -11439,7 +11471,11 @@
+     arg4 = (char**) malloc(size + 1);
+     
+     for(i = 0; i < size; i++) {
++#if PY_VERSION_HEX >= 0x03000000
++      if (!PyUnicode_Check(PySequence_GetItem(obj3, i))) {
++#else
+       if (!PyString_Check(PySequence_GetItem(obj3, i))) {
++#endif
+         PyErr_SetString(PyExc_ValueError, "Sequence must contain only strings");
+         return NULL;
+       }
+@@ -11447,8 +11483,13 @@
      
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj3, i);
