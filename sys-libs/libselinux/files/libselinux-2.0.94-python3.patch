@@ -216,7 +216,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/s
  }
 diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
 --- libselinux-2.0.94.orig/src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-06 21:46:31.336005849 +0200
++++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-06 21:48:14.986005855 +0200
 @@ -2762,16 +2762,7 @@
    {
      char *cstr; Py_ssize_t len;
@@ -231,7 +231,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
 -    obj = PyUnicode_AsUTF8String(obj);
 -    PyBytes_AsStringAndSize(obj, &cstr, &len);
 -    if(alloc) *alloc = SWIG_NEWOBJ;
-+    PyUnicode_AsUTF8String(obj, &cstr);
++    cstr = PyUnicode_AsUTF8String(obj);
  #else
      PyString_AsStringAndSize(obj, &cstr, &len);
  #endif
