@@ -136,6 +136,21 @@ diff -ur libselinux-2.0.94.orig/src/audit2why.c libselinux-2.0.94/src/audit2why.
 +	return m;
 +#endif
  }
+diff -ur libselinux-2.0.94.orig/src/selinux.py libselinux-2.0.94/src/selinux.py
+--- libselinux-2.0.94.orig/src/selinux.py	2010-03-24 20:40:05.000000000 +0100
++++ libselinux-2.0.94/src/selinux.py	2011-07-06 20:04:23.135005491 +0200
+@@ -1631,7 +1631,10 @@
+ is_selinux_mls_enabled = _selinux.is_selinux_mls_enabled
+ 
+ def getcon():
+-  return _selinux.getcon()
++  if not sys.version_info[:1] == (3,)
++    return _selinux.getcon()
++  else:
++    return str(_selinux.getcon())
+ getcon = _selinux.getcon
+ 
+ def getcon_raw():
 diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/selinuxswig_python.i
 --- libselinux-2.0.94.orig/src/selinuxswig_python.i	2010-03-24 20:40:05.000000000 +0100
 +++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-06 19:08:28.224005295 +0200
