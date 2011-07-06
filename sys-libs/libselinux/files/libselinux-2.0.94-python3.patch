@@ -138,7 +138,7 @@ diff -ur libselinux-2.0.94.orig/src/audit2why.c libselinux-2.0.94/src/audit2why.
  }
 diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/selinuxswig_python.i
 --- libselinux-2.0.94.orig/src/selinuxswig_python.i	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-06 00:03:30.056001279 +0200
++++ libselinux-2.0.94/src/selinuxswig_python.i	2011-07-06 19:08:28.224005295 +0200
 @@ -37,7 +37,11 @@
  	PyObject* list = PyList_New(*$2);
  	int i;
@@ -186,9 +186,15 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/s
  		}
  	} else {
  		plist = PyList_New(0);
-@@ -138,14 +159,21 @@
+@@ -136,16 +157,27 @@
+ 	$1 = (char**) malloc(size + 1);
+ 
  	for(i = 0; i < size; i++) {
++#if PY_VERSION_HEX >= 0x03000000
++		if (!PyUnicode_Check(PySequence_GetItem($input, i))) {
++#else
  		if (!PyString_Check(PySequence_GetItem($input, i))) {
++#endif
  			PyErr_SetString(PyExc_ValueError, "Sequence must contain only strings");
 +
  			return NULL;
