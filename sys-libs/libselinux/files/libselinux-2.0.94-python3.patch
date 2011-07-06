@@ -216,19 +216,17 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_python.i libselinux-2.0.94/src/s
  }
 diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/selinuxswig_wrap.c
 --- libselinux-2.0.94.orig/src/selinuxswig_wrap.c	2010-03-24 20:40:05.000000000 +0100
-+++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-06 20:35:14.985005599 +0200
-@@ -6658,7 +6658,9 @@
-   int result;
++++ libselinux-2.0.94/src/selinuxswig_wrap.c	2011-07-06 20:37:35.675005607 +0200
+@@ -6659,7 +6659,7 @@
    
    if (!PyArg_ParseTuple(args,(char *)"O:setexeccon",&obj0)) SWIG_fail;
--  res1 = SWIG_AsCharPtrAndSize(obj0, &buf1, NULL, &alloc1);
-+  // res1 = SWIG_AsCharPtrAndSize(obj0, &buf1, NULL, &alloc1);
-+  res1 = 0;
-+  // res1 = SWIG_Python_str_AsChar(obj0);
-   if (!SWIG_IsOK(res1)) {
+   res1 = SWIG_AsCharPtrAndSize(obj0, &buf1, NULL, &alloc1);
+-  if (!SWIG_IsOK(res1)) {
++  if (SWIG_IsOK(res1)) {
      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "setexeccon" "', argument " "1"" of type '" "security_context_t""'");
    }
-@@ -11420,8 +11422,13 @@
+   arg1 = (security_context_t)(buf1);
+@@ -11420,8 +11420,13 @@
      
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj2, i);
@@ -242,7 +240,7 @@ diff -ur libselinux-2.0.94.orig/src/selinuxswig_wrap.c libselinux-2.0.94/src/sel
      }
      arg3[size] = NULL;
    }
-@@ -11447,8 +11454,13 @@
+@@ -11447,8 +11452,13 @@
      
      for(i = 0; i < size; i++) {
        s = PySequence_GetItem(obj3, i);
