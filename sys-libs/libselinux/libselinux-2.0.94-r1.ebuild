@@ -47,7 +47,7 @@ src_compile() {
 			emake CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" LDFLAGS="-fPIC ${LDFLAGS}" "$@"
 		}
 		python_execute_function -s --source-dir src building
-		python_execute_function -s --source-dir src building -- swigify
+		#python_execute_function -s --source-dir src building -- swigify
 		python_execute_function -s --source-dir src building -- pywrap
 	fi
 
