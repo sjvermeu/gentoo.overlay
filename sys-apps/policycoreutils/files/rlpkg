@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3.1
 #
 # Copyright(c) 2006, Chris PeBenito <pebenito@gentoo.org>
 # Copyright(c) 2006, Gentoo Foundation
@@ -11,7 +11,7 @@
 #
 # $Header: /var/cvsroot/gentoo-projects/hardened/policycoreutils-extra/scripts/rlpkg,v 1.11 2009/08/02 01:20:32 pebenito Exp $
 
-import os,sys,string,getopt,selinux,portage,subprocess
+import os,sys,string,getopt,portage,selinux,portage,subprocess
 
 SCANELF=["/usr/bin/scanelf","-tqR","-E ET_DYN"]
 SETFILES=["/usr/sbin/setfiles"]
@@ -112,7 +112,7 @@ def parse_mount_options(mount):
 
 def find_xattr_mounts():
 	"""Find mounted xattr filesystems"""
-	print("Relabeling filesystem types: "+join(xattrfs))
+	print("Relabeling filesystem types: "+" ".join(xattrfs))
 	mounts=open("/etc/mtab", "r")
 
 	fs_matches=[]
@@ -120,7 +120,7 @@ def find_xattr_mounts():
 		fields=line.split()
 		if fields[2] in xattrfs:
 			options=parse_mount_options(fields[3])
-			if not options["rw"] or options.has_key("context") or options.has_key("bind"):
+			if not options["rw"] or "context" in options or "bind" in options:
 				continue
 			fs_matches.append(fields[1])
 
@@ -171,7 +171,7 @@ def relabel_textrel_shlib(verbose):
 			if verbose:
 				print("Relabeling "+filename+" to "+textrel_type+".")
 			ctx[2] = textrel_type
-			if selinux.setfilecon(filename,join(ctx,":")) < 0:
+			if selinux.setfilecon(filename,string.join(ctx,":")) < 0:
 				print("Failed to relabel "+filename)
 		elif ctx[2] == textrel_type:
 			if verbose:
@@ -231,7 +231,7 @@ def relabel_packages(packages,reset,verbose):
 		cmdline.append("-vv")
 
 	# do the relabeling
-	childin = os.popen(join(cmdline),'w')
+	childin = os.popen(string.join(cmdline),'w')
 
 	for i in pkglist:
 		print("Relabeling: "+i.get_cpv())
