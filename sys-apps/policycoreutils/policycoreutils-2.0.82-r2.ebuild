@@ -20,7 +20,8 @@ IUSE=""
 DESCRIPTION="SELinux core utilities"
 HOMEPAGE="http://userspace.selinuxproject.org"
 SRC_URI="http://userspace.selinuxproject.org/releases/20100525/devel/${P}.tar.gz
-	mirror://gentoo/policycoreutils-extra-${EXTRAS_VER}.tar.bz2"
+	mirror://gentoo/policycoreutils-extra-${EXTRAS_VER}.tar.bz2
+	mirror://gentoo/policycoreutils-2.0.82-python3.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -60,11 +61,11 @@ src_prepare() {
 	cp "${S}/po/sq.po" "${S}/po/id.po" || die "failed to copy ${S}/po/sq.po to id.po"
 	cp "${S}/po/sq.po" "${S}/po/et.po" || die "failed to copy ${S}/po/sq.po to et.po"
 	# "Fixed" scripts for python 3
-	cp "${FILESDIR}/seobject.py" "${S}/semanage/seobject.py" || die "failed to copy seobject.py"
-	cp "${FILESDIR}/semanage" "${S}/semanage/semanage" || die "failed to copy semanage"
-	cp "${FILESDIR}/chcat" "${S}/scripts/chcat" || die "failed to copy chcat"
-	cp "${FILESDIR}/audit2allow" "${S}/audit2allow/audit2allow" || die "failed to copy audit2allow"
-	cp "${FILESDIR}/rlpkg" "${S2}/scripts/rlpkg" || die "failed to copy rlpkg"
+	cp "${WORKDIR}/seobject.py" "${S}/semanage/seobject.py" || die "failed to copy seobject.py"
+	cp "${WORKDIR}/semanage" "${S}/semanage/semanage" || die "failed to copy semanage"
+	cp "${WORKDIR}/chcat" "${S}/scripts/chcat" || die "failed to copy chcat"
+	cp "${WORKDIR}/audit2allow" "${S}/audit2allow/audit2allow" || die "failed to copy audit2allow"
+	cp "${WORKDIR}/rlpkg" "${S2}/scripts/rlpkg" || die "failed to copy rlpkg"
 }
 
 src_compile() {
