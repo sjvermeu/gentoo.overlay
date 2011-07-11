@@ -10,8 +10,9 @@ inherit selinux-policy-2
 
 DESCRIPTION="SELinux policy for nginx web server application"
 
-KEYWORDS="amd64 x86"
-DEPEND="sec-policy/selinux-apache"
+KEYWORDS="~amd64 ~x86"
+DEPEND="sec-policy/selinux-base-policy
+		sec-policy/selinux-apache"
 RDEPEND="${DEPEND}"
 
 POLICY_PATCH="${FILESDIR}/fix-services-nginx-r1.patch"
