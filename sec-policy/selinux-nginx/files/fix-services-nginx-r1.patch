@@ -1,5 +1,5 @@
 --- services/nginx.te	1970-01-01 01:00:00.000000000 +0100
-+++ services/nginx.te	2011-06-13 22:03:04.055001402 +0200
++++ services/nginx.te	2011-07-11 14:48:44.940000470 +0200
 @@ -0,0 +1,149 @@
 +###############################################################################
 +# SELinux module for the NGINX Web Server
@@ -86,7 +86,7 @@
 +allow nginx_t self:fifo_file { read write };
 +allow nginx_t self:unix_stream_socket create_stream_socket_perms;
 +allow nginx_t self:tcp_socket { listen accept };
-+allow nginx_t self:capability { setuid net_bind_service setgid };
++allow nginx_t self:capability { setuid net_bind_service setgid chown };
 +
 +## Policy-owned type management rules
 +# log files
@@ -142,7 +142,7 @@
 +
 +#init_use_fds(nginx_t)
 +#init_use_script_ptys(nginx_t)
-+#jlibs_use_ld_so(nginx_t)
++#libs_use_ld_so(nginx_t)
 +#libs_use_shared_libs(nginx_t)
 +
 +#allow nginx_t fs_t:filesystem associate;
