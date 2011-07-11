@@ -1,0 +1,66 @@
+--- services/puppet.te	2010-08-03 15:11:07.000000000 +0200
++++ services/puppet.te	2011-07-11 14:05:31.619000405 +0200
+@@ -78,6 +78,7 @@
+ 
+ kernel_dontaudit_search_sysctl(puppet_t)
+ kernel_dontaudit_search_kernel_sysctl(puppet_t)
++kernel_read_network_state(puppet_t)
+ kernel_read_system_state(puppet_t)
+ kernel_read_crypto_sysctls(puppet_t)
+ 
+@@ -115,6 +116,8 @@
+ term_dontaudit_getattr_unallocated_ttys(puppet_t)
+ term_dontaudit_getattr_all_ttys(puppet_t)
+ 
++## system modules
++
+ init_all_labeled_script_domtrans(puppet_t)
+ init_domtrans_script(puppet_t)
+ init_read_utmp(puppet_t)
+@@ -125,12 +128,19 @@
+ miscfiles_read_hwdata(puppet_t)
+ miscfiles_read_localization(puppet_t)
+ 
++mount_domtrans(puppet_t)
++
+ seutil_domtrans_setfiles(puppet_t)
+ seutil_domtrans_semanage(puppet_t)
+ 
+ sysnet_dns_name_resolve(puppet_t)
+ sysnet_run_ifconfig(puppet_t, system_r)
+ 
++## Other modules
++
++
++usermanage_domtrans_passwd(puppet_t)
++
+ tunable_policy(`puppet_manage_all_files',`
+ 	auth_manage_all_files_except_shadow(puppet_t)
+ ')
+@@ -144,6 +154,14 @@
+ ')
+ 
+ optional_policy(`
++	mta_sendmail_domtrans(puppet_t)
++')
++
++optional_policy(`
++	portage_domtrans(puppet_t)
++')
++
++optional_policy(`
+ 	files_rw_var_files(puppet_t)
+ 
+ 	rpm_domtrans(puppet_t)
+--- services/puppet.fc	2010-08-03 15:11:07.000000000 +0200
++++ services/puppet.fc	2011-07-11 14:06:20.907000356 +0200
+@@ -3,7 +3,9 @@
+ /etc/rc\.d/init\.d/puppet	--	gen_context(system_u:object_r:puppet_initrc_exec_t,s0)
+ /etc/rc\.d/init\.d/puppetmaster --	gen_context(system_u:object_r:puppetmaster_initrc_exec_t,s0)
+ 
++/usr/bin/puppetd		--	gen_context(system_u:object_r:puppet_exec_t,s0)
+ /usr/sbin/puppetd		--	gen_context(system_u:object_r:puppet_exec_t,s0)
++/usr/bin/puppetmasterd		--	gen_context(system_u:object_r:puppetmaster_exec_t,s0)
+ /usr/sbin/puppetmasterd		--	gen_context(system_u:object_r:puppetmaster_exec_t,s0)
+ 
+ /var/lib/puppet(/.*)?			gen_context(system_u:object_r:puppet_var_lib_t,s0)
