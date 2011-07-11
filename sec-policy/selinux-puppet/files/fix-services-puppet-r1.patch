@@ -1,15 +1,16 @@
 --- services/puppet.te	2010-08-03 15:11:07.000000000 +0200
-+++ services/puppet.te	2011-07-11 21:54:33.061001199 +0200
-@@ -17,6 +17,8 @@
++++ services/puppet.te	2011-07-11 22:08:41.993001224 +0200
+@@ -17,6 +17,9 @@
  type puppet_exec_t;
  init_daemon_domain(puppet_t, puppet_exec_t)
  
 +type puppet_initrc_notrans_t;
++role system_r types puppet_initrc_notrans_t;
 +
  type puppet_etc_t;
  files_config_file(puppet_etc_t)
  
-@@ -77,7 +79,9 @@
+@@ -77,7 +80,9 @@
  files_tmp_filetrans(puppet_t, puppet_tmp_t, { file dir })
  
  kernel_dontaudit_search_sysctl(puppet_t)
@@ -20,7 +21,7 @@
  kernel_read_system_state(puppet_t)
  kernel_read_crypto_sysctls(puppet_t)
  
-@@ -115,6 +119,9 @@
+@@ -115,6 +120,9 @@
  term_dontaudit_getattr_unallocated_ttys(puppet_t)
  term_dontaudit_getattr_all_ttys(puppet_t)
  
@@ -30,7 +31,7 @@
  init_all_labeled_script_domtrans(puppet_t)
  init_domtrans_script(puppet_t)
  init_read_utmp(puppet_t)
-@@ -125,12 +132,26 @@
+@@ -125,12 +133,26 @@
  miscfiles_read_hwdata(puppet_t)
  miscfiles_read_localization(puppet_t)
  
@@ -57,7 +58,7 @@
  tunable_policy(`puppet_manage_all_files',`
  	auth_manage_all_files_except_shadow(puppet_t)
  ')
-@@ -144,6 +165,16 @@
+@@ -144,6 +166,16 @@
  ')
  
  optional_policy(`
