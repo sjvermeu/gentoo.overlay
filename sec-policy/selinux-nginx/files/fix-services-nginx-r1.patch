@@ -1,6 +1,6 @@
 --- services/nginx.te	1970-01-01 01:00:00.000000000 +0100
-+++ services/nginx.te	2011-07-11 15:07:42.716000501 +0200
-@@ -0,0 +1,210 @@
++++ services/nginx.te	2011-07-11 15:27:31.443000535 +0200
+@@ -0,0 +1,214 @@
 +###############################################################################
 +# SELinux module for the NGINX Web Server
 +#
@@ -192,16 +192,20 @@
 +	apache_read_sys_content(nginx_t)
 +')
 +
++# We enable both binding and connecting, since nginx acts here as a reverse proxy
 +tunable_policy(`nginx_enable_imap_server',`
 +	corenet_tcp_bind_pop_port(nginx_t)
++	corenet_tcp_connect_pop_port(nginx_t)
 +')
 +
 +tunable_policy(`nginx_enable_pop3_server',`
 +	corenet_tcp_bind_pop_port(nginx_t)
++	corenet_tcp_connect_pop_port(nginx_t)
 +')
 +
 +tunable_policy(`nginx_enable_smtp_server',`
 +	corenet_tcp_bind_smtp_port(nginx_t)
++	corenet_tcp_connect_smtp_port(nginx_t)
 +')
 +
 +tunable_policy(`nginx_can_network_connect_http',`
