@@ -1,5 +1,5 @@
 --- services/nginx.te	1970-01-01 01:00:00.000000000 +0100
-+++ services/nginx.te	2011-07-11 15:05:19.337000497 +0200
++++ services/nginx.te	2011-07-11 15:07:42.716000501 +0200
 @@ -0,0 +1,210 @@
 +###############################################################################
 +# SELinux module for the NGINX Web Server
@@ -59,24 +59,24 @@
 +
 +## <desc>
 +## <p>
-+## Allow nginx to serve HTTP content (act as an http server)
++## Allow nginx to act as an imap proxy server)
 +## </p>
 +## </desc>
-+gen_tunable(nginx_enable_http_server, false)
++gen_tunable(nginx_enable_imap_server, false)
 +
 +## <desc>
 +## <p>
-+## Allow nginx to serve HTTP content (act as an http server)
++## Allow nginx to act as a pop3 server)
 +## </p>
 +## </desc>
-+gen_tunable(nginx_enable_http_server, false)
++gen_tunable(nginx_enable_pop3_server, false)
 +
 +## <desc>
 +## <p>
-+## Allow nginx to serve HTTP content (act as an http server)
++## Allow nginx to act as an smtp server)
 +## </p>
 +## </desc>
-+gen_tunable(nginx_enable_http_server, false)
++gen_tunable(nginx_enable_smtp_server, false)
 +
 +## <desc>
 +## <p>
@@ -196,7 +196,7 @@
 +	corenet_tcp_bind_pop_port(nginx_t)
 +')
 +
-+tunable_policy(`nginx_enable_pop_server',`
++tunable_policy(`nginx_enable_pop3_server',`
 +	corenet_tcp_bind_pop_port(nginx_t)
 +')
 +
