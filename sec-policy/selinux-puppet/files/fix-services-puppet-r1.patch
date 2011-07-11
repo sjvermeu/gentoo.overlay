@@ -1,5 +1,5 @@
 --- services/puppet.te	2010-08-03 15:11:07.000000000 +0200
-+++ services/puppet.te	2011-07-11 15:44:38.631000565 +0200
++++ services/puppet.te	2011-07-11 16:08:15.738000605 +0200
 @@ -78,6 +78,7 @@
  
  kernel_dontaudit_search_sysctl(puppet_t)
@@ -41,7 +41,7 @@
  ')
  
  optional_policy(`
-+	sendmail_domtrans(puppet_t)
++	mta_send_mail(puppet_t)
 +')
 +
 +optional_policy(`
