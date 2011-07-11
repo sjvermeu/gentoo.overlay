@@ -1,5 +1,5 @@
 --- services/puppet.te	2010-08-03 15:11:07.000000000 +0200
-+++ services/puppet.te	2011-07-11 22:08:41.993001224 +0200
++++ services/puppet.te	2011-07-11 22:40:28.700001278 +0200
 @@ -17,6 +17,9 @@
  type puppet_exec_t;
  init_daemon_domain(puppet_t, puppet_exec_t)
@@ -50,7 +50,7 @@
 +
 +tunable_policy(`gentoo_try_dontaudit',`
 +	dontaudit puppet_t self:capability dac_read_search;
-+
++	kernel_dontaudit_read_system_state(puppet_initrc_notrans_t)
 +	userdom_dontaudit_use_user_terminals(puppet_t)
 +')
 +
