@@ -1,23 +1,28 @@
 --- services/puppet.te	2010-08-03 15:11:07.000000000 +0200
-+++ services/puppet.te	2011-07-11 16:08:15.738000605 +0200
-@@ -78,6 +78,7 @@
++++ services/puppet.te	2011-07-11 16:21:30.468000629 +0200
+@@ -77,7 +77,9 @@
+ files_tmp_filetrans(puppet_t, puppet_tmp_t, { file dir })
  
  kernel_dontaudit_search_sysctl(puppet_t)
- kernel_dontaudit_search_kernel_sysctl(puppet_t)
+-kernel_dontaudit_search_kernel_sysctl(puppet_t)
++#kernel_dontaudit_search_kernel_sysctl(puppet_t)
++kernel_read_kernel_sysctls(puppet_t)
 +kernel_read_network_state(puppet_t)
  kernel_read_system_state(puppet_t)
  kernel_read_crypto_sysctls(puppet_t)
  
-@@ -115,6 +116,8 @@
+@@ -115,6 +117,10 @@
  term_dontaudit_getattr_unallocated_ttys(puppet_t)
  term_dontaudit_getattr_all_ttys(puppet_t)
  
++userdom_dontaudit_use_user_terminals(puppet_t)
++
 +## system modules
 +
  init_all_labeled_script_domtrans(puppet_t)
  init_domtrans_script(puppet_t)
  init_read_utmp(puppet_t)
-@@ -125,12 +128,19 @@
+@@ -125,12 +131,19 @@
  miscfiles_read_hwdata(puppet_t)
  miscfiles_read_localization(puppet_t)
  
@@ -37,7 +42,7 @@
  tunable_policy(`puppet_manage_all_files',`
  	auth_manage_all_files_except_shadow(puppet_t)
  ')
-@@ -144,6 +154,14 @@
+@@ -144,6 +157,15 @@
  ')
  
  optional_policy(`
@@ -45,6 +50,7 @@
 +')
 +
 +optional_policy(`
++	gentoo_init_initrc_exec_notrans(puppet, system_r, puppet_t)
 +	portage_domtrans(puppet_t)
 +')
 +
