@@ -2,10 +2,11 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-libs/libsemanage/libsemanage-2.0.45.ebuild,v 1.7 2011/06/30 10:40:52 blueness Exp $
 
-EAPI="2"
-PYTHON_DEPEND="python? 2"
+EAPI="3"
+# Support for 4 depends on python.eclass
+PYTHON_DEPEND="python? *"
 SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="3.* *-jython"
+RESTRICT_PYTHON_ABIS="*-jython"
 
 inherit multilib python toolchain-funcs
 
@@ -69,9 +70,10 @@ src_compile() {
 	if use python; then
 		python_copy_sources src
 		building() {
-			emake CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" pywrap
+			emake CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" "$@"
 		}
-		python_execute_function -s --source-dir src building
+		python_execute_function -s --source-dir src building -- swigify
+		python_execute_function -s --source-dir src building -- pywrap
 	fi
 
 	if use ruby; then
