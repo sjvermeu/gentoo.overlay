@@ -2,11 +2,11 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-apps/policycoreutils/policycoreutils-2.0.82.ebuild,v 1.4 2011/06/16 01:33:17 blueness Exp $
 
-EAPI="2"
-PYTHON_DEPEND="2"
+EAPI="3"
+PYTHON_DEPEND="*"
 PYTHON_USE_WITH="xml"
 SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="3.* *-jython"
+RESTRICT_PYTHON_ABIS="*-jython"
 
 inherit multilib python toolchain-funcs
 
@@ -58,10 +58,14 @@ src_prepare() {
 }
 
 src_compile() {
-	einfo "Compiling policycoreutils"
-	emake -C "${S}" AUDIT_LOG_PRIV="y" CC="$(tc-getCC)" || die
-	einfo "Compiling policycoreutils-extra"
-	emake -C "${S2}" CC="$(tc-getCC)" || die
+	python_copy_sources semanage
+	building() {
+		einfo "Compiling policycoreutils"
+		emake -C "${S}" AUDIT_LOG_PRIVS="y" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" || die
+		einfo "Compiling policycoreutils-extra"
+		emake -C "${S2}" AUDIT_LOG_PRIVS="y" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" || die
+	}
+	python_execute_function -s --source-dir semanage building
 }
 
 src_install() {
