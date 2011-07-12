@@ -56,6 +56,12 @@ src_prepare() {
 	# rename in future to sesandbox?
 	sed -i -e 's/sandbox //' "${S}/Makefile" \
 		|| die "failed removing sandbox"
+	# Fixed scripts for Python 3 support
+	cp "${WORKDIR}/seobject.py" "${S}/semanage/seobject.py" || die "failed to copy seobject.py"
+	cp "${WORKDIR}/semanage" "${S}/semanage/semanage" || die "failed to copy semanage"
+	cp "${WORKDIR}/chcat" "${S}/scripts/chcat" || die "failed to copy chcat"
+	cp "${WORKDIR}/audit2allow" "${S}/audit2allow/audit2allow" || die "failed to copy audit2allow"
+	cp "${WORKDIR}/rlpkg" "${S2}/scripts/rlpkg" || die "failed to copy rlpkg"
 }
 
 src_compile() {
