@@ -20,7 +20,8 @@ IUSE=""
 DESCRIPTION="SELinux core utilities"
 HOMEPAGE="http://userspace.selinuxproject.org"
 SRC_URI="http://userspace.selinuxproject.org/releases/20101221/devel/${P}.tar.gz
-	mirror://gentoo/policycoreutils-extra-${EXTRAS_VER}.tar.bz2"
+	mirror://gentoo/policycoreutils-extra-${EXTRAS_VER}.tar.bz2
+	http://git.overlays.gentoo.org/gitweb/?p=proj/hardened-dev.git;a=blob_plain;f=sys-apps/policycoreutils/files/policycoreutils-2.0.85-python3.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
