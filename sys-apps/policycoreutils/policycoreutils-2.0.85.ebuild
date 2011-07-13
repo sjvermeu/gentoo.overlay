@@ -52,10 +52,6 @@ src_prepare() {
 		|| die "fixfiles sed 1 failed"
 	sed -i -e '/fixfiles/d' "${S}/scripts/Makefile" \
 		|| die "fixfiles sed 2 failed"
-	# removing sandbox for the time being, need to
-	# rename in future to sesandbox?
-	sed -i -e 's/sandbox //' "${S}/Makefile" \
-		|| die "failed removing sandbox"
 	# Overwrite gl.po, id.po and et.po with valid PO file
 	cp "${S}/po/sq.po" "${S}/po/gl.po" || die "failed to copy ${S}/po/sq.po to gl.po"
 	cp "${S}/po/sq.po" "${S}/po/id.po" || die "failed to copy ${S}/po/sq.po to id.po"
