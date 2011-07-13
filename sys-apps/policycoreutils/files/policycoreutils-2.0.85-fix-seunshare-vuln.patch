@@ -1,6 +1,6 @@
 diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85/sandbox/seunshare.c
 --- policycoreutils-2.0.85.orig/sandbox/seunshare.c	2011-07-13 18:35:00.498002303 +0200
-+++ policycoreutils-2.0.85/sandbox/seunshare.c	2011-07-13 21:19:07.445002585 +0200
++++ policycoreutils-2.0.85/sandbox/seunshare.c	2011-07-13 21:29:24.277002602 +0200
 @@ -1,10 +1,17 @@
 +/*
 + * Authors: Dan Walsh <dwalsh@redhat.com>
@@ -55,7 +55,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85
 + * This function will drop all capabilities
   */
 -static int drop_capabilities(uid_t uid)
-+static int drop_caps(uid_t uid)
++static int drop_caps()
  {
 -	capng_clear(CAPNG_SELECT_BOTH);
 -
@@ -106,9 +106,9 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85
 +		return -1;
 +	}
 +
-+	return 0;
-+}
-+
+ 	return 0;
+ }
+ 
 +#define status_to_retval(status,retval) do { \
 +	if ((status) == -1) \
 +		retval = -1; \
@@ -152,9 +152,13 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85
 +	return status;
 +}
 +
-+/**
+ /**
+- * This function makes sure the mounted directory is owned by the user executing
+- * seunshare.
+- * If so, it returns 0. If it can not figure this out or they are different, it returns -1.
 + * Check file/directory ownership, struct stat * must be passed to the functions.
-+ */
+  */
+-static int verify_mount(const char *mntdir, struct passwd *pwd) {
 +static int check_owner_uid(uid_t uid, const char *file, struct stat *st) {
 +	if (S_ISLNK(st->st_mode)) {
 +		fprintf(stderr, _("Error: %s must not be a symbolic link\n"), file);
@@ -176,23 +180,19 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85
 +		fprintf(stderr, _("Error: %s not owned by GID %d\n"), file, gid);
 +		return -1;
 +	}
- 	return 0;
- }
- 
++	return 0;
++}
++
 +#define equal_stats(one,two) \
 +	((one)->st_dev == (two)->st_dev && (one)->st_ino == (two)->st_ino && \
 +	 (one)->st_uid == (two)->st_uid && (one)->st_gid == (two)->st_gid && \
 +	 (one)->st_mode == (two)->st_mode)
 +
- /**
-- * This function makes sure the mounted directory is owned by the user executing
-- * seunshare.
-- * If so, it returns 0. If it can not figure this out or they are different, it returns -1.
++/**
 + * Sanity check specified directory. Store stat info for future comparison, or compare
 + * with previously saved info to detect replaced directories.
 + * Note: this function does not perform owner checks.
-  */
--static int verify_mount(const char *mntdir, struct passwd *pwd) {
++ */
 +static int verify_directory(const char *dir, struct stat *st_in, struct stat *st_out) {
  	struct stat sb;
 -	if (stat(mntdir, &sb) == -1) {
@@ -226,7 +226,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85
  			break;
  		}
  	}
-@@ -131,45 +247,387 @@
+@@ -131,45 +247,388 @@
  	return rc;
  }
  
@@ -284,7 +284,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85
 +			fprintf(stderr, _("Failed to make /var/tmp private: %s\n"), strerror(errno));
 +			return -1;
 +		}
-+		if (mount("/tmp", "/var/tmp", NULL, MS_BIND | flagsd, NULL) < 0) {
++		if (mount("/tmp", "/var/tmp", NULL, MS_BIND | flags, NULL) < 0) {
 +			fprintf(stderr, _("Failed to mount /tmp on /var/tmp: %s\n"), strerror(errno));
 +			return -1;
 +		}
@@ -453,7 +453,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85
 +			goto err;
 +		}
 +
-+		/* ok to not reach this if there is an error */.
++		/* ok to not reach this if there is an error */
 +		setfsuid(0);
 +	}
 +
@@ -483,7 +483,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85
 +		fprintf(stderr, _("Failed to stat directory %s: %s\n"), tmpdir, strerror(errno));
 +		goto err;
 +	}
-+	if (!equal_stats(out_tmp, &tmp_st)) {
++	if (!equal_stats(out_st, &tmp_st)) {
 +		fprintf(stderr, _("Error: %s was replaced by a different directory\n"), tmpdir);
 +		goto err;
 +	}
@@ -536,6 +536,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85
 +	return tmpdir;
 +}
 +
++#define DEFAULT_PATH "/usr/bin:/bin"
 +#define USAGE_STRING _("USAGE: seunshare [ -v ] -C -t tmpdir -h homedir [-Z context] -- executable [args]")
 +#define PROC_BASE "/proc"
 +
@@ -626,7 +627,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85
  		{NULL, 0, 0, 0}
  	};
  
-@@ -187,34 +645,33 @@
+@@ -187,34 +646,33 @@
  	}
  
  	if (verify_shell(pwd->pw_shell) < 0) {
@@ -675,7 +676,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85
  			break;
  		default:
  			fprintf(stderr, "%s\n", USAGE_STRING);
-@@ -223,74 +680,80 @@
+@@ -223,74 +681,80 @@
  	}
  
  	if (! homedir_s && ! tmpdir_s) {
@@ -803,7 +804,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85
  		}
  
  		if (display) 
-@@ -300,22 +763,46 @@
+@@ -300,22 +764,46 @@
  		rc |= setenv("USER", pwd->pw_name, 1);
  		rc |= setenv("LOGNAME", pwd->pw_name, 1);
  		rc |= setenv("PATH", DEFAULT_PATH, 1);
