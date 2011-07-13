@@ -1,12 +1,3 @@
-diff -uNr policycoreutils-2.0.85.orig/Makefile policycoreutils-2.0.85/Makefile
---- policycoreutils-2.0.85.orig/Makefile	2011-07-13 18:35:00.493002303 +0200
-+++ policycoreutils-2.0.85/Makefile	2011-07-13 18:35:17.315002303 +0200
-@@ -1,4 +1,4 @@
--SUBDIRS = setfiles semanage load_policy newrole run_init sandbox secon audit2allow audit2why scripts sestatus semodule_package semodule semodule_link semodule_expand semodule_deps setsebool po
-+SUBDIRS = setfiles semanage load_policy newrole run_init sandbox secon audit2allow audit2why scripts sestatus semodule_package semodule semodule_link semodule_expand semodule_deps setsebool po sandbox
- 
- INOTIFYH = $(shell ls /usr/include/sys/inotify.h 2>/dev/null)
- 
 diff -uNr policycoreutils-2.0.85.orig/sandbox/Makefile policycoreutils-2.0.85/sandbox/Makefile
 --- policycoreutils-2.0.85.orig/sandbox/Makefile	2011-07-13 18:35:00.498002303 +0200
 +++ policycoreutils-2.0.85/sandbox/Makefile	2011-07-13 18:37:27.937002307 +0200
