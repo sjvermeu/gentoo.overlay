@@ -59,7 +59,7 @@ src_prepare() {
 	# - prepare support for switching name from "sandbox" to "sesandbox"
 	epatch "${FILESDIR}/policycoreutils-2.0.85-sesandbox.patch"
 	# - patch the sandbox and seunshare code to fix the vulnerability
-	epatch "${FILESDIR}/policycoreutils-2.0.85-fix-seunshare-vuln.patch
+	epatch "${FILESDIR}/policycoreutils-2.0.85-fix-seunshare-vuln.patch"
 	# But for now, disable building sandbox code
 	#sed -i -e 's/sandbox //' "${S}/Makefile" || die "failed removing sandbox"
 	# Overwrite gl.po, id.po and et.po with valid PO file
