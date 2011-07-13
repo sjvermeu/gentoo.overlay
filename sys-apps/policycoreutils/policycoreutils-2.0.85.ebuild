@@ -66,10 +66,12 @@ src_prepare() {
 	cp "${WORKDIR}/chcat" "${S}/scripts/chcat" || die "failed to copy chcat"
 	cp "${WORKDIR}/audit2allow" "${S}/audit2allow/audit2allow" || die "failed to copy audit2allow"
 	cp "${WORKDIR}/rlpkg" "${S2}/scripts/rlpkg" || die "failed to copy rlpkg"
+	# Patch seunshare and enable sandbox support
+	epatch "${FILESDIR}/policycoreutils-2.0.85-sesandbox.patch"
 }
 
 src_compile() {
-	python_copy_sources semanage
+	python_copy_sources semanage sesandbox
 	building() {
 		einfo "Compiling policycoreutils"
 		emake -C "${S}" AUDIT_LOG_PRIVS="y" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" || die
