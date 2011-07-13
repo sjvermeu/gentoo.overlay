@@ -1,6 +1,6 @@
 diff -uNr policycoreutils-2.0.85.orig/sandbox/sandbox policycoreutils-2.0.85/sandbox/sandbox
 --- policycoreutils-2.0.85.orig/sandbox/sandbox	2011-07-13 19:49:59.186002432 +0200
-+++ policycoreutils-2.0.85/sandbox/sandbox	2011-07-13 22:04:01.761002662 +0200
++++ policycoreutils-2.0.85/sandbox/sandbox	2011-07-13 22:06:40.482002666 +0200
 @@ -19,15 +19,16 @@
  # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  #
@@ -91,7 +91,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/sandbox policycoreutils-2.0.85/san
                    fd.write("""#! /bin/sh
  #TITLE: %s
  /usr/bin/test -r ~/.xmodmap && /usr/bin/xmodmap ~/.xmodmap
-@@ -230,10 +237,11 @@
+@@ -230,9 +237,9 @@
      def __parse_options(self):
          from optparse import OptionParser
          usage = _("""
@@ -99,14 +99,11 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/sandbox policycoreutils-2.0.85/san
 +sesandbox [-h] [-l level ] [-[X|M] [-H homedir] [-T tempdir]] [-I includefile ] [-W windowmanager ] [ -w windowsize ] [[-i file ] ...] [ -t type ] command
  
 -sesandbox [-h] [-[X|M] [-l level ] [-H homedir] [-T tempdir]] [-I includefile ] [-W windowmanager ] [[-i file ] ...] [ -t type ] -S
--""")
 +sesandbox [-h] [-l level ] [-[X|M] [-H homedir] [-T tempdir]] [-I includefile ] [-W windowmanager ] [ -w windowsize ] [[-i file ] ...] [ -t type ] -S
-+%s
-+""") % types
+ """)
          
          parser = OptionParser(version=self.VERSION, usage=usage)
-         parser.disable_interspersed_args()
-@@ -268,6 +276,10 @@
+@@ -268,6 +275,10 @@
                            action="callback", callback=self.__validdir,
                            help=_("alternate /tmp directory to use for mounting"))
  
@@ -117,7 +114,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/sandbox policycoreutils-2.0.85/san
          parser.add_option("-W", "--windowmanager", dest="wm",  
                            type="string",
                            default="/usr/bin/matchbox-window-manager -use_titlebar no",
-@@ -276,12 +288,18 @@
+@@ -276,12 +287,18 @@
          parser.add_option("-l", "--level", dest="level", 
                            help=_("MCS/MLS level for the sesandbox"))
  
@@ -136,7 +133,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/sandbox policycoreutils-2.0.85/san
          
          if self.__options.setype:
                 self.setype = self.__options.setype
-@@ -300,6 +318,10 @@
+@@ -300,6 +317,10 @@
                 self.__homedir = self.__options.homedir
                 self.__tmpdir = self.__options.tmpdir
          else:
@@ -147,7 +144,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/sandbox policycoreutils-2.0.85/san
                 if len(cmds) == 0:
                        self.usage(_("Command required"))
                 cmds[0] = fullpath(cmds[0])
-@@ -329,44 +351,45 @@
+@@ -329,44 +350,45 @@
      def __setup_dir(self):
             if self.__options.level or self.__options.session:
                    return
@@ -213,7 +210,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/sandbox policycoreutils-2.0.85/san
  
                    selinux.setexeccon(self.__execcon)
                    rc = subprocess.Popen(self.__cmds).wait()
-@@ -404,7 +427,7 @@
+@@ -404,7 +426,7 @@
             sandbox = Sandbox()
             rc = sandbox.main()
      except OSError, error:
