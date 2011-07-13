@@ -1,3 +1,238 @@
+diff -uNr policycoreutils-2.0.85.orig/sandbox/sandbox policycoreutils-2.0.85/sandbox/sandbox
+--- policycoreutils-2.0.85.orig/sandbox/sandbox	2011-07-13 19:49:59.186002432 +0200
++++ policycoreutils-2.0.85/sandbox/sandbox	2011-07-13 21:57:27.803002650 +0200
+@@ -19,15 +19,17 @@
+ # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ #
+ 
+-import os, sys, socket, random, fcntl, shutil, re, subprocess
++import os, stat, sys, socket, random, fcntl, shutil, re, subprocess
+ import selinux
+ import signal
+ from tempfile import mkdtemp
+ import pwd
++import commands
++import setools
+ 
+ PROGNAME = "policycoreutils"
+-HOMEDIR=pwd.getpwuid(os.getuid()).pw_dir
+-
++SEUNSHARE = "/usr/sbin/seunshare"
++SANDBOXSH = "/usr/share/sesandbox/sesandboxX.sh"
+ import gettext
+ gettext.bindtextdomain(PROGNAME, "/usr/share/locale")
+ gettext.textdomain(PROGNAME)
+@@ -41,6 +43,7 @@
+        import __builtin__
+        __builtin__.__dict__['_'] = unicode
+ 
++DEFAULT_WINDOWSIZE = "1000x700"
+ DEFAULT_TYPE = "sandbox_t"
+ DEFAULT_X_TYPE = "sandbox_x_t"
+ SAVE_FILES = {}
+@@ -63,15 +66,15 @@
+     sys.stderr.flush()
+     sys.exit(1)
+ 
+-def copyfile(file, dir, dest):
++def copyfile(file, srcdir, dest):
+        import re
+-       if file.startswith(dir):
++       if file.startswith(srcdir):
+               dname = os.path.dirname(file)
+               bname = os.path.basename(file)
+-              if dname == dir:
++              if dname == srcdir:
+                      dest = dest + "/" + bname
+               else:
+-                     newdir = re.sub(dir, dest, dname)
++                     newdir = re.sub(srcdir, dest, dname)
+                      if not os.path.exists(newdir):
+                             os.makedirs(newdir)
+                      dest = newdir + "/" + bname
+@@ -81,9 +84,10 @@
+                             shutil.copytree(file, dest)
+                      else:
+                             shutil.copy2(file, dest)
++
+               except shutil.Error, elist:
+-                     for e in elist:
+-                            sys.stderr.write(e[1])
++                     for e in elist.message:
++                            sys.stderr.write(e[2])
+                      
+               SAVE_FILES[file] = (dest, os.path.getmtime(dest))
+ 
+@@ -161,7 +165,7 @@
+                   if not self.__options.homedir or not self.__options.tmpdir:
+                          self.usage(_("Homedir and tempdir required for level mounts"))
+ 
+-           if not os.path.exists("/usr/sbin/seunshare"):
++           if not os.path.exists(SEUNSHARE):
+                   raise ValueError(_("""
+ /usr/sbin/seunshare is required for the action you want to perform.  
+ """))
+@@ -194,6 +198,8 @@
+                          self.__include(option, opt, i[:-1], parser)
+                   except IOError, e:
+                          sys.stderr.write(str(e))
++                  except TypeError, e:
++                         sys.stderr.write(str(e))
+            fd.close()
+ 
+     def __copyfiles(self):
+@@ -212,7 +218,9 @@
+ /etc/gdm/Xsession
+ """)
+            else:
+-                  command = " ".join(self.__paths)
++                  command = self.__paths[0] + " "
++                  for p in self.__paths[1:]:
++                         command += "'%s' " % p
+                   fd.write("""#! /bin/sh
+ #TITLE: %s
+ /usr/bin/test -r ~/.xmodmap && /usr/bin/xmodmap ~/.xmodmap
+@@ -229,11 +237,21 @@
+ 
+     def __parse_options(self):
+         from optparse import OptionParser
++        types = ""
++        try:
++               types = _("""
++Policy defines the following types for use with the -t:
++\t%s
++""") % "\n\t".join(setools.seinfo(setools.ATTRIBUTE, "sandbox_type"][0]['types'])
++        except RuntimeError:
++               pass
++
+         usage = _("""
+-sesandbox [-h] [-[X|M] [-l level ] [-H homedir] [-T tempdir]] [-I includefile ] [-W windowmanager ] [[-i file ] ...] [ -t type ] command
++sesandbox [-h] [-l level ] [-[X|M] [-H homedir] [-T tempdir]] [-I includefile ] [-W windowmanager ] [ -w windowsize ] [[-i file ] ...] [ -t type ] command
+ 
+-sesandbox [-h] [-[X|M] [-l level ] [-H homedir] [-T tempdir]] [-I includefile ] [-W windowmanager ] [[-i file ] ...] [ -t type ] -S
+-""")
++sesandbox [-h] [-l level ] [-[X|M] [-H homedir] [-T tempdir]] [-I includefile ] [-W windowmanager ] [ -w windowsize ] [[-i file ] ...] [ -t type ] -S
++%s
++""") % types
+         
+         parser = OptionParser(version=self.VERSION, usage=usage)
+         parser.disable_interspersed_args()
+@@ -268,6 +286,10 @@
+                           action="callback", callback=self.__validdir,
+                           help=_("alternate /tmp directory to use for mounting"))
+ 
++        parser.add_option("-w", "--windowsize", dest="windowsize",
++                          type="string", default=DEFAULT_WINDOWSIZE,
++                          help="size of the sandbox window")
++
+         parser.add_option("-W", "--windowmanager", dest="wm",  
+                           type="string",
+                           default="/usr/bin/matchbox-window-manager -use_titlebar no",
+@@ -276,12 +298,18 @@
+         parser.add_option("-l", "--level", dest="level", 
+                           help=_("MCS/MLS level for the sesandbox"))
+ 
++        parser.add_option("-C", "--capabilities",
++                          action="store_true", dest="usecaps", default=False,
++                          help="Allow apps requiring capabilities to run within the sandbox.")
++
++
+         self.__parser=parser
+ 
+         self.__options, cmds = parser.parse_args()
+ 
+         if self.__options.X_ind:
+                self.setype = DEFAULT_X_TYPE
++               self.dpi=commands.getoutput("xrdb -query | grep dpi | /bin/cut -f 2")
+         
+         if self.__options.setype:
+                self.setype = self.__options.setype
+@@ -300,6 +328,10 @@
+                self.__homedir = self.__options.homedir
+                self.__tmpdir = self.__options.tmpdir
+         else:
++               if self.__options.level:
++                      self.__homedir = self.__options.homedir
++                      self.__tmpdir = self.__options.tmpdir
++
+                if len(cmds) == 0:
+                       self.usage(_("Command required"))
+                cmds[0] = fullpath(cmds[0])
+@@ -329,44 +361,45 @@
+     def __setup_dir(self):
+            if self.__options.level or self.__options.session:
+                   return
+-           sandboxdir = HOMEDIR + "/.sesandbox"
+-           if not os.path.exists(sandboxdir):
+-                  os.mkdir(sandboxdir)
+ 
+            if self.__options.homedir:
+                   selinux.chcon(self.__options.homedir, self.__filecon, recursive=True)
+                   self.__homedir = self.__options.homedir
+            else:
+                   selinux.setfscreatecon(self.__filecon)
+-                  self.__homedir = mkdtemp(dir=sandboxdir, prefix=".sesandbox")
++                  self.__homedir = mkdtemp(dir="/tmp", prefix=".sesandbox_home_")
+ 
+            if self.__options.tmpdir:
+                   selinux.chcon(self.__options.tmpdir, self.__filecon, recursive=True)
+                   self.__tmpdir = self.__options.tmpdir
+            else:
+                   selinux.setfscreatecon(self.__filecon)
+-                  self.__tmpdir = mkdtemp(dir="/tmp", prefix=".sesandbox")
++                  self.__tmpdir = mkdtemp(dir="/tmp", prefix=".sesandbox_tmp_")
+            selinux.setfscreatecon(None)
+            self.__copyfiles()
+ 
+     def __execute(self):
+            try:
+-                  if self.__options.X_ind:
+-                         xmodmapfile = self.__homedir + "/.xmodmap"
+-                         xd = open(xmodmapfile,"w")
+-                         subprocess.Popen(["/usr/bin/xmodmap","-pke"],stdout=xd).wait()
+-                         xd.close()
+-
+-                         self.__setup_sandboxrc(self.__options.wm)
+-                         
+-                         cmds = [ '/usr/sbin/seunshare', "-t", self.__tmpdir, "-h", self.__homedir, "--", self.__execcon, "/usr/share/sesandbox/sesandboxX.sh" ]
+-                         rc = subprocess.Popen(cmds).wait()
+-                         return rc
+-
++                  cmds = [ SEUNSHARE, "-Z", self.__execcon ]
++                  if self.__options.usecaps:
++                         cmds.append('-C')
++                  if not self.__options.level:
++                         cmds.append('-k')
+                   if self.__mount:
+-                         cmds =  [ '/usr/sbin/seunshare', "-t", self.__tmpdir, "-h", self.__homedir, "--", self.__execcon ] + self.__paths
+-                         rc = subprocess.Popen(cmds).wait()
+-                         return rc
++                         cmds += [ "-t", self.__tmpdir, "-h", self.__homedir ]
++
++                         if self.__options.X_ind:
++                                xmodmapfile = self.__homedir + "/.xmodmap"
++                                xd = open(xmodmapfile,"w")
++                                subprocess.Popen(["/usr/bin/xmodmap","-pke"],stdout=xd).wait()
++                                xd.close()
++
++                                self.__setup_sandboxrc(self.__options.wm)
++
++                                cmds += [ "--", SANDBOXSH, self.__options.windowsize, self.dpi ]
++                         else:
++                                cmds += [ "--" ] + self.__paths
++                         return subprocess.Popen(cmds).wait()
+ 
+                   selinux.setexeccon(self.__execcon)
+                   rc = subprocess.Popen(self.__cmds).wait()
+@@ -404,7 +437,7 @@
+            sandbox = Sandbox()
+            rc = sandbox.main()
+     except OSError, error:
+-           error_exit(error.args[1])
++           error_exit(error)
+     except ValueError, error:
+            error_exit(error.args[0])
+     except KeyError, error:
 diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85/sandbox/seunshare.c
 --- policycoreutils-2.0.85.orig/sandbox/seunshare.c	2011-07-13 18:35:00.498002303 +0200
 +++ policycoreutils-2.0.85/sandbox/seunshare.c	2011-07-13 21:33:33.601002609 +0200
