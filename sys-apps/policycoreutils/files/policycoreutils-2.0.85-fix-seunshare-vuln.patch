@@ -1,6 +1,6 @@
 diff -uNr policycoreutils-2.0.85.orig/sandbox/sandbox policycoreutils-2.0.85/sandbox/sandbox
 --- policycoreutils-2.0.85.orig/sandbox/sandbox	2011-07-13 19:49:59.186002432 +0200
-+++ policycoreutils-2.0.85/sandbox/sandbox	2011-07-13 21:57:27.803002650 +0200
++++ policycoreutils-2.0.85/sandbox/sandbox	2011-07-13 21:59:37.439002654 +0200
 @@ -19,15 +19,17 @@
  # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  #
@@ -101,7 +101,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/sandbox policycoreutils-2.0.85/san
 +               types = _("""
 +Policy defines the following types for use with the -t:
 +\t%s
-+""") % "\n\t".join(setools.seinfo(setools.ATTRIBUTE, "sandbox_type"][0]['types'])
++""") % "\n\t".join(setools.seinfo(setools.ATTRIBUTE, "sandbox_type")[0]['types'])
 +        except RuntimeError:
 +               pass
 +
