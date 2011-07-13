@@ -63,7 +63,7 @@ src_prepare() {
 	#   http://pkgs.fedoraproject.org/gitweb/?p=policycoreutils.git;a=blob_plain;f=policycoreutils-rhat.patch;hb=HEAD)
 	epatch "${FILESDIR}/policycoreutils-2.0.85-fix-seunshare-vuln.patch"
 	# But for now, disable building sandbox code
-	sed -i -e 's/sandbox //' "${S}/Makefile" || die "failed removing sandbox"
+	#sed -i -e 's/sandbox //' "${S}/Makefile" || die "failed removing sandbox"
 	# Overwrite gl.po, id.po and et.po with valid PO file
 	cp "${S}/po/sq.po" "${S}/po/gl.po" || die "failed to copy ${S}/po/sq.po to gl.po"
 	cp "${S}/po/sq.po" "${S}/po/id.po" || die "failed to copy ${S}/po/sq.po to id.po"
