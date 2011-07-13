@@ -1,6 +1,6 @@
 diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85/sandbox/seunshare.c
 --- policycoreutils-2.0.85.orig/sandbox/seunshare.c	2011-07-13 18:35:00.498002303 +0200
-+++ policycoreutils-2.0.85/sandbox/seunshare.c	2011-07-13 21:29:24.277002602 +0200
++++ policycoreutils-2.0.85/sandbox/seunshare.c	2011-07-13 21:33:33.601002609 +0200
 @@ -1,10 +1,17 @@
 +/*
 + * Authors: Dan Walsh <dwalsh@redhat.com>
@@ -686,10 +686,11 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/seunshare.c policycoreutils-2.0.85
  		return -1;
  	}
  
- 	if (argc - optind < 2) {
+-	if (argc - optind < 2) {
 -		fprintf(stderr, _("Error: context and executable required \n"),
 -			"%s\n", USAGE_STRING);
-+		fprintf(stderr, _("Error: context and executable required \n %s\n"), USAGE_STRING);
++	if (argc - optind < 1) {
++		fprintf(stderr, _("Error: executable required \n %s\n"), USAGE_STRING);
  		return -1;
  	}
  
