@@ -1,7 +1,7 @@
 diff -uNr policycoreutils-2.0.85.orig/sandbox/Makefile policycoreutils-2.0.85/sandbox/Makefile
 --- policycoreutils-2.0.85.orig/sandbox/Makefile	2011-07-13 18:35:00.498002303 +0200
-+++ policycoreutils-2.0.85/sandbox/Makefile	2011-07-13 18:37:27.937002307 +0200
-@@ -6,28 +6,34 @@
++++ policycoreutils-2.0.85/sandbox/Makefile	2011-07-13 19:29:38.453002397 +0200
+@@ -6,28 +6,35 @@
  SBINDIR ?= $(PREFIX)/sbin
  MANDIR ?= $(PREFIX)/share/man
  LOCALEDIR ?= /usr/share/locale
@@ -15,6 +15,7 @@ diff -uNr policycoreutils-2.0.85.orig/sandbox/Makefile policycoreutils-2.0.85/sa
 +
 +sesandbox: sandbox
 +	cp sandbox sesandbox
++	cp sandbox.8 sesandbox.8
 +
 +sesandboxX.sh: sandboxX.sh
 +	cp sandboxX.sh sesandboxX.sh
