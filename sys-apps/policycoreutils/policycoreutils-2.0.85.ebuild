@@ -52,6 +52,16 @@ src_prepare() {
 		|| die "fixfiles sed 1 failed"
 	sed -i -e '/fixfiles/d' "${S}/scripts/Makefile" \
 		|| die "fixfiles sed 2 failed"
+	# We currently do not support MCS, so the sandbox code in policycoreutils
+	# is not usable yet. However, work for MCS is on the way and a reported
+	# vulnerability (bug #374897) might go by unnoticed if we ignore it now.
+	# As such, we will
+	# - prepare support for switching name from "sandbox" to "sesandbox"
+	epatch "${FILESDIR}/policycoreutils-2.0.85-sesandbox.patch"
+	# - patch the sandbox and seunshare code to fix the vulnerability
+	epatch "${FILESDIR}/policycoreutils-2.0.85-fix-seunshare-vuln.patch
+	# But for now, disable building sandbox code
+	#sed -i -e 's/sandbox //' "${S}/Makefile" || die "failed removing sandbox"
 	# Overwrite gl.po, id.po and et.po with valid PO file
 	cp "${S}/po/sq.po" "${S}/po/gl.po" || die "failed to copy ${S}/po/sq.po to gl.po"
 	cp "${S}/po/sq.po" "${S}/po/id.po" || die "failed to copy ${S}/po/sq.po to id.po"
@@ -62,8 +72,6 @@ src_prepare() {
 	cp "${WORKDIR}/chcat" "${S}/scripts/chcat" || die "failed to copy chcat"
 	cp "${WORKDIR}/audit2allow" "${S}/audit2allow/audit2allow" || die "failed to copy audit2allow"
 	cp "${WORKDIR}/rlpkg" "${S2}/scripts/rlpkg" || die "failed to copy rlpkg"
-	# Patch seunshare and enable sandbox support
-	epatch "${FILESDIR}/policycoreutils-2.0.85-sesandbox.patch"
 }
 
 src_compile() {
