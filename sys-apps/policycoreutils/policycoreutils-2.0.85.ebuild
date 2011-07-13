@@ -71,7 +71,7 @@ src_prepare() {
 }
 
 src_compile() {
-	python_copy_sources semanage sesandbox
+	python_copy_sources semanage sandbox
 	building() {
 		einfo "Compiling policycoreutils"
 		emake -C "${S}" AUDIT_LOG_PRIVS="y" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" || die
