@@ -10,5 +10,8 @@ inherit selinux-policy-2
 DESCRIPTION="SELinux policy for entropy-managing domains like audioentropyd, haveged, etc."
 
 KEYWORDS="~amd64 ~x86"
+RDEPEND="!<=sec-policy/selinux-haveged-2.20101213-r1
+	>=sys-apps/policycoreutils-1.30.30
+	>=sec-policy/selinux-base-policy-${PV}"
 
 POLICY_PATCH="${FILESDIR}/fix-services-audioentropy-r1.patch"
