@@ -10,9 +10,9 @@ inherit selinux-policy-2
 
 DESCRIPTION="SELinux policy for general applications"
 
-DEPEND=">=sec-policy/selinux-base-policy-2.20101213-r19"
+DEPEND=">=sec-policy/selinux-base-policy-2.20101213-r20"
 RDEPEND="${DEPEND}"
 
 KEYWORDS="~amd64 ~x86"
 
-POLICY_PATCH="${FILESDIR}/fix-services-puppet-r1.patch"
+POLICY_PATCH="${FILESDIR}/fix-services-puppet-r2.patch"
