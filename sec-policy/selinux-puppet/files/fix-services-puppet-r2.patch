@@ -1,5 +1,5 @@
 --- services/puppet.te	2010-08-03 15:11:07.000000000 +0200
-+++ services/puppet.te	2011-07-20 22:06:40.602005206 +0200
++++ services/puppet.te	2011-07-20 22:44:18.556005270 +0200
 @@ -17,6 +17,9 @@
  type puppet_exec_t;
  init_daemon_domain(puppet_t, puppet_exec_t)
@@ -58,7 +58,7 @@
  tunable_policy(`puppet_manage_all_files',`
  	auth_manage_all_files_except_shadow(puppet_t)
  ')
-@@ -144,6 +166,16 @@
+@@ -144,6 +166,15 @@
  ')
  
  optional_policy(`
@@ -66,9 +66,8 @@
 +')
 +
 +optional_policy(`
-+	#gentoo_init_initrc_notrans(puppet_initrc_notrans_t, puppet_t)
++	init_rc_exec(puppet_t)
 +	portage_domtrans(puppet_t)
-+	#puppet_rw_tmp(puppet_initrc_notrans_t)
 +')
 +
 +optional_policy(`
