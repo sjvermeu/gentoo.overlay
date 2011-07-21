@@ -1,5 +1,5 @@
 --- services/puppet.te	2010-08-03 15:11:07.000000000 +0200
-+++ services/puppet.te	2011-07-20 23:00:25.186005298 +0200
++++ services/puppet.te	2011-07-21 11:15:55.552000371 +0200
 @@ -17,6 +17,9 @@
  type puppet_exec_t;
  init_daemon_domain(puppet_t, puppet_exec_t)
@@ -75,7 +75,7 @@
 +')
 +
 +optional_policy(`
-+	init_rc_exec(puppet_t)
++	gentoo_init_rc_exec(puppet_t)
 +	portage_domtrans(puppet_t)
 +')
 +
@@ -84,7 +84,7 @@
  
  	rpm_domtrans(puppet_t)
 --- services/puppet.fc	2010-08-03 15:11:07.000000000 +0200
-+++ services/puppet.fc	2011-07-11 14:06:20.907000356 +0200
++++ services/puppet.fc	2011-07-21 10:08:43.240000256 +0200
 @@ -3,7 +3,9 @@
  /etc/rc\.d/init\.d/puppet	--	gen_context(system_u:object_r:puppet_initrc_exec_t,s0)
  /etc/rc\.d/init\.d/puppetmaster --	gen_context(system_u:object_r:puppetmaster_initrc_exec_t,s0)
