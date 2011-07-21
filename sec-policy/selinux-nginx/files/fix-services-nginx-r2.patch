@@ -196,7 +196,7 @@
 +	corenet_tcp_connect_all_ports(nginx_t)
 +')
 --- services/nginx.fc	1970-01-01 01:00:00.000000000 +0100
-+++ services/nginx.fc	2011-07-21 14:13:12.188000676 +0200
++++ services/nginx.fc	2011-07-21 14:21:43.956000690 +0200
 @@ -0,0 +1,63 @@
 +###############################################################################
 +# SELinux module for the NGINX Web Server
@@ -259,5 +259,5 @@
 +#
 +# /var
 +#
-+/var/log/nginx(/.*)?				gen_context(system_u:object_r:nginx_var_log_t,s0)
++/var/log/nginx(/.*)?				gen_context(system_u:object_r:nginx_log_t,s0)
 +/var/tmp/nginx(/.*)?				gen_context(system_u:object_r:nginx_tmp_t,s0)
