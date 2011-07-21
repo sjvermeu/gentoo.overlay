@@ -29,7 +29,6 @@ S=${WORKDIR}/
 
 src_unpack() {
 	[ -z "${POLICY_TYPES}" ] && local POLICY_TYPES="targeted strict mls mcs"
-	MOD_CONF_VER="20090730"
 
 	unpack ${A}
 
@@ -57,9 +56,13 @@ src_unpack() {
 		make conf || die "Make conf in ${i} failed"
 
 		# Define what we see as "base" and what we want to remain modular
-		cp "${FILESDIR}/modules.conf.${i}.${MOD_CONF_VER}" \
+		cp "${FILESDIR}/modules.conf" \
 			"${S}/${i}/policy/modules.conf" \
 			|| die "failed to set up modules.conf"
+		if [[ "${i}" == "targeted" ]];
+		then
+			echo "unconfined = base" >> "${S}/${i}/policy/modules.conf"
+		fi
 		sed -i -e '/^QUIET/s/n/y/' -e '/^MONOLITHIC/s/y/n/' \
 			-e "/^NAME/s/refpolicy/$i/" "${S}/${i}/build.conf" \
 			|| die "build.conf setup failed."
