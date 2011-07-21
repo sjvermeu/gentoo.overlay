@@ -15,4 +15,4 @@ DEPEND="sec-policy/selinux-base-policy
 		sec-policy/selinux-apache"
 RDEPEND="${DEPEND}"
 
-POLICY_PATCH="${FILESDIR}/fix-services-nginx-r1.patch"
+POLICY_PATCH="${FILESDIR}/fix-services-nginx-r2.patch"
