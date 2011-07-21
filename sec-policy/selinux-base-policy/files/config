@@ -9,7 +9,7 @@ SELINUX=permissive
 # SELINUXTYPE can take one of these four values:
 #	targeted - Only targeted network daemons are protected.
 #	strict   - Full SELinux protection.
-#	mls      - Full SELinux protection with Multi-Layered Security
+#	mls      - Full SELinux protection with Multi-Level Security
 #	mcs      - Full SELinux protection with Multi-Category Security 
 #	           (mls, but only one sensitivity level)
 SELINUXTYPE=strict
