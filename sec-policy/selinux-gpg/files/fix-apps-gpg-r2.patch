@@ -1,17 +1,18 @@
 --- apps/gpg.te	2010-12-13 15:11:01.000000000 +0100
-+++ apps/gpg.te	2011-07-22 15:40:20.357000764 +0200
-@@ -147,6 +147,10 @@
++++ apps/gpg.te	2011-07-22 16:43:36.926000872 +0200
+@@ -147,6 +147,11 @@
  ')
  
  optional_policy(`
 +	gentoo_portage_search_conf(gpg_t)
++	gentoo_portage_read_tmp_files(gpg_t)
 +')
 +
 +optional_policy(`
  	xserver_use_xdm_fds(gpg_t)
  	xserver_rw_xdm_pipes(gpg_t)
  ')
-@@ -347,6 +351,10 @@
+@@ -347,6 +352,10 @@
  ')
  
  optional_policy(`
