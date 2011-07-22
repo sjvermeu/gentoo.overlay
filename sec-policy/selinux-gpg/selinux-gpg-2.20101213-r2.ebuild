@@ -10,5 +10,8 @@ inherit selinux-policy-2
 DESCRIPTION="SELinux policy for GNU privacy guard"
 
 KEYWORDS="amd64 x86"
+RDEPEND="!<=sec-policy/selinux-gnupg-2.20101213-r1
+	>=sys-apps/policycoreutils-1.30.30
+	>=sec-policy/selinux-base-policy-${PV}"
 
 POLICY_PATCH="${FILESDIR}/fix-apps-gpg-r2.patch"
