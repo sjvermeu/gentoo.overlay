@@ -38,6 +38,10 @@ src_unpack() {
 	# Fix bug 257111
 	sed -i -e 's:system_crond_t:system_cronjob_t:g' \
 		"${S}/refpolicy/config/appconfig-standard/default_contexts"
+	sed -i -e 's|system_r:cronjob_t|system_r:system_cronjob_t|g' \
+		"${S}/refpolicy/config/appconfig-mls/default_contexts"
+	sed -i -e 's|system_r:cronjob_t|system_r:system_cronjob_t|g' \
+		"${S}/refpolicy/config/appconfig-mcs/default_contexts"
 
 	if ! use peer_perms; then
 		sed -i -e '/network_peer_controls/d' \
