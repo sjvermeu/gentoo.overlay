@@ -10,7 +10,7 @@ inherit selinux-policy-2
 
 DESCRIPTION="SELinux policy for general applications"
 
-KEYWORDS="amd64 x86"
+KEYWORDS="~amd64 ~x86"
 
 POLICY_PATCH="${FILESDIR}/fix-apps-skype-r3.patch"
 RDEPEND=">=sec-policy/selinux-base-policy-2.20101213-r20"

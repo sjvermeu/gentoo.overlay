@@ -1,6 +1,6 @@
 --- apps/skype.te	1970-01-01 01:00:00.000000000 +0100
-+++ apps/skype.te	2011-07-24 16:37:30.333000653 +0200
-@@ -0,0 +1,109 @@
++++ apps/skype.te	2011-07-24 17:24:40.996000734 +0200
+@@ -0,0 +1,111 @@
 +policy_module(skype, 0.0.2)
 +
 +############################
@@ -23,7 +23,7 @@
 +# Policy
 +#
 +
-+allow skype_t self:process { getsched setsched execmem };
++allow skype_t self:process { getsched setsched execmem signal };
 +allow skype_t self:fifo_file rw_fifo_file_perms;
 +allow skype_t self:unix_stream_socket create_socket_perms;
 +allow skype_t self:sem create_sem_perms;
@@ -49,6 +49,7 @@
 +
 +## Kernel layer calls
 +#
++kernel_dontaudit_search_sysctl(skype_t)
 +kernel_read_system_state(skype_t)
 +
 +corecmd_exec_bin(skype_t)
@@ -56,19 +57,22 @@
 +
 +corenet_all_recvfrom_netlabel(skype_t)
 +corenet_all_recvfrom_unlabeled(skype_t)
++corenet_sendrecv_http_client_packets(skype_t)
 +corenet_tcp_bind_generic_node(skype_t)
-+corenet_udp_bind_generic_node(skype_t)
 +corenet_tcp_bind_generic_port(skype_t) 
-+corenet_udp_bind_generic_port(skype_t) 
 +corenet_tcp_connect_generic_port(skype_t)
 +corenet_tcp_connect_http_port(skype_t)
 +corenet_tcp_sendrecv_http_port(skype_t)
-+corenet_sendrecv_http_client_packets(skype_t)
++corenet_udp_bind_generic_node(skype_t)
++corenet_udp_bind_generic_port(skype_t) 
 +
 +dev_read_sound(skype_t)
 +dev_read_video_dev(skype_t)
 +dev_write_sound(skype_t)
 +dev_write_video_dev(skype_t)
++
++# Needed to debug skype (start through commandline)
++domain_use_interactive_fds(skype_t)
 +
 +files_read_etc_files(skype_t)
 +files_read_usr_files(skype_t)
@@ -76,8 +80,6 @@
 +## System layer calls
 +#
 +auth_use_nsswitch(skype_t)
-+domain_use_interactive_fds(skype_t)
-+libs_use_ld_so(skype_t)
 +miscfiles_dontaudit_setattr_fonts_dirs(skype_t)
 +miscfiles_read_localization(skype_t)
 +userdom_manage_user_home_content_dirs(skype_t)
@@ -88,7 +90,7 @@
 +
 +## Other calls
 +#
-+#xserver_user_x_domain_template(skype, skype_t, skype_tmpfs_t)
++xserver_user_x_domain_template(skype, skype_t, skype_tmpfs_t)
 +
 +tunable_policy(`gentoo_try_dontaudit',`
 +	dev_dontaudit_search_sysfs(skype_t)
