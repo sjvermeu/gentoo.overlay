@@ -1,6 +1,6 @@
 --- apps/pan.te	1970-01-01 01:00:00.000000000 +0100
-+++ apps/pan.te	2011-07-24 17:52:40.440000782 +0200
-@@ -0,0 +1,86 @@
++++ apps/pan.te	2011-07-24 18:31:32.760000849 +0200
+@@ -0,0 +1,102 @@
 +policy_module(pan, 1.0)
 +
 +########################################
@@ -28,21 +28,37 @@
 +#
 +# Pan local policy
 +#
++allow pan_t self:process { getsched signal };
++allow pan_t self:fifo_file rw_fifo_file_perms;
++allow pan_t pan_tmpfs_t:file { read write };
 +
++# Allow pan to work with its ~/.pan2 location
++manage_dirs_pattern(pan_t, pan_home_t, pan_home_t)
++manage_files_pattern(pan_t, pan_home_t, pan_home_t)
++manage_lnk_files_pattern(pan_t, pan_home_t, pan_home_t)
++
++# Support for shared memory
++fs_tmpfs_filetrans(pan_t, pan_tmpfs_t, file)
 +
 +## Kernel layer calls
 +#
++kernel_dontaudit_read_system_state(pan_t)
++files_read_etc_files(pan_t)
++files_read_usr_files(pan_t)
 +corenet_all_recvfrom_unlabeled(pan_t)
 +corenet_all_recvfrom_netlabel(pan_t)
++corenet_tcp_connect_innd_port(pan_t)
 +corenet_tcp_sendrecv_generic_if(pan_t)
 +corenet_tcp_sendrecv_generic_node(pan_t)
-+corenet_tcp_sendrecv_ntp_port(pan_t)
-+corenet_sendrecv_ntp_client_packets(pan_t)
++corenet_tcp_sendrecv_innd_port(pan_t)
++corenet_sendrecv_innd_client_packets(pan_t)
 +
 +## System layer calls
 +#
++miscfiles_read_localization(pan_t)
 +sysnet_dns_name_resolve(pan_t)
-+userdom_search_user_home_dirs(pan_t)
++userdom_manage_user_home_content_dirs(pan_t)
++userdom_manage_user_home_content_files(pan_t)
 +
 +## Other yayer calls
 +#
