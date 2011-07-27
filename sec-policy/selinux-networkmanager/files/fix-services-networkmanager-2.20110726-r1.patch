@@ -1,5 +1,5 @@
 --- refpolicy-20110726/policy/modules/services/networkmanager.te	2011-03-28 17:05:14.000000000 +0200
-+++ services/networkmanager.te	2011-07-27 15:44:33.905005579 +0200
++++ services/networkmanager.te	2011-07-27 18:12:30.251005833 +0200
 @@ -28,6 +28,9 @@
  type wpa_cli_exec_t;
  init_system_domain(wpa_cli_t, wpa_cli_exec_t)
@@ -26,7 +26,7 @@
  init_read_utmp(NetworkManager_t)
  init_dontaudit_write_utmp(NetworkManager_t)
  init_domtrans_script(NetworkManager_t)
-+init_domtrans_script(wpa_cli)
++init_domtrans_script(wpa_cli_t)
  
  auth_use_nsswitch(NetworkManager_t)
  
