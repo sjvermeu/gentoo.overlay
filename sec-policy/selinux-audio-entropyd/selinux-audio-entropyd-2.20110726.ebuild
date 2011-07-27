@@ -13,4 +13,4 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-RDEPEND=">=sec-policy/selinux-entropid-2.20110726"
+RDEPEND=">=sec-policy/selinux-entropyd-2.20110726"
