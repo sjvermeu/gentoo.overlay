@@ -1,5 +1,5 @@
---- apps/links.te	1970-01-01 01:00:00.000000000 +0100
-+++ apps/links.te	2011-01-22 15:01:55.272000135 +0100
+--- refpolicy-20110726/policy/modules/apps/links.te	1970-01-01 01:00:00.000000000 +0100
++++ apps/links.te	2011-07-26 22:27:17.234003767 +0200
 @@ -0,0 +1,58 @@
 +policy_module(links, 1.0.0)
 +
@@ -59,8 +59,8 @@
 +
 +miscfiles_read_localization(links_t)
 +
---- apps/links.fc	1970-01-01 01:00:00.000000000 +0100
-+++ apps/links.fc	2011-01-16 10:50:48.058999501 +0100
+--- refpolicy-20110726/policy/modules/apps/links.fc	1970-01-01 01:00:00.000000000 +0100
++++ apps/links.fc	2011-07-26 22:27:17.234003767 +0200
 @@ -0,0 +1,2 @@
 +/usr/bin/links         -- gen_context(system_u:object_r:links_exec_t,s0)
 +HOME_DIR/\.links(/.*)?    gen_context(system_u:object_r:links_home_t,s0)
