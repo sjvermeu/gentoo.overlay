@@ -1,0 +1,13 @@
+# Copyright 1999-2011 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# : $
+EAPI="4"
+
+IUSE=""
+MODS="@MODULE@"
+
+inherit selinux-policy-2
+
+DESCRIPTION="SELinux policy for @MODULE@"
+
+KEYWORDS="~amd64 ~x86"
