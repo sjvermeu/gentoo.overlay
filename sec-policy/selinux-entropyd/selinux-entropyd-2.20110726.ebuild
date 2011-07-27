@@ -14,3 +14,19 @@ KEYWORDS="~amd64 ~x86"
 RDEPEND="!<sec-policy/selinux-audio-entropyd-2.20110726
 		>=sys-apps/policycoreutils-1.30.30
 		>=sec-policy/selinux-base-policy-${PV}"
+
+pkg_postinst() {
+	selinux-policy-2_pkg_postinst
+	echo
+	einfo "The SELinux entropyd module is the replacement of audioentropyd and"
+	einfo "is made more generic for all-purpose entropy daemons, including"
+	einfo "audioentropyd and haveged."
+	einfo
+	einfo "If you are upgrading from an audioentropyd module, the installation"
+	einfo "of the new policy module might fail due to collisions. You will need"
+	einfo "to remove the current audioentropyd module first:"
+	einfo "  # semodule -r audioentropyd"
+	einfo
+	einfo "Then, you can install the new policy:"
+	einfo "  # semodule -i /usr/share/selinux/<type>/entropyd.pp"
+}
