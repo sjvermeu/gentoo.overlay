@@ -9,5 +9,5 @@ MODS="mozilla"
 inherit selinux-policy-2
 
 DESCRIPTION="SELinux policy for mozilla"
-POLICY_PATCH="${FILESDIR}/fix-apps-mozilla-r4.patch"
+POLICY_PATCH="${FILESDIR}/fix-apps-mozilla-2.20110726-r1.patch"
 KEYWORDS="~amd64 ~x86"
