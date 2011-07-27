@@ -29,7 +29,7 @@
 # This variable contains the version string of the selinux-base-policy package
 # that this module build depends on. It is used to patch with the appropriate
 # patch bundle(s) that are part of selinux-base-policy. 
-: ${MODS:="0"}
+: ${BASEPOL:="0"}
 
 # @ECLASS-VARIABLE: POLICY_PATCH
 # @DESCRIPTION:
