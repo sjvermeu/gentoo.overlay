@@ -4,7 +4,7 @@
 
 EAPI=4
 
-DESCRIPTION="SELinux policy for audio-entropyd (meta package for selinux-entrypod)"
+DESCRIPTION="SELinux policy for audio-entropyd (meta package for selinux-entropyd)"
 HOMEPAGE="http://hardened.gentoo.org"
 SRC_URI=""
 
