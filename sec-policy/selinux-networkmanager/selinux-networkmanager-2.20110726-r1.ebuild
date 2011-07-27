@@ -9,5 +9,5 @@ MODS="networkmanager"
 inherit selinux-policy-2
 
 DESCRIPTION="SELinux policy for networkmanager"
-POLICY_PATCH="${FILESDIR}/fix-services-networkmanager-2.20110726-r1"
+POLICY_PATCH="${FILESDIR}/fix-services-networkmanager-2.20110726-r1.patch"
 KEYWORDS="~amd64 ~x86"
