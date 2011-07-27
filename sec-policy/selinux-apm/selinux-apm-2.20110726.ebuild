@@ -4,10 +4,10 @@
 EAPI="4"
 
 IUSE=""
-MODS="@MODULE@"
+MODS="apm"
 
 inherit selinux-policy-2
 
-DESCRIPTION="SELinux policy for @MODULE@"
+DESCRIPTION="SELinux policy for apm"
 
 KEYWORDS="~amd64 ~x86"

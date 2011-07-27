@@ -4,10 +4,10 @@
 EAPI="4"
 
 IUSE=""
-MODS="@MODULE@"
+MODS="varnishd"
 
 inherit selinux-policy-2
 
-DESCRIPTION="SELinux policy for @MODULE@"
+DESCRIPTION="SELinux policy for varnishd"
 
 KEYWORDS="~amd64 ~x86"

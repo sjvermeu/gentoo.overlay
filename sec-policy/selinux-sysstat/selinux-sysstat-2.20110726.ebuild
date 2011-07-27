@@ -4,10 +4,10 @@
 EAPI="4"
 
 IUSE=""
-MODS="@MODULE@"
+MODS="sysstat"
 
 inherit selinux-policy-2
 
-DESCRIPTION="SELinux policy for @MODULE@"
+DESCRIPTION="SELinux policy for sysstat"
 
 KEYWORDS="~amd64 ~x86"

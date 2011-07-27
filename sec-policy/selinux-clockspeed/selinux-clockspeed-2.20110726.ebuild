@@ -4,10 +4,10 @@
 EAPI="4"
 
 IUSE=""
-MODS="@MODULE@"
+MODS="clockspeed"
 
 inherit selinux-policy-2
 
-DESCRIPTION="SELinux policy for @MODULE@"
+DESCRIPTION="SELinux policy for clockspeed"
 
 KEYWORDS="~amd64 ~x86"
