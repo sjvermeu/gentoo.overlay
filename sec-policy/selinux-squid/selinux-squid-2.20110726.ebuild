@@ -11,3 +11,5 @@ inherit selinux-policy-2
 DESCRIPTION="SELinux policy for squid"
 
 KEYWORDS="~amd64 ~x86"
+DEPEND=">=sec-policy/selinux-apache-2.20110726-r1"
+RDEPEND="${DEPEND}"
