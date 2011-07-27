@@ -23,7 +23,7 @@ pkg_postinst() {
 	einfo "If you are upgrading from an audioentropyd module, the installation"
 	einfo "of the new policy module might fail due to collisions. You will need"
 	einfo "to remove the current audioentropyd module first:"
-	einfo "  # semodule -r audioentropyd"
+	einfo "  # semodule -r audioentropy"
 	einfo
 	einfo "Then, you can install the new policy:"
 	einfo "  # semodule -i /usr/share/selinux/<type>/entropyd.pp"
