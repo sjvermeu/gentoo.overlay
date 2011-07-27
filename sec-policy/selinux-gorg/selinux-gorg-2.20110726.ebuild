@@ -9,5 +9,5 @@ MODS="gorg"
 inherit selinux-policy-2
 
 DESCRIPTION="SELinux policy for gorg"
-POLICY_PATCH="${FILESDIR}/add-gorg.patch"
+POLICY_PATCH="${FILESDIR}/fix-services-gorg-2.20110726-r1.patch"
 KEYWORDS="~amd64 ~x86"

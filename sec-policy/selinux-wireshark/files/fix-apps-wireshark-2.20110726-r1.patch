@@ -1,5 +1,5 @@
 --- refpolicy-20110726/policy/modules/apps/wireshark.te	2011-03-28 17:05:13.000000000 +0200
-+++ apps/wireshark.te	2011-07-27 15:06:37.226005514 +0200
++++ apps/wireshark.te	2011-07-27 15:20:49.581005538 +0200
 @@ -35,18 +35,20 @@
  #
  
@@ -44,7 +44,7 @@
  sysnet_read_config(wireshark_t)
  
 +userdom_exec_user_home_content_files(wireshark_t)
-+userdom_user_home_dir_filetrans_user_home_content(wiershark_t, { file lnk_file fifo_file sock_file })
++userdom_user_home_dir_filetrans_user_home_content(wireshark_t, { file lnk_file fifo_file sock_file })
  userdom_manage_user_home_content_files(wireshark_t)
 +userdom_use_user_terminals(wireshark_t)
  
