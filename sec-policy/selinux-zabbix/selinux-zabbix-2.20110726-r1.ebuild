@@ -10,4 +10,5 @@ inherit selinux-policy-2
 
 DESCRIPTION="SELinux policy for zabbix"
 POLICY_PATCH="${FILESDIR}/fix-services-zabbix-2.20110726-r1.patch"
+BASEPOL="2.20110726-r1"
 KEYWORDS="~amd64 ~x86"
