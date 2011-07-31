@@ -5,9 +5,9 @@ EAPI="4"
 
 IUSE=""
 MODS="courier"
+BASEPOL="2.20110726-r1"
 
 inherit selinux-policy-2
 
 DESCRIPTION="SELinux policy for courier"
-POLICY_PATCH="${FILESDIR}/fix-services-courier-2.20110726-r1.patch"
 KEYWORDS="~amd64 ~x86"

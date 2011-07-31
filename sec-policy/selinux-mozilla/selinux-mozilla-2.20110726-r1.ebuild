@@ -5,9 +5,9 @@ EAPI="4"
 
 IUSE=""
 MODS="mozilla"
+BASEPOL="2.20110726-r1"
 
 inherit selinux-policy-2
 
 DESCRIPTION="SELinux policy for mozilla"
-POLICY_PATCH="${FILESDIR}/fix-apps-mozilla-2.20110726-r1.patch"
 KEYWORDS="~amd64 ~x86"

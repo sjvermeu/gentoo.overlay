@@ -5,9 +5,9 @@ EAPI="4"
 
 IUSE=""
 MODS="gpg"
+BASEPOL="2.20110726-r1"
 
 inherit selinux-policy-2
 
 DESCRIPTION="SELinux policy for GnuPG"
-POLICY_PATCH="${FILESDIR}/fix-apps-gpg-r2.patch"
 KEYWORDS="~amd64 ~x86"
