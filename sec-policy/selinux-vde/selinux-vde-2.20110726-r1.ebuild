@@ -5,9 +5,9 @@ EAPI="4"
 
 IUSE=""
 MODS="vde"
+BASEPOL="2.20110726-r1"
 
 inherit selinux-policy-2
 
 DESCRIPTION="SELinux policy for vde"
-POLICY_PATCH="${FILESDIR}/fix-services-vde-2.20110726-r1.patch"
 KEYWORDS="~amd64 ~x86"
