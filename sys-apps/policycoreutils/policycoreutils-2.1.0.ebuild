@@ -73,7 +73,6 @@ src_prepare() {
 	cp "${WORKDIR}/semanage" "${S}/semanage/semanage" || die "failed to copy semanage"
 	cp "${WORKDIR}/chcat" "${S}/scripts/chcat" || die "failed to copy chcat"
 	cp "${WORKDIR}/audit2allow" "${S}/audit2allow/audit2allow" || die "failed to copy audit2allow"
-	cp "${WORKDIR}/rlpkg" "${S2}/scripts/rlpkg" || die "failed to copy rlpkg"
 }
 
 src_compile() {
