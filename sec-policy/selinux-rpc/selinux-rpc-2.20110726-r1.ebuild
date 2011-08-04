@@ -11,3 +11,4 @@ inherit selinux-policy-2
 
 DESCRIPTION="SELinux policy for rpc"
 KEYWORDS="~amd64 ~x86"
+RDEPEND="!<sec-policy/selinux-nfs-2.20110726"

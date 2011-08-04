@@ -3,11 +3,8 @@
 # $Header: $
 EAPI="4"
 
+DEPEND=">=sec-policy/selinux-rpc-2.20110726"
+
 IUSE=""
-MODS="nfs"
-
-inherit selinux-policy-2
-
-DESCRIPTION="SELinux policy for nfs"
-
+DESCRIPTION="SELinux policy for nfs (meta-package for rpc)"
 KEYWORDS="~amd64 ~x86"
