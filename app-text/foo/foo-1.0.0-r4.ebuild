@@ -12,6 +12,6 @@ LICENSE=""
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
-DEPEND="app-text/bar[test(-)]"
+DEPEND=""
 RDEPEND="${DEPEND}"
 
