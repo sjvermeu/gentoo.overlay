@@ -1,0 +1,396 @@
+diff -u wondershaper-1.1a.orig/wshaper wondershaper-1.1a/wshaper
+--- wondershaper-1.1a.orig/wshaper	2011-08-08 22:34:29.152000081 +0200
++++ wondershaper-1.1a/wshaper	2011-08-08 22:45:31.858000080 +0200
+@@ -1,31 +1,28 @@
+-#!/bin/bash 
++#!/sbin/runscript
+ 
+-# Wonder Shaper
+-# please read the README before filling out these values 
+-#
+-# Set the following values to somewhat less than your actual download
+-# and uplink speed. In kilobits. Also set the device that is to be shaped.
+-DOWNLINK=800
+-UPLINK=220
+-DEV=eth0
+-
+-# low priority OUTGOING traffic - you can leave this blank if you want
+-# low priority source netmasks
+-NOPRIOHOSTSRC=80
+-
+-# low priority destination netmasks
+-NOPRIOHOSTDST=
+-
+-# low priority source ports
+-NOPRIOPORTSRC=
++# wraps wondershaper
+ 
+-# low priority destination ports
+-NOPRIOPORTDST=
++opts="${opts} showstatus"
+ 
+-# Now remove the following two lines :-)
++start() {
++	ebegin "Starting wondershaper"
++	real_shaper start
++	eend $?
++}
++
++stop() {
++	ebegin "Stopping wondershaper"
++	real_shaper stop
++	eend $?
++}
++
++showstatus() {
++	ebegin "Status"
++	real_shaper status
++	eend $?
++}
+ 
+-echo Please read the documentation in 'README' first :-\)
+-exit
++real_shaper() {
+ 
+ #########################################################
+ 
+@@ -33,7 +30,7 @@
+ then
+ 	tc -s qdisc ls dev $DEV
+ 	tc -s class ls dev $DEV
+-	exit
++	return 0
+ fi
+ 
+ 
+@@ -43,52 +40,52 @@
+ 
+ if [ "$1" = "stop" ] 
+ then 
+-	exit
++	return 0
+ fi
+ 
+ ###### uplink
+ 
+ # install root CBQ
+ 
+-tc qdisc add dev $DEV root handle 1: cbq avpkt 1000 bandwidth 10mbit 
++tc qdisc add dev $DEV root handle 1: cbq avpkt 1000 bandwidth 10mbit  || return 1
+ 
+ # shape everything at $UPLINK speed - this prevents huge queues in your
+ # DSL modem which destroy latency:
+ # main class
+ 
+ tc class add dev $DEV parent 1: classid 1:1 cbq rate ${UPLINK}kbit \
+-allot 1500 prio 5 bounded isolated 
++allot 1500 prio 5 bounded isolated  || return 1
+ 
+ # high prio class 1:10:
+ 
+ tc class add dev $DEV parent 1:1 classid 1:10 cbq rate ${UPLINK}kbit \
+-   allot 1600 prio 1 avpkt 1000
++   allot 1600 prio 1 avpkt 1000 || return 1
+ 
+ # bulk and default class 1:20 - gets slightly less traffic, 
+ #  and a lower priority:
+ 
+ tc class add dev $DEV parent 1:1 classid 1:20 cbq rate $[9*$UPLINK/10]kbit \
+-   allot 1600 prio 2 avpkt 1000
++   allot 1600 prio 2 avpkt 1000 || return 1
+ 
+ # 'traffic we hate'
+ 
+ tc class add dev $DEV parent 1:1 classid 1:30 cbq rate $[8*$UPLINK/10]kbit \
+-   allot 1600 prio 2 avpkt 1000
++   allot 1600 prio 2 avpkt 1000 || return 1
+ 
+ # all get Stochastic Fairness:
+-tc qdisc add dev $DEV parent 1:10 handle 10: sfq perturb 10
+-tc qdisc add dev $DEV parent 1:20 handle 20: sfq perturb 10
+-tc qdisc add dev $DEV parent 1:30 handle 30: sfq perturb 10
++tc qdisc add dev $DEV parent 1:10 handle 10: sfq perturb 10 || return 1
++tc qdisc add dev $DEV parent 1:20 handle 20: sfq perturb 10 || return 1
++tc qdisc add dev $DEV parent 1:30 handle 30: sfq perturb 10 || return 1
+ 
+ # start filters
+ # TOS Minimum Delay (ssh, NOT scp) in 1:10:
+ tc filter add dev $DEV parent 1:0 protocol ip prio 10 u32 \
+-      match ip tos 0x10 0xff  flowid 1:10
++      match ip tos 0x10 0xff  flowid 1:10 || return 1
+ 
+ # ICMP (ip protocol 1) in the interactive class 1:10 so we 
+ # can do measurements & impress our friends:
+ tc filter add dev $DEV parent 1:0 protocol ip prio 11 u32 \
+-        match ip protocol 1 0xff flowid 1:10
++        match ip protocol 1 0xff flowid 1:10 || return 1
+ 
+ # prioritize small packets (<64 bytes)
+ 
+@@ -96,38 +93,48 @@
+    match ip protocol 6 0xff \
+    match u8 0x05 0x0f at 0 \
+    match u16 0x0000 0xffc0 at 2 \
+-   flowid 1:10
++   flowid 1:10 || return 1
+ 
+ 
+ # some traffic however suffers a worse fate
+ for a in $NOPRIOPORTDST
+ do
++	PORT=${a%/*}
++	MASK=${a#*/}
++	if [ "${PORT}" = "${a}" ]; then
++		MASK='0xffff'
++	fi
+ 	tc filter add dev $DEV parent 1: protocol ip prio 14 u32 \
+-	   match ip dport $a 0xffff flowid 1:30
++	   match ip dport ${PORT} ${MASK} flowid 1:30 || return 1
+ done
+ 
+ for a in $NOPRIOPORTSRC
+ do
++	PORT=${a%/*}
++	MASK=${a#*/}
++	if [ "${PORT}" = "${a}" ]; then
++		MASK='0xffff'
++	fi
+  	tc filter add dev $DEV parent 1: protocol ip prio 15 u32 \
+-	   match ip sport $a 0xffff flowid 1:30
++	   match ip sport ${PORT} ${MASK} flowid 1:30 || return 1
+ done
+ 
+ for a in $NOPRIOHOSTSRC
+ do
+  	tc filter add dev $DEV parent 1: protocol ip prio 16 u32 \
+-	   match ip src $a flowid 1:30
++	   match ip src $a flowid 1:30 || return 1
+ done
+ 
+ for a in $NOPRIOHOSTDST
+ do
+  	tc filter add dev $DEV parent 1: protocol ip prio 17 u32 \
+-	   match ip dst $a flowid 1:30
++	   match ip dst $a flowid 1:30 || return 1
+ done
+ 
+ # rest is 'non-interactive' ie 'bulk' and ends up in 1:20
+ 
+ tc filter add dev $DEV parent 1: protocol ip prio 18 u32 \
+-   match ip dst 0.0.0.0/0 flowid 1:20
++   match ip dst 0.0.0.0/0 flowid 1:20 || return 1
+ 
+ 
+ ########## downlink #############
+@@ -137,11 +144,12 @@
+ #
+ # attach ingress policer:
+ 
+-tc qdisc add dev $DEV handle ffff: ingress
++tc qdisc add dev $DEV handle ffff: ingress || return 1
+ 
+ # filter *everything* to it (0.0.0.0/0), drop everything that's
+ # coming in too fast:
+ 
+ tc filter add dev $DEV parent ffff: protocol ip prio 50 u32 match ip src \
+-   0.0.0.0/0 police rate ${DOWNLINK}kbit burst 10k drop flowid :1
++   0.0.0.0/0 police rate ${DOWNLINK}kbit burst 10k drop flowid :1 || return 1
+ 
++}
+diff -u wondershaper-1.1a.orig/wshaper.htb wondershaper-1.1a/wshaper.htb
+--- wondershaper-1.1a.orig/wshaper.htb	2011-08-08 22:34:29.151000081 +0200
++++ wondershaper-1.1a/wshaper.htb	2011-08-08 22:43:58.500000080 +0200
+@@ -1,38 +1,34 @@
+-#!/bin/bash
+-# Wonder Shaper
+-# please read the README before filling out these values 
+-#
+-# Set the following values to somewhat less than your actual download
+-# and uplink speed. In kilobits. Also set the device that is to be shaped.
+-
+-DOWNLINK=800
+-UPLINK=220
+-DEV=ppp0
+-
+-# low priority OUTGOING traffic - you can leave this blank if you want
+-# low priority source netmasks
+-NOPRIOHOSTSRC=
++#!/sbin/runscript
+ 
+-# low priority destination netmasks
+-NOPRIOHOSTDST=
++# wraps wondershaper
+ 
+-# low priority source ports
+-NOPRIOPORTSRC=
++opts="${opts} showstatus"
+ 
+-# low priority destination ports
+-NOPRIOPORTDST=
++start() {
++	ebegin "Starting wondershaper"
++	real_shaper start
++	eend $?
++}
++
++stop() {
++	ebegin "Stopping wondershaper"
++	real_shaper stop
++	eend $?
++}
++
++showstatus() {
++	ebegin "Status"
++	real_shaper status
++	eend $?
++}
+ 
+-
+-# Now remove the following two lines :-)
+-
+-echo Please read the documentation in 'README' first
+-exit
++real_shaper() {
+ 
+ if [ "$1" = "status" ]
+ then
+ 	tc -s qdisc ls dev $DEV
+ 	tc -s class ls dev $DEV
+-	exit
++	return 0
+ fi
+ 
+ 
+@@ -42,7 +38,7 @@
+ 
+ if [ "$1" = "stop" ] 
+ then 
+-	exit
++	return 0
+ fi
+ 
+ 
+@@ -50,41 +46,41 @@
+ 
+ # install root HTB, point default traffic to 1:20:
+ 
+-tc qdisc add dev $DEV root handle 1: htb default 20
++tc qdisc add dev $DEV root handle 1: htb default 20 || return 1
+ 
+ # shape everything at $UPLINK speed - this prevents huge queues in your
+ # DSL modem which destroy latency:
+ 
+-tc class add dev $DEV parent 1: classid 1:1 htb rate ${UPLINK}kbit burst 6k
++tc class add dev $DEV parent 1: classid 1:1 htb rate ${UPLINK}kbit burst 6k || return 1
+ 
+ # high prio class 1:10:
+ 
+ tc class add dev $DEV parent 1:1 classid 1:10 htb rate ${UPLINK}kbit \
+-   burst 6k prio 1
++   burst 6k prio 1 || return 1
+ 
+ # bulk & default class 1:20 - gets slightly less traffic, 
+ # and a lower priority:
+ 
+ tc class add dev $DEV parent 1:1 classid 1:20 htb rate $[9*$UPLINK/10]kbit \
+-   burst 6k prio 2
++   ceil ${UPLINK}kbit burst 6k prio 2 || return 1
+ 
+ tc class add dev $DEV parent 1:1 classid 1:30 htb rate $[8*$UPLINK/10]kbit \
+-   burst 6k prio 2
++   ceil ${UPLINK}kbit burst 6k prio 2 || return 1
+ 
+ # all get Stochastic Fairness:
+-tc qdisc add dev $DEV parent 1:10 handle 10: sfq perturb 10
+-tc qdisc add dev $DEV parent 1:20 handle 20: sfq perturb 10
+-tc qdisc add dev $DEV parent 1:30 handle 30: sfq perturb 10
++tc qdisc add dev $DEV parent 1:10 handle 10: sfq perturb 10 || return 1
++tc qdisc add dev $DEV parent 1:20 handle 20: sfq perturb 10 || return 1
++tc qdisc add dev $DEV parent 1:30 handle 30: sfq perturb 10 || return 1
+ 
+ # TOS Minimum Delay (ssh, NOT scp) in 1:10:
+ 
+ tc filter add dev $DEV parent 1:0 protocol ip prio 10 u32 \
+-      match ip tos 0x10 0xff  flowid 1:10
++      match ip tos 0x10 0xff  flowid 1:10 || return 1
+ 
+ # ICMP (ip protocol 1) in the interactive class 1:10 so we 
+ # can do measurements & impress our friends:
+ tc filter add dev $DEV parent 1:0 protocol ip prio 10 u32 \
+-        match ip protocol 1 0xff flowid 1:10
++        match ip protocol 1 0xff flowid 1:10 || return 1
+ 
+ # To speed up downloads while an upload is going on, put ACK packets in
+ # the interactive class:
+@@ -94,39 +90,49 @@
+    match u8 0x05 0x0f at 0 \
+    match u16 0x0000 0xffc0 at 2 \
+    match u8 0x10 0xff at 33 \
+-   flowid 1:10
++   flowid 1:10 || return 1
+ 
+ # rest is 'non-interactive' ie 'bulk' and ends up in 1:20
+ 
+ # some traffic however suffers a worse fate
+ for a in $NOPRIOPORTDST
+ do
++	PORT=${a%/*}
++	MASK=${a#*/}
++	if [ "${PORT}" = "${a}" ]; then
++		MASK='0xffff'
++	fi
+ 	tc filter add dev $DEV parent 1: protocol ip prio 14 u32 \
+-	   match ip dport $a 0xffff flowid 1:30
++	   match ip dport ${PORT} ${MASK} flowid 1:30 || return 1
+ done
+ 
+ for a in $NOPRIOPORTSRC
+ do
++	PORT=${a%/*}
++	MASK=${a#*/}
++	if [ "${PORT}" = "${a}" ]; then
++		MASK='0xffff'
++	fi
+  	tc filter add dev $DEV parent 1: protocol ip prio 15 u32 \
+-	   match ip sport $a 0xffff flowid 1:30
++	   match ip sport ${PORT} ${MASK} flowid 1:30 || return 1
+ done
+ 
+ for a in $NOPRIOHOSTSRC
+ do
+  	tc filter add dev $DEV parent 1: protocol ip prio 16 u32 \
+-	   match ip src $a flowid 1:30
++	   match ip src $a flowid 1:30 || return 1
+ done
+ 
+ for a in $NOPRIOHOSTDST
+ do
+  	tc filter add dev $DEV parent 1: protocol ip prio 17 u32 \
+-	   match ip dst $a flowid 1:30
++	   match ip dst $a flowid 1:30 || return 1
+ done
+ 
+ # rest is 'non-interactive' ie 'bulk' and ends up in 1:20
+ 
+ tc filter add dev $DEV parent 1: protocol ip prio 18 u32 \
+-   match ip dst 0.0.0.0/0 flowid 1:20
++   match ip dst 0.0.0.0/0 flowid 1:20 || return 1
+ 
+ 
+ ########## downlink #############
+@@ -136,12 +142,12 @@
+ #
+ # attach ingress policer:
+ 
+-tc qdisc add dev $DEV handle ffff: ingress
++tc qdisc add dev $DEV handle ffff: ingress || return 1
+ 
+ # filter *everything* to it (0.0.0.0/0), drop everything that's
+ # coming in too fast:
+ 
+ tc filter add dev $DEV parent ffff: protocol ip prio 50 u32 match ip src \
+-   0.0.0.0/0 police rate ${DOWNLINK}kbit burst 10k drop flowid :1
+-
++   0.0.0.0/0 police rate ${DOWNLINK}kbit burst 10k drop flowid :1 || return 1
+ 
++}

@@ -1,6 +1,6 @@
 # Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header$
+# $Header: $
 
 EAPI=4
 
@@ -8,46 +8,32 @@ inherit eutils
 
 DESCRIPTION="Wondershaper is a VoIP QoS script"
 HOMEPAGE="http://lartc.org/wondershaper"
-SRC_URI="http://lartc.org/${PN}/${P}.tar.gz"
-
-LICENSE="GPL-1"
-SLOT="0"
 KEYWORDS="~amd64"
+LICENSE="GPL-2"
 
-SKEL="${FILESDIR}/rc.skel-1.1a"
+SRC_URI="http://lartc.org/${PN}/${P}.tar.gz"
+SLOT="0"
+IUSE=""
+
+DEPEND=""
+RDEPEND=">=sys-apps/iproute2-2.6.35-r2"
+
 PATCH="${FILESDIR}/${P}-gentoo.patch"
 
 src_prepare() {
 	epatch "${PATCH}"
 }
 
-src_compile() {
-	tail -n+2 wshaper \
-	| awk '/^# Now remove/{firstPartOver=1}{if (! firstPartOver) print $0}' \
-	>> wondershaper.config
-
-	for i in wshaper*; do
-		SCRIPT=${i/wshaper/wondershaper}
-		cp ${SKEL} ${SCRIPT}
-		awk '/^if \[/{firstPartOver=1}{if (firstPartOver) print $0}' ${i} \
-		| awk '			{addOR=nextAddOR;
-						 nextAddOR=0}
-			/tc.*add/	{addOR=1}
-			/\\$/		{nextAddOR=addOR;addOR=0}
-						{printf("%s",$0);
-						 if (addOR) print " || return 1"
-						 else printf "\n"}' \
-		| sed 's/exit/return 0/' >> ${SCRIPT}
-		echo "}" >> ${SCRIPT}
-	done
-}
-
 src_install() {
-	exeinto /etc/init.d/
-	doexe wondershaper wondershaper.htb
-	insinto /etc/conf.d/
-	newins wondershaper.config wondershaper
-	dohard /etc/conf.d/wondershaper /etc/conf.d/wondershaper.htb
-	dodoc ChangeLog README TODO COPYING VERSION
+	doinitd "${S}"/wshaper
+	doinitd "${S}"/wshaper.htb
+	newconfd "${FILESDIR}"/wshaper.confd wshaper
+	newconfd "${FILESDIR}"/wshaper.confd wshaper.htb
+	dodoc ChangeLog README TODO VERSION
 }
 
+pkg_postinst() {
+	elog "The wondershaper script is installed as a Gentoo init script, called"
+	elog "${ROOT}etc/init.d/wshaper (or wshaper.htb). To configure the script,"
+	elog "please edit ${ROOT}etc/conf.d/wshaper (or wshaper.htb)."
+}
