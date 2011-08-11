@@ -15,13 +15,10 @@ SRC_URI="http://lartc.org/${PN}/${P}.tar.gz"
 SLOT="0"
 IUSE=""
 
-DEPEND=""
-RDEPEND=">=sys-apps/iproute2-2.6.35-r2"
-
-PATCH="${FILESDIR}/${P}-gentoo.patch"
+RDEPEND="sys-apps/iproute2"
 
 src_prepare() {
-	epatch "${PATCH}"
+	epatch "${FILESDIR}/${P}-gentoo.patch"
 }
 
 src_install() {
@@ -29,7 +26,7 @@ src_install() {
 	doinitd "${S}"/wshaper.htb
 	newconfd "${FILESDIR}"/wshaper.confd wshaper
 	newconfd "${FILESDIR}"/wshaper.confd wshaper.htb
-	dodoc ChangeLog README TODO VERSION
+	dodoc ChangeLog README
 }
 
 pkg_postinst() {
