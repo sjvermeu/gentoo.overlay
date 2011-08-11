@@ -22,8 +22,7 @@ src_prepare() {
 }
 
 src_install() {
-	doinitd "${S}"/wshaper
-	doinitd "${S}"/wshaper.htb
+	doinitd "${S}"/wshaper "${S}"/wshaper.htb
 	newconfd "${FILESDIR}"/wshaper.confd wshaper
 	newconfd "${FILESDIR}"/wshaper.confd wshaper.htb
 	dodoc ChangeLog README
