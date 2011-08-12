@@ -7,7 +7,6 @@ IUSE="+peer_perms +open_perms +ubac"
 
 inherit eutils
 
-PATCHBUNDLE="${DISTDIR}/patchbundle-${PF}.tar.bz2"
 DESCRIPTION="Gentoo base policy for SELinux"
 HOMEPAGE="http://www.gentoo.org/proj/en/hardened/selinux/"
 SRC_URI="http://oss.tresys.com/files/refpolicy/refpolicy-${PV}.tar.bz2
@@ -28,7 +27,7 @@ S=${WORKDIR}/
 src_prepare() {
 	# Apply the gentoo patches to the policy. These patches are only necessary
 	# for base policies, or for interface changes on modules.
-	epatch "${PATCHBUNDLE}"
+	epatch "${DISTDIR}/patchbundle-${PF}.tar.bz2"
 
 	cd "${S}/refpolicy"
 	# Fix bug 257111 - Correct the initial sid for cron-started jobs in the
