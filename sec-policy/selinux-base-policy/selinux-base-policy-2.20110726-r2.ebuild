@@ -27,7 +27,7 @@ S=${WORKDIR}/
 src_prepare() {
 	# Apply the gentoo patches to the policy. These patches are only necessary
 	# for base policies, or for interface changes on modules.
-	PATCHDIR="${WORKDIR}" \
+	EPATCH_SOURCE="${WORKDIR}" \
 	EPATCH_SUFFIX="patch" \
 	epatch
 
