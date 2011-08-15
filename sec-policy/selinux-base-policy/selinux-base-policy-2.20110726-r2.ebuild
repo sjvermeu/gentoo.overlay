@@ -27,8 +27,10 @@ S=${WORKDIR}/
 src_prepare() {
 	# Apply the gentoo patches to the policy. These patches are only necessary
 	# for base policies, or for interface changes on modules.
-	EPATCH_SOURCE="${WORKDIR}" \
+	EPATCH_MULTI_MSG="Applying SELinux policy updates ... " \
 	EPATCH_SUFFIX="patch" \
+	EPATCH_SOURCE="${WORKDIR}" \
+	EPATCH_FORCE="yes" \
 	epatch
 
 	cd "${S}/refpolicy"
