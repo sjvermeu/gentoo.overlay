@@ -27,7 +27,8 @@ S=${WORKDIR}/
 src_prepare() {
 	# Apply the gentoo patches to the policy. These patches are only necessary
 	# for base policies, or for interface changes on modules.
-	epatch "${DISTDIR}/patchbundle-${PF}.tar.bz2"
+	EPATCH_SOURCE="${S}"
+	epatch
 
 	cd "${S}/refpolicy"
 	# Fix bug 257111 - Correct the initial sid for cron-started jobs in the
