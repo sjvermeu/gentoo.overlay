@@ -28,6 +28,7 @@ src_prepare() {
 	# Apply the gentoo patches to the policy. These patches are only necessary
 	# for base policies, or for interface changes on modules.
 	EPATCH_SOURCE="${S}"
+	EPATCH_SUFFIX="patch"
 	epatch
 
 	cd "${S}/refpolicy"
