@@ -5,7 +5,7 @@ EAPI="4"
 
 IUSE=""
 MODS="asterisk"
-BASEPOL="2.20110726-r2"
+BASEPOL="2.20110726-r3"
 
 inherit selinux-policy-2
 
