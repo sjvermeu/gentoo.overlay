@@ -3,7 +3,7 @@
 # $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-base-policy/selinux-base-policy-2.20101213-r18.ebuild,v 1.1 2011/07/10 02:30:17 blueness Exp $
 
 EAPI="4"
-IUSE="+peer_perms +open_perms +ubac"
+IUSE="+peer_perms +open_perms +ubac doc"
 
 inherit eutils
 
@@ -108,6 +108,9 @@ src_compile() {
 	for i in ${POLICY_TYPES}; do
 		cd "${S}/${i}"
 		make base || die "${i} compile failed"
+		if use doc; then
+			make html || die
+		fi
 	done
 }
 
@@ -129,6 +132,10 @@ src_install() {
 
 		# libsemanage won't make this on its own
 		keepdir "/etc/selinux/${i}/policy"
+
+		if use doc; then
+			dohtml -r doc/html;
+		fi
 	done
 
 	dodoc doc/Makefile.example doc/example.{te,fc,if}
