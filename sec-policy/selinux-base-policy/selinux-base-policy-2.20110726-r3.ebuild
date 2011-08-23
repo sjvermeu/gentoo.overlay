@@ -134,7 +134,7 @@ src_install() {
 		keepdir "/etc/selinux/${i}/policy"
 
 		if use doc; then
-			dohtml -r doc/html;
+			dohtml doc/html/*;
 		fi
 	done
 
