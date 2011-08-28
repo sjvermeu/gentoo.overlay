@@ -5,7 +5,7 @@ EAPI="4"
 
 IUSE=""
 MODS="mutt"
-BASEPOL="2.20110726-r3"
+BASEPOL="2.20110726-r4"
 
 inherit selinux-policy-2
 
