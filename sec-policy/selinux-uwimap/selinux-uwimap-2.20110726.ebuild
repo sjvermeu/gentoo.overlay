@@ -5,7 +5,7 @@ EAPI="4"
 
 IUSE=""
 MODS="uwimap"
-#BASEPOL="2.20110726-r6"
+BASEPOL="2.20110726-r6"
 
 inherit selinux-policy-2
 
