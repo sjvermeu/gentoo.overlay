@@ -83,8 +83,6 @@ src_configure() {
 		then
 			echo "unconfined = base" >> "${S}/${i}/policy/modules.conf"
 		fi
-		# Add xdg support
-		echo "xdg = base" >> "${S}/${i}/policy/modules.conf"
 
 		sed -i -e '/^QUIET/s/n/y/' -e "/^NAME/s/refpolicy/$i/" \
 			"${S}/${i}/build.conf" || die "build.conf setup failed."
