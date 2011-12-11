@@ -2,6 +2,10 @@
 # Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/app-admin/sudo/ChangeLog,v 1.286 2011/11/15 22:25:02 vapier Exp $
 
+  11 Dec 2011; <swift@gentoo.org> -sudo-1.7.4_p5.ebuild, -sudo-1.8.1_p2.ebuild,
+  -sudo-1.8.2-r1.ebuild, -sudo-1.8.3_p1.ebuild, -sudo-1.8.3_p1-r2.ebuild:
+  Dropping older ebuilds
+
 *sudo-1.8.3_p1-r3 (11 Dec 2011)
 
   11 Dec 2011; <swift@gentoo.org> +sudo-1.7.4_p5.ebuild, +sudo-1.8.1_p2.ebuild,
