@@ -1,0 +1,13 @@
+http://crosbug.com/20607
+
+--- a/plugins/sudoers/Makefile.in
++++ b/plugins/sudoers/Makefile.in
+@@ -164,7 +164,7 @@
+ visudo: libparsesudoers.la $(VISUDO_OBJS) $(LT_LIBS)
+ 	$(LIBTOOL) --mode=link $(CC) -o $@ $(VISUDO_OBJS) $(LDFLAGS) libparsesudoers.la $(LIBS) $(NET_LIBS)
+ 
+-sudoreplay: $(REPLAY_OBJS) $(LT_LIBS)
++sudoreplay: $(REPLAY_OBJS) $(LT_LIBS) timestr.lo
+ 	$(LIBTOOL) --mode=link $(CC) -o $@ $(REPLAY_OBJS) $(LDFLAGS) timestr.lo $(REPLAY_LIBS) $(LIBS)
+ 
+ testsudoers: libparsesudoers.la $(TEST_OBJS) $(LT_LIBS)
