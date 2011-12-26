@@ -10,5 +10,4 @@ BASEPOL="2.20110726-r9"
 inherit selinux-policy-2
 
 DESCRIPTION="SELinux policy for virt"
-
 KEYWORDS="~amd64 ~x86"
