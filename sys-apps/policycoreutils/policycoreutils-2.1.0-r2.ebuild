@@ -98,10 +98,16 @@ src_compile() {
 }
 
 src_install() {
+	local use_audit="n";
+	local use_pam="n";
+
+	use audit && use_audit="y";
+	use pam && use_pam="y";
+
 	# Python scripts are present in many places. There are no extension modules.
 	installation() {
 		einfo "Installing policycoreutils"
-		emake -C "${S}" DESTDIR="${T}/images/${PYTHON_ABI}" AUDIT_LOG_PRIV="y" PYLIBVER="python$(python_get_version)" install || return 1
+		emake -C "${S}" DESTDIR="${T}/images/${PYTHON_ABI}" AUDITH="${use_audit}" PAMH="${use_pam}" AUDIT_LOG_PRIV="y" PYLIBVER="python$(python_get_version)" install || return 1
 
 		einfo "Installing policycoreutils-extra"
 		emake -C "${S2}" DESTDIR="${T}/images/${PYTHON_ABI}" SHLIBDIR="${D}$(get_libdir)/rc" install || return 1
@@ -123,8 +129,6 @@ src_install() {
 
 pkg_postinst() {
 	python_mod_optimize seobject.py
-	# Remove setuid, fixes #375475
-	chmod 0555 "${ROOT}"usr/bin/newrole
 }
 
 pkg_postrm() {
