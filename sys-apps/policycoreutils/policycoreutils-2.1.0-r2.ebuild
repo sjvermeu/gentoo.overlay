@@ -15,13 +15,14 @@ SEMNG_VER="2.1.0"
 SELNX_VER="2.1.0"
 SEPOL_VER="2.1.0"
 
-IUSE=""
+IUSE="audit pam"
 
 DESCRIPTION="SELinux core utilities"
 HOMEPAGE="http://userspace.selinuxproject.org"
 SRC_URI="http://userspace.selinuxproject.org/releases/20110727/devel/${P}.tar.gz
 	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.0.85-sesandbox.patch.gz
 	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.0.85-fix-seunshare-vuln.patch.gz
+	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.0-fix-makefile-pam-audit.patch.gz
 	mirror://gentoo/policycoreutils-extra-${EXTRAS_VER}.tar.bz2
 	mirror://gentoo/policycoreutils-2.0.85-python3.tar.gz"
 
@@ -31,13 +32,13 @@ KEYWORDS="~amd64 ~x86"
 
 COMMON_DEPS=">=sys-libs/libselinux-${SELNX_VER}[python]
 	>=sys-libs/glibc-2.4
-	>=sys-process/audit-1.5.1
 	>=sys-libs/libcap-1.10-r10
-	sys-libs/pam
 	>=sys-libs/libsemanage-${SEMNG_VER}[python]
 	sys-libs/libcap-ng
 	>=sys-libs/libsepol-${SEPOL_VER}
-	sys-devel/gettext"
+	sys-devel/gettext
+	audit? ( >=sys-process/audit-1.5.1 )
+	pam? ( sys-libs/pam )"
 
 # pax-utils for scanelf used by rlpkg
 RDEPEND="${COMMON_DEPS}
@@ -66,6 +67,8 @@ src_prepare() {
 	epatch "${DISTDIR}/policycoreutils-2.0.85-fix-seunshare-vuln.patch.gz"
 	# But for now, disable building sandbox code
 	sed -i -e 's/sandbox //' "${S}/Makefile" || die "failed removing sandbox"
+	# Disable auto-detection of PAM and audit related stuff and override
+	epatch "${DISTDIR}/policycoreutils-2.1.0-fix-makefile-pam-audit.patch.gz"
 	# Overwrite gl.po, id.po and et.po with valid PO file
 	cp "${S}/po/sq.po" "${S}/po/gl.po" || die "failed to copy ${S}/po/sq.po to gl.po"
 	cp "${S}/po/sq.po" "${S}/po/id.po" || die "failed to copy ${S}/po/sq.po to id.po"
@@ -78,12 +81,18 @@ src_prepare() {
 }
 
 src_compile() {
+	local use_audit="n";
+	local use_pam="n";
+
+	use audit && use_audit="y";
+	use pam && use_pam="y";
+
 	python_copy_sources semanage sandbox
 	building() {
 		einfo "Compiling policycoreutils"
-		emake -C "${S}" AUDIT_LOG_PRIVS="y" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" || die
-		einfo "Compiling policycoreutils-extra"
-		emake -C "${S2}" AUDIT_LOG_PRIVS="y" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" || die
+		emake -C "${S}" AUDIT_LOG_PRIVS="y" AUDITH="${use_audit}" PAMH="${use_pam}" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" || die
+		einfo "Compiling policycoreutils-extra "
+		emake -C "${S2}" AUDIT_LOG_PRIVS="y" AUDITH="${use_audit}" PAMH="${use_pam}" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" || die
 	}
 	python_execute_function -s --source-dir semanage building
 }

@@ -2,6 +2,10 @@
 # Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/sys-apps/policycoreutils/ChangeLog,v 1.94 2011/11/12 18:13:09 swift Exp $
 
+  27 Dec 2011; <swift@gentoo.org> policycoreutils-2.1.0-r2.ebuild,
+  metadata.xml:
+  Override auto-detection of pam and audit, use USE flags for this
+
 *policycoreutils-2.1.0-r2 (14 Dec 2011)
 
   14 Dec 2011; <swift@gentoo.org> +policycoreutils-2.1.0-r2.ebuild,

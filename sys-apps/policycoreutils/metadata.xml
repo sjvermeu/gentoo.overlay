@@ -14,4 +14,7 @@
 		avc_enforcing to query the current mode of the system, enforcing or
 		permissive.
 	</longdescription>
+	<use>
+	  <flag name='audit'>Enable support for <pkg>sys-process/audit</pkg> and use the audit_* functions (like audit_getuid instead of getuid())</flag>
+	</use>
 </pkgmetadata>
