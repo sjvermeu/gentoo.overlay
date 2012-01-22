@@ -9,8 +9,8 @@ inherit eutils
 DESCRIPTION="Tool to match installed software against the list of CVE entries"
 HOMEPAGE="http://cvechecker.sourceforge.net"
 if [[ $PV == 9999 ]]; then
-	ESVN_REPO_URI="https://cvechecker.svn.sourceforge.net/svnroot/cvechecker"
-	inherit autotools subversion
+	EGIT_REPO_URI="git://github.com/sjvermeu/cvechecker.git"
+	inherit autotools git-2
 else
 	SRC_URI="mirror://sourceforge/${PN}/development/${P}.tar.gz"
 fi
