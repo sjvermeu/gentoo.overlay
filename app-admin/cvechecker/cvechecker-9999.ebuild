@@ -36,11 +36,13 @@ src_prepare() {
 	fi
 }
 
-src_compile() {
+src_configure() {
 	econf \
 		$(use_enable sqlite sqlite3) \
 		$(use_enable mysql) || die "./configure failed"
+}
 
+src_compile() {
 	emake || die "compile failed"
 }
 
