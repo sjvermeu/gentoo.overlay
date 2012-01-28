@@ -5,7 +5,7 @@ EAPI="4"
 
 IUSE=""
 MODS="gpg"
-BASEPOL="2.20110726-r4"
+BASEPOL="2.20110726-r12"
 
 inherit selinux-policy-2
 
