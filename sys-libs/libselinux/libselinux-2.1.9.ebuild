@@ -3,9 +3,8 @@
 # $Header: /var/cvsroot/gentoo-x86/sys-libs/libselinux/libselinux-2.1.0.ebuild,v 1.2 2011/10/23 12:39:16 swift Exp $
 
 EAPI="2"
-PYTHON_DEPEND="python? 2"
+PYTHON_DEPEND="python? *"
 SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="3.* *-jython"
 
 inherit multilib python toolchain-funcs
 
