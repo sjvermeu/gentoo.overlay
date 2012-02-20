@@ -38,8 +38,12 @@ COMMON_DEPS=">=sys-libs/libselinux-${SELNX_VER}[python]
 	>=sys-libs/libsepol-${SEPOL_VER}
 	sys-devel/gettext
 	dev-libs/libcgroup
+	sys-apps/dbus
 	audit? ( >=sys-process/audit-1.5.1 )
 	pam? ( sys-libs/pam )"
+
+### libcgroup -> seunshare
+### dbus -> restorecond
 
 # pax-utils for scanelf used by rlpkg
 RDEPEND="${COMMON_DEPS}
