@@ -21,7 +21,7 @@ DESCRIPTION="SELinux core utilities"
 HOMEPAGE="http://userspace.selinuxproject.org"
 SRC_URI="http://userspace.selinuxproject.org/releases/20120216/${P}.tar.gz
 	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.10-sesandbox.patch.gz
-	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.0-fix-makefile-pam-audit.patch.gz
+	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.10-fix-makefile-pam-audit.patch.gz
 	mirror://gentoo/policycoreutils-extra-${EXTRAS_VER}.tar.bz2
 	mirror://gentoo/policycoreutils-2.0.85-python3.tar.gz"
 
@@ -61,7 +61,7 @@ src_prepare() {
 	# - prepare support for switching name from "sandbox" to "sesandbox"
 	epatch "${DISTDIR}/policycoreutils-2.1.10-sesandbox.patch.gz"
 	# Disable auto-detection of PAM and audit related stuff and override
-	epatch "${DISTDIR}/policycoreutils-2.1.0-fix-makefile-pam-audit.patch.gz"
+	epatch "${DISTDIR}/policycoreutils-2.1.10-fix-makefile-pam-audit.patch.gz"
 	# Overwrite gl.po, id.po and et.po with valid PO file
 	cp "${S}/po/sq.po" "${S}/po/gl.po" || die "failed to copy ${S}/po/sq.po to gl.po"
 	cp "${S}/po/sq.po" "${S}/po/id.po" || die "failed to copy ${S}/po/sq.po to id.po"
