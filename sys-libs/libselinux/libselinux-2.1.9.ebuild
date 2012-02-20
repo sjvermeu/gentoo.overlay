@@ -44,7 +44,7 @@ src_compile() {
 	if use python; then
 		python_copy_sources src
 		building() {
-			emake CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" LDFLAGS="-fPIC ${LDFLAGS}" pywrap
+			emake CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" PYPREFIX="python-$(python_get_version)" LDFLAGS="-fPIC ${LDFLAGS}" pywrap
 		}
 		python_execute_function -s --source-dir src building
 	fi
@@ -59,7 +59,7 @@ src_install() {
 
 	if use python; then
 		installation() {
-			emake DESTDIR="${D}" PYLIBVER="python$(python_get_version)" install-pywrap
+			emake DESTDIR="${D}" PYLIBVER="python$(python_get_version)" PYPREFIX="python-$(python_get_version)" install-pywrap
 		}
 		python_execute_function -s --source-dir src installation
 	fi
