@@ -73,7 +73,7 @@ src_compile() {
 	if use python; then
 		python_copy_sources src
 		building() {
-			emake CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" "$@"
+			emake CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" PYPREFIX="python-$(python_get_version)" "$@"
 		}
 		python_execute_function -s --source-dir src building -- swigify
 		python_execute_function -s --source-dir src building -- pywrap
@@ -97,6 +97,7 @@ src_install() {
 			emake \
 				DESTDIR="${D}" \
 				PYLIBVER="python$(python_get_version)" \
+				PYPREFIX="python-$(python_get_version)" \
 				LIBDIR="${D}usr/$(get_libdir)" \
 				install-pywrap
 		}
