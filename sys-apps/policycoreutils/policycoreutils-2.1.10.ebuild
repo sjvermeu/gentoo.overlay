@@ -36,6 +36,7 @@ COMMON_DEPS=">=sys-libs/libselinux-${SELNX_VER}[python]
 	sys-libs/libcap-ng
 	>=sys-libs/libsepol-${SEPOL_VER}
 	sys-devel/gettext
+	dev-libs/libcgroup
 	audit? ( >=sys-process/audit-1.5.1 )
 	pam? ( sys-libs/pam )"
 
