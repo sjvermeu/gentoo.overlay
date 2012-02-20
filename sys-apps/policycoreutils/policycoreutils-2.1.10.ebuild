@@ -20,7 +20,7 @@ IUSE="audit pam"
 DESCRIPTION="SELinux core utilities"
 HOMEPAGE="http://userspace.selinuxproject.org"
 SRC_URI="http://userspace.selinuxproject.org/releases/20120216/${P}.tar.gz
-	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.0.85-sesandbox.patch.gz
+	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.10-sesandbox.patch.gz
 	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.0.85-fix-seunshare-vuln.patch.gz
 	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.0-fix-makefile-pam-audit.patch.gz
 	mirror://gentoo/policycoreutils-extra-${EXTRAS_VER}.tar.bz2
@@ -60,7 +60,7 @@ src_prepare() {
 	# vulnerability (bug #374897) might go by unnoticed if we ignore it now.
 	# As such, we will
 	# - prepare support for switching name from "sandbox" to "sesandbox"
-	epatch "${DISTDIR}/policycoreutils-2.0.85-sesandbox.patch.gz"
+	epatch "${DISTDIR}/policycoreutils-2.1.10-sesandbox.patch.gz"
 	# - patch the sandbox and seunshare code to fix the vulnerability
 	#   (uses, with permission, extract from
 	#   http://pkgs.fedoraproject.org/gitweb/?p=policycoreutils.git;a=blob_plain;f=policycoreutils-rhat.patch;hb=HEAD)
