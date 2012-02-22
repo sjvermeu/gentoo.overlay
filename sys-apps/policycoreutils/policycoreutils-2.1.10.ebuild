@@ -15,7 +15,7 @@ SEMNG_VER="2.1.6"
 SELNX_VER="2.1.9"
 SEPOL_VER="2.1.4"
 
-IUSE="audit pam"
+IUSE="audit pam dbus sesandbox"
 
 DESCRIPTION="SELinux core utilities"
 HOMEPAGE="http://userspace.selinuxproject.org"
@@ -23,6 +23,7 @@ SRC_URI="http://userspace.selinuxproject.org/releases/20120216/${P}.tar.gz
 	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.10-sesandbox.patch.gz
 	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.10-fix-makefile-pam-audit.patch.gz
 	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.10-fix-seunshare.patch.gz
+	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.10-fix-nodbus_or_libcg.patch.gz
 	mirror://gentoo/policycoreutils-extra-${EXTRAS_VER}.tar.bz2
 	mirror://gentoo/policycoreutils-2.0.85-python3.tar.gz"
 
@@ -37,9 +38,11 @@ COMMON_DEPS=">=sys-libs/libselinux-${SELNX_VER}[python]
 	sys-libs/libcap-ng
 	>=sys-libs/libsepol-${SEPOL_VER}
 	sys-devel/gettext
-	dev-libs/libcgroup
-	sys-apps/dbus
-	dev-libs/dbus-glib
+	sesandbox? ( dev-libs/libcgroup )
+	dbus? (
+		sys-apps/dbus
+		dev-libs/dbus-glib
+	)
 	audit? ( >=sys-process/audit-1.5.1 )
 	pam? ( sys-libs/pam )"
 
@@ -85,14 +88,16 @@ src_prepare() {
 src_compile() {
 	local use_audit="n";
 	local use_pam="n";
+	local use_dbus="n";
 
 	use audit && use_audit="y";
 	use pam && use_pam="y";
+	use dbus && use_dbus="y";
 
 	python_copy_sources semanage sandbox
 	building() {
 		einfo "Compiling policycoreutils"
-		emake -C "${S}" AUDIT_LOG_PRIVS="y" AUDITH="${use_audit}" PAMH="${use_pam}" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" || die
+		emake -C "${S}" AUDIT_LOG_PRIVS="y" AUDITH="${use_audit}" PAMH="${use_pam}" INOTIFYH="${use_dbus}" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" || die
 		einfo "Compiling policycoreutils-extra "
 		emake -C "${S2}" AUDIT_LOG_PRIVS="y" AUDITH="${use_audit}" PAMH="${use_pam}" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" || die
 	}
