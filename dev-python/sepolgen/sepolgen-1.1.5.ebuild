@@ -2,10 +2,10 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/dev-python/sepolgen/sepolgen-1.1.0.ebuild,v 1.2 2011/10/23 12:41:16 swift Exp $
 
-EAPI="2"
-PYTHON_DEPEND="2:2.5"
+EAPI="3"
+PYTHON_DEPEND="*"
 SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="2.4 3.* *-jython"
+RESTRICT_PYTHON_ABIS="*-jython"
 
 inherit python
 
