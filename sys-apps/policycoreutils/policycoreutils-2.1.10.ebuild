@@ -74,6 +74,8 @@ src_prepare() {
 	epatch "${DISTDIR}/policycoreutils-2.1.10-fix-makefile-pam-audit.patch.gz"
 	# - Fix build failure on seunshare
 	epatch "${DISTDIR}/policycoreutils-2.1.10-fix-seunshare.patch.gz"
+	# - Make sandbox & dbus-depending stuff (restorecond) USE-triggered
+	epatch "${DISTDIR}/policycoreutils-2.1.10-fix-nodbus_or_libcg.patch.gz"
 	# Overwrite gl.po, id.po and et.po with valid PO file
 	cp "${S}/po/sq.po" "${S}/po/gl.po" || die "failed to copy ${S}/po/sq.po to gl.po"
 	cp "${S}/po/sq.po" "${S}/po/id.po" || die "failed to copy ${S}/po/sq.po to id.po"
@@ -89,17 +91,19 @@ src_compile() {
 	local use_audit="n";
 	local use_pam="n";
 	local use_dbus="n";
+	local use_sesandbox="n";
 
 	use audit && use_audit="y";
 	use pam && use_pam="y";
 	use dbus && use_dbus="y";
+	use sesandbox && use_sesandbox="y";
 
 	python_copy_sources semanage sandbox
 	building() {
 		einfo "Compiling policycoreutils"
-		emake -C "${S}" AUDIT_LOG_PRIVS="y" AUDITH="${use_audit}" PAMH="${use_pam}" INOTIFYH="${use_dbus}" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" || die
+		emake -C "${S}" AUDIT_LOG_PRIVS="y" AUDITH="${use_audit}" PAMH="${use_pam}" INOTIFYH="${use_dbus}" SESANDBOX="${use_sesandbox}" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" || die
 		einfo "Compiling policycoreutils-extra "
-		emake -C "${S2}" AUDIT_LOG_PRIVS="y" AUDITH="${use_audit}" PAMH="${use_pam}" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" || die
+		emake -C "${S2}" AUDIT_LOG_PRIVS="y" AUDITH="${use_audit}" PAMH="${use_pam}" INOTIFYH="${use_dbus}" SESANDBOX="${use_sesandbox}" CC="$(tc-getCC)" PYLIBVER="python$(python_get_version)" || die
 	}
 	python_execute_function -s --source-dir semanage building
 }
@@ -107,14 +111,18 @@ src_compile() {
 src_install() {
 	local use_audit="n";
 	local use_pam="n";
+	local use_dbus="n";
+	local use_sesandbox="n";
 
 	use audit && use_audit="y";
 	use pam && use_pam="y";
+	use dbus && use_dbus="y";
+	use sesandbox && use_sesandbox="y";
 
 	# Python scripts are present in many places. There are no extension modules.
 	installation() {
 		einfo "Installing policycoreutils"
-		emake -C "${S}" DESTDIR="${T}/images/${PYTHON_ABI}" AUDITH="${use_audit}" PAMH="${use_pam}" AUDIT_LOG_PRIV="y" PYLIBVER="python$(python_get_version)" install || return 1
+		emake -C "${S}" DESTDIR="${T}/images/${PYTHON_ABI}" AUDITH="${use_audit}" PAMH="${use_pam}" INOTIFYH="${use_dbus}" SESANDBOX="${use_sesandbox}" AUDIT_LOG_PRIV="y" PYLIBVER="python$(python_get_version)" install || return 1
 
 		einfo "Installing policycoreutils-extra"
 		emake -C "${S2}" DESTDIR="${T}/images/${PYTHON_ABI}" SHLIBDIR="${D}$(get_libdir)/rc" install || return 1
