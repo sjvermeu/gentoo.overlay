@@ -15,7 +15,8 @@ SELNX_VER="2.1.9"
 
 DESCRIPTION="SELinux kernel and policy management library"
 HOMEPAGE="http://userspace.selinuxproject.org"
-SRC_URI="http://userspace.selinuxproject.org/releases/20120216/${P}.tar.gz"
+SRC_URI="http://userspace.selinuxproject.org/releases/20120216/${P}.tar.gz
+		http://dev.gentoo.org/~swift/patches/libsemanage/libsemanage-2.1.6-nolevel.patch.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -65,6 +66,9 @@ src_prepare() {
 	echo "# Reduce memory usage for bzip2 compression and" >> "${S}/src/semanage.conf"
 	echo "# decompression of modules in the module store." >> "${S}/src/semanage.conf"
 	echo "bzip-small=true" >> "${S}/src/semanage.conf"
+
+	# Apply patch to support non-leveled types (like strict or targeted)
+	epatch "${DISTDIR}/libsemanage-2.1.6-nolevel.patch.gz"
 }
 
 src_compile() {
