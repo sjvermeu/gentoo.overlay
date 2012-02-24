@@ -16,11 +16,11 @@ SLOT="0"
 
 KEYWORDS="~amd64 ~x86"
 
-RDEPEND=">=sys-apps/policycoreutils-1.30.30
+RDEPEND=">=sys-apps/policycoreutils-2.1.10
 	>=sys-fs/udev-151"
 DEPEND="${RDEPEND}
 	sys-devel/m4
-	>=sys-apps/checkpolicy-1.30.12"
+	>=sys-apps/checkpolicy-2.1.8"
 
 S=${WORKDIR}/
 
