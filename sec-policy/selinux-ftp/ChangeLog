@@ -1,0 +1,13 @@
+# ChangeLog for sec-policy/selinux-ftp
+# Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-ftp/ChangeLog,v 1.2 2011/10/23 12:42:27 swift Exp $
+
+  23 Oct 2011; <swift@gentoo.org> selinux-ftp-2.20110726.ebuild:
+  Stabilization (tracker #384231)
+
+*selinux-ftp-2.20110726 (28 Aug 2011)
+
+  28 Aug 2011; <swift@gentoo.org> +selinux-ftp-2.20110726.ebuild,
+  +metadata.xml:
+  New policy based on refpolicy 20110726 sources
+

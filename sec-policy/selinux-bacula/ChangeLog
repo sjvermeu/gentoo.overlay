@@ -1,0 +1,10 @@
+# ChangeLog for sec-policy/selinux-bacula
+# Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-bacula/ChangeLog,v 1.1 2012/01/14 19:59:58 swift Exp $
+
+*selinux-bacula-2.20110726 (28 Dec 2011)
+
+  28 Dec 2011; <swift@gentoo.org> +selinux-bacula-2.20110726.ebuild,
+  +metadata.xml:
+  Initial policy for Bacula, thanks to Stan Sander
+

@@ -1,0 +1,13 @@
+# ChangeLog for sec-policy/selinux-uwimap
+# Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-uwimap/ChangeLog,v 1.2 2011/12/19 18:17:16 swift Exp $
+
+  19 Dec 2011; <swift@gentoo.org> selinux-uwimap-2.20110726.ebuild:
+  Stabilize rev6
+
+*selinux-uwimap-2.20110726 (15 Nov 2011)
+
+  15 Nov 2011; <swift@gentoo.org> +selinux-uwimap-2.20110726.ebuild,
+  +metadata.xml:
+  Adding new SELinux policy (uwimap)
+

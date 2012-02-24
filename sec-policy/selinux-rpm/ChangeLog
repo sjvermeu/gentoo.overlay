@@ -1,0 +1,16 @@
+# ChangeLog for sec-policy/selinux-rpm
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-rpm/ChangeLog,v 1.3 2012/01/29 13:08:49 swift Exp $
+
+  29 Jan 2012;  <swift@gentoo.org> Manifest:
+  Updating manifest
+
+  29 Jan 2012; <swift@gentoo.org> selinux-rpm-2.20110726.ebuild:
+  Stabilize
+
+*selinux-rpm-2.20110726 (04 Dec 2011)
+
+  04 Dec 2011; <swift@gentoo.org> +selinux-rpm-2.20110726.ebuild,
+  +metadata.xml:
+  Adding SELinux module for rpm
+

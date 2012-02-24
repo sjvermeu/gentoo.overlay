@@ -1,0 +1,38 @@
+# ChangeLog for sec-policy/selinux-nginx
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-nginx/ChangeLog,v 1.5 2012/02/07 19:38:33 swift Exp $
+
+  07 Feb 2012; <swift@gentoo.org> selinux-nginx-2.20110726-r1.ebuild:
+  Adding dependency on apache policy as reported by amade on #gentoo-hardened
+
+  12 Nov 2011; <swift@gentoo.org> -files/fix-services-nginx-r1.patch,
+  -files/fix-services-nginx-r2.patch, -selinux-nginx-2.20101213-r1.ebuild,
+  -selinux-nginx-2.20101213-r2.ebuild:
+  Removing old policies
+
+  23 Oct 2011; <swift@gentoo.org> selinux-nginx-2.20110726-r1.ebuild:
+  Stabilization (tracker #384231)
+
+*selinux-nginx-2.20110726-r1 (28 Aug 2011)
+
+  28 Aug 2011; <swift@gentoo.org> +selinux-nginx-2.20110726-r1.ebuild:
+  Updating policy builds to refpolicy 20110726
+
+  25 Jul 2011; Anthony G. Basile <blueness@gentoo.org>
+  +files/fix-services-nginx-r1.patch, +files/fix-services-nginx-r2.patch,
+  +selinux-nginx-2.20101213-r1.ebuild, +selinux-nginx-2.20101213-r2.ebuild,
+  +metadata.xml:
+  Initial commit to tree
+
+*selinux-nginx-2.20101213-r2 (21 Jul 2011)
+
+  21 Jul 2011; <swift@gentoo.org> +files/fix-services-nginx-r2.patch,
+  +selinux-nginx-2.20101213-r2.ebuild:
+  Improve nginx policy and make it compliant with upstream rules
+
+*selinux-nginx-2.20101213-r1 (17 Jul 2011)
+
+  17 Jul 2011; <swift@gentoo.org> +files/fix-services-nginx-r1.patch,
+  +selinux-nginx-2.20101213-r1.ebuild, +metadata.xml:
+  Add initial support for nginx
+
