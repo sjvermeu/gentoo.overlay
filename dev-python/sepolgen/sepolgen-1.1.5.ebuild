@@ -18,7 +18,8 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND=">=sys-libs/libselinux-2.0[python]"
+DEPEND=">=sys-libs/libselinux-2.0[python]
+		>=app-admin/setools[python]"
 RDEPEND="${DEPEND}"
 
 src_prepare() {
