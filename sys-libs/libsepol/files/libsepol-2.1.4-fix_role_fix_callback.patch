@@ -5,7 +5,7 @@ diff -uNr libsepol-2.1.4.orig/src/expand.c libsepol-2.1.4-fix_role_fix_callback/
  		return 0;
  	}
  
-+	if (!isid_enabled(id, state->base, SYM_ROLES)) {
++	if (!is_id_enabled(id, state->base, SYM_ROLES)) {
 +		/* Identifiers scope is not enabled */
 +		return 0;
 +	}
