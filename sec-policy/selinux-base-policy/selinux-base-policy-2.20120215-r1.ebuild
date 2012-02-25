@@ -74,10 +74,6 @@ src_configure() {
 		cd "${S}/${i}";
 		make conf || die "Make conf in ${i} failed"
 
-		# Define what we see as "base" and what we want to remain modular.
-		cp "${FILESDIR}/modules.conf" \
-			"${S}/${i}/policy/modules.conf" \
-			|| die "failed to set up modules.conf"
 		# In case of "targeted", we add the "unconfined" to the base policy
 		if [[ "${i}" == "targeted" ]];
 		then
