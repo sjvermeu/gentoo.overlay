@@ -74,8 +74,7 @@ src_configure() {
 		cd "${S}/${i}";
 		make conf || die "Make conf in ${i} failed"
 
-		# Clean-up, only build base components
-		sed -i -e '/= module/d' "${S}/${i}/policy/modules.conf"
+		cp "${FILESDIR}/modules-2.20120215.conf" "${S}/${i}/policy/modules.conf"
 		# In case of "targeted", we add the "unconfined" to the base policy
 		if [[ "${i}" == "targeted" ]];
 		then
