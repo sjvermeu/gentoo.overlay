@@ -11,8 +11,8 @@ BASEPOL="2.20120215-r1"
 
 inherit eutils
 
-DEPEND=">=sec-policy/selinux-base-2.20120215-r1"
-RDEPEND="${DEPEND}"
+RDEPEND=">=sec-policy/selinux-base-2.20120215-r1"
+DEPEND=""
 SRC_URI="http://oss.tresys.com/files/refpolicy/refpolicy-${PV}.tar.bz2
 		http://dev.gentoo.org/~swift/patches/${PN}/patchbundle-${PN}-${BASEPOL}.tar.bz2"
 KEYWORDS="~amd64 ~x86"
