@@ -10,7 +10,7 @@ inherit eutils
 DESCRIPTION="Gentoo base policy for SELinux"
 HOMEPAGE="http://www.gentoo.org/proj/en/hardened/selinux/"
 SRC_URI="http://oss.tresys.com/files/refpolicy/refpolicy-${PV}.tar.bz2
-	http://dev.gentoo.org/~swift/patches/${PN}/patchbundle-${PF}.tar.bz2"
+	http://dev.gentoo.org/~swift/patches/selinux-base-policy/patchbundle-selinux-base-policy-${PVR}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 
