@@ -18,7 +18,7 @@ KEYWORDS="~amd64 ~x86"
 
 RDEPEND=">=sys-apps/policycoreutils-2.1.10
 	>=sys-fs/udev-151
-	!!<=sec-policy/selinux-base-policy-2.20120215"
+	!<=sec-policy/selinux-base-policy-2.20120215"
 DEPEND="${RDEPEND}
 	sys-devel/m4
 	>=sys-apps/checkpolicy-2.1.8"
