@@ -77,11 +77,6 @@ src_configure() {
 
 		#cp "${FILESDIR}/modules-2.20120215.conf" "${S}/${i}/policy/modules.conf"
 		sed -i -e "/= module/d" "${S}/${i}/policy/modules.conf"
-		# In case of "targeted", we add the "unconfined" to the base policy
-		if [[ "${i}" == "targeted" ]];
-		then
-			echo "unconfined = base" >> "${S}/${i}/policy/modules.conf"
-		fi
 
 		sed -i -e '/^QUIET/s/n/y/' -e "/^NAME/s/refpolicy/$i/" \
 			"${S}/${i}/build.conf" || die "build.conf setup failed."

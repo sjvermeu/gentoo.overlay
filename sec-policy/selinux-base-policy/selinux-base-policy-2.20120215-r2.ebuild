@@ -61,6 +61,12 @@ src_prepare() {
 		fi
 	fi
 
+	# In case of "targeted", we add the "unconfined" to the list
+	if [[ "${i}" == "targeted" ]];
+	then
+		MODS="${MODS} unconfined"
+	fi
+
 	# Collect only those files needed for this particular module
 	for i in ${MODS}; do
 		modfiles="$(find ${S}/refpolicy/policy/modules -iname $i.te) $modfiles"
