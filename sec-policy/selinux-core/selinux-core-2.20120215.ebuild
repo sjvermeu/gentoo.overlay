@@ -12,3 +12,18 @@ inherit selinux-policy-2
 DESCRIPTION="SELinux policy for core modules"
 
 KEYWORDS="~amd64 ~x86"
+
+pkg_postinst() {
+	# Override the command from the eclass, we need to load in base as well here
+	local COMMAND
+	for i in ${MODS}; do
+		COMMAND="-i ${i}.pp ${COMMAND}"
+	done
+
+	for i in ${POLICY_TYPES}; do
+		einfo "Inserting the following modules, with base, into the $i module store: ${MODS}"
+
+		cd /usr/share/selinux/${i} || die "Could not enter /usr/share/selinux/${i}"
+		semodule -s ${i} -b base.pp ${COMMAND} || die "Failed to load in base and modules ${MODS} in the $i policy store"
+	done
+}

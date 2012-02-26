@@ -151,10 +151,14 @@ pkg_postinst() {
 	[ -z "${POLICY_TYPES}" ] && local POLICY_TYPES="targeted strict mls mcs"
 
 	for i in ${POLICY_TYPES}; do
-		einfo "Inserting base module into ${i} module store."
+		einfo "Trying to insert base module into ${i} module store."
 
 		cd "${ROOT}/usr/share/selinux/${i}"
-		semodule -s "${i}" -b base.pp || die "Could not load in new base policy"
+		semodule -s "${i}" -b base.pp
+		if [[ $? -ne 0 ]]; then
+			ewarn "Base policy failed loading. However, this can be ignored if"
+			ewarn "you still have to install (or update) selinux-core."
+		fi
 	done
 	elog "Updates on policies might require you to relabel files. If you, after"
 	elog "installing new SELinux policies, get 'permission denied' errors,"
