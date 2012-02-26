@@ -20,7 +20,8 @@ RDEPEND=">=sys-apps/policycoreutils-2.1.10
 	>=sys-fs/udev-151"
 DEPEND="${RDEPEND}
 	sys-devel/m4
-	>=sys-apps/checkpolicy-2.1.8"
+	>=sys-apps/checkpolicy-2.1.8
+	!<=sec-policy/selinux-base-policy-2.20120215"
 
 S=${WORKDIR}/
 

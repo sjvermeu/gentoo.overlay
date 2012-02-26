@@ -9,6 +9,8 @@ DESCRIPTION="SELinux policy for core modules"
 IUSE=""
 BASEPOL="2.20120215-r1"
 
+inherit eutils
+
 DEPEND=">=sec-policy/selinux-base-2.20120215-r1"
 RDEPEND="${DEPEND}"
 SRC_URI="http://oss.tresys.com/files/refpolicy/refpolicy-${PV}.tar.bz2
