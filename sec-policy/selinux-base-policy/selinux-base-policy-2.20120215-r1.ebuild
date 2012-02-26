@@ -7,10 +7,10 @@ IUSE=""
 MODS="application authlogin bootloader clock consoletype cron dmesg fstools getty hostname hotplug init iptables libraries locallogin logging lvm miscfiles modutils mount mta netutils nscd portage raid rsync selinuxutil ssh staff storage su sysadm sysnetwork udev userdomain usermanage unprivuser xdg"
 BASEPOL="2.20120215-r1"
 
+inherit selinux-policy-2
+
 DEPEND=">=sec-policy/selinux-base-2.20120215-r1"
 RDEPEND="${DEPEND}"
-
-inherit selinux-policy-2
 
 DESCRIPTION="SELinux policy for core modules"
 
