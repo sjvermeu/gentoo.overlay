@@ -17,7 +17,7 @@ SRC_URI="http://oss.tresys.com/files/refpolicy/refpolicy-${PV}.tar.bz2
 		http://dev.gentoo.org/~swift/patches/${PN}/patchbundle-${PN}-${BASEPOL}.tar.bz2"
 KEYWORDS="~amd64 ~x86"
 
-MODS="application authlogin bootloader clock consoletype cron dmesg fstools getty hostname hotplug init iptables libraries locallogin logging lvm miscfiles modutils mount mta netutils nscd portage raid rsync selinuxutil ssh staff storage su sysadm sysnetwork udev userdomain usermanage unprivuser xdg"
+MODS="application authlogin bootloader clock consoletype cron dmesg fstools getty hostname hotplug init iptables libraries locallogin logging lvm miscfiles modutils mount mta netutils nscd portage raid rsync selinuxutil ssh staff storage su sysadm sysnetwork udev userdomain usermanage unprivuser xdg unconfined"
 LICENSE="GPL-2"
 SLOT="0"
 S="${WORKDIR}/"
@@ -59,12 +59,6 @@ src_prepare() {
 				epatch "${POLPATCH}"
 			done
 		fi
-	fi
-
-	# In case of "targeted", we add the "unconfined" to the list
-	if [[ "${i}" == "targeted" ]];
-	then
-		MODS="${MODS} unconfined"
 	fi
 
 	# Collect only those files needed for this particular module
@@ -113,6 +107,11 @@ pkg_postinst() {
 		einfo "Inserting the following modules, with base, into the $i module store: ${MODS}"
 
 		cd /usr/share/selinux/${i} || die "Could not enter /usr/share/selinux/${i}"
-		semodule -s ${i} -b base.pp ${COMMAND} || die "Failed to load in base and modules ${MODS} in the $i policy store"
+
+		if [[ "${i}" == "targeted" ]]; then
+			semodule -s ${i} -b base.pp ${COMMAND} -i unconfined.pp || die "Failed to load in base and modules ${MODS} in the $i policy store"
+		else
+			semodule -s ${i} -b base.pp ${COMMAND} || die "Failed to load in base and modules ${MODS} in the $i policy store"
+		fi
 	done
 }
