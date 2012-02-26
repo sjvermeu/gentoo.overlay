@@ -4,11 +4,11 @@
 EAPI="4"
 
 IUSE=""
-MODS="acct"
+MODS="unconfined"
 BASEPOL="2.20120215-r1"
 
 inherit selinux-policy-2
 
-DESCRIPTION="SELinux policy for acct"
+DESCRIPTION="SELinux policy for unconfined"
 
 KEYWORDS="~amd64 ~x86"
