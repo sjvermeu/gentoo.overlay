@@ -107,7 +107,7 @@ pkg_postinst() {
 		local LOCCOMMAND
 		local LOCMODS
 		if [[ "${i}" != "targeted" ]]; then
-			LOCCOMMAND=$(echo "${COMMAND}" | sed -e 's: -i unconfined.pp::g');
+			LOCCOMMAND=$(echo "${COMMAND}" | sed -e 's:-i unconfined.pp::g');
 			LOCMODS=$(echo "${MODS}" | sed -e 's: unconfined::g');
 		else
 			LOCCOMMAND="${COMMAND}"
