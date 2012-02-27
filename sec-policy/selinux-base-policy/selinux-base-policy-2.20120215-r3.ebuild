@@ -104,14 +104,19 @@ pkg_postinst() {
 	done
 
 	for i in ${POLICY_TYPES}; do
-		einfo "Inserting the following modules, with base, into the $i module store: ${MODS}"
+		local LOCCOMMAND
+		local LOCMODS
+		if [[ "${i}" != "targeted" ]]; then
+			LOCCOMMAND=$(echo "${COMMAND}" | sed -e 's: -i unconfined.pp::g');
+			LOCMODS=$(echo "${MODS}" | sed -e 's: unconfined::g');
+		else
+			LOCCOMMAND="${COMMAND}"
+			LOCMODS="${MODS}"
+		fi
+		einfo "Inserting the following modules, with base, into the $i module store: ${LOCMODS}"
 
 		cd /usr/share/selinux/${i} || die "Could not enter /usr/share/selinux/${i}"
 
-		if [[ "${i}" == "targeted" ]]; then
-			semodule -s ${i} -b base.pp ${COMMAND} -i unconfined.pp || die "Failed to load in base and modules ${MODS} in the $i policy store"
-		else
-			semodule -s ${i} -b base.pp ${COMMAND} || die "Failed to load in base and modules ${MODS} in the $i policy store"
-		fi
+		semodule -s ${i} -b base.pp ${LOCCOMMAND} || die "Failed to load in base and modules ${LOCMODS} in the $i policy store"
 	done
 }
