@@ -1,0 +1,61 @@
+--- guvcview-src-1.5.1.orig/src/v4l2_controls.c	2011-11-18 12:12:53.049556430 +0100
++++ guvcview-src-1.5.1/src/v4l2_controls.c	2011-11-18 12:13:00.095556136 +0100
+@@ -993,10 +993,10 @@
+     int i = 0;
+     int done = 0;
+     
+-    while(!done)
++    for(; next != NULL; current = next, next = current->next)
+     {   
+         if(current->control.flags & V4L2_CTRL_FLAG_WRITE_ONLY)
+-            goto next_control;
++            continue;
+             
+         clist[count].id = current->control.id;
+ #ifndef DISABLE_STRING_CONTROLS 
+@@ -1081,15 +1081,6 @@
+             
+             count = 0;
+             
+-            if(next == NULL)
+-                done = 1;
+-        }
+-        
+-next_control:
+-        if(!done)
+-        {
+-            current = next;
+-            next = current->next;
+         }
+     }
+     
+@@ -1188,10 +1179,10 @@
+     int i = 0;
+     int done = 0;
+     
+-    while(!done)
++    for(; next != NULL; current = next, next = current->next)
+     {
+         if(current->control.flags & V4L2_CTRL_FLAG_READ_ONLY)
+-            goto next_control;
++            continue;
+             
+         clist[count].id = current->control.id;
+         switch (current->control.type)
+@@ -1269,16 +1260,6 @@
+             
+             
+             count = 0;
+-            
+-            if(next == NULL)
+-                done = 1;
+-        }
+-
+-next_control:
+-        if(!done)
+-        {
+-            current = next;
+-            next = current->next;   
+         }
+     }
+     
