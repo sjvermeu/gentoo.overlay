@@ -10,7 +10,7 @@ inherit eutils multilib python bash-completion-r1
 
 DESCRIPTION="Framework which enables integration with the Security Content Automation Protocol (SCAP)"
 HOMEPAGE="http://www.open-scap.org/"
-SRC_URI="http://www.open-scap.org/download/${P}.tar.gz"
+SRC_URI="http://fedorahosted.org/releases/o/p/openscap/${P}.tar.gz"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
