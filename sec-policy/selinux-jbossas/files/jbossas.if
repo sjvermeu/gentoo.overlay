@@ -1,0 +1,19 @@
+# <summary>RedHat JBoss AS</summary>
+
+#######################################
+## <summary>
+## 	Execute a domain transition to run JBoss AS.
+## </summary>
+## <param name="domain">
+## 	<summary>
+##	Domain allowed to transition.
+##	</summary>
+## </param>
+#
+interface(`jbossas_domtrans',`
+	gen_require(`
+		type jbossas_t, jbossas_exec_t;
+	')
+
+	domtrans_pattern($1, jbossas_exec_t, jbossas_t)
+')
