@@ -17,6 +17,8 @@ IUSE="selinux"
 RDEPEND="selinux? ( sec-policy/selinux-jbossas )"
 DEPEND="${RDEPEND}"
 
+S="${WORKDIR}/jboss-as-${MY_PV}"
+
 src_unpack() {
 	unpack ${A}
 }
