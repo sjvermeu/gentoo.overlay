@@ -1,0 +1,30 @@
+#!/sbin/runscript
+# Copyright 1999-2008 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: /var/cvsroot/gentoo-x86/dev-vcs/git/files/git-daemon.initd,v 1.1 2010/03/17 15:13:27 sping Exp $
+
+PIDFILE=/var/run/jboss-as.pid
+LOGFILE=/var/log/jboss-as.log
+
+depend() {
+	need net
+	use logger
+}
+
+start() {
+	ebegin "Starting JBoss AS"
+		start-stop-daemon --start --quiet --background \
+		--make-pidfile --pidfile ${PIDFILE} \
+		--stdout ${LOGFILE} --stderr ${LOGFILE} \
+		--exec /opt/redhat/jboss-as-7.1.0.CR1b/bin/standalone.sh \
+		--user=${JBOSS_AS_USER} --group=${JBOSS_AS_GROUP} \
+		-- ${JBOSS_AS_OPTS}
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping JBoss AS"
+		start-stop-daemon --stop --quiet \
+		--pidfile ${PIDFILE}
+	eend $?
+}
