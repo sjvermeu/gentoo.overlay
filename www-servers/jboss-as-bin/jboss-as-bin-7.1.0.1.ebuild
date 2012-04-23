@@ -14,8 +14,9 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="selinux"
 
-RDEPEND="selinux? ( sec-policy/selinux-jbossas )"
-DEPEND="${RDEPEND}"
+RDEPEND="selinux? ( sec-policy/selinux-jbossas )
+		virtual/jdk"
+DEPEND="selinux? ( sec-policy/selinux-jbossas )"
 
 S="${WORKDIR}/jboss-as-${MY_PV}"
 
@@ -25,8 +26,8 @@ src_unpack() {
 
 src_install() {
 	# Install JBoss AS in /opt
-	dodir /opt/redhat
-	mv "${S}" "${D}"/opt/redhat/jboss-as || die
+	dodir /opt/redhat/jboss-as
+	mv "${S}/*" "${D}"/opt/redhat/jboss-as || die
 
 	doconfd "${FILESDIR}/jboss-as.conf" jboss-as
 	doinitd "${FILESDIR}/jboss-as.init" jboss-as
