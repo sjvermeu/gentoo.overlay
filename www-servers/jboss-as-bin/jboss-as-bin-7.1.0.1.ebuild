@@ -30,6 +30,6 @@ src_install() {
 	mv "${S}" "${D}"/opt/redhat/ || die
 	mv "${D}/opt/redhat/jboss-as-${MY_PV}" "${D}/opt/redhat/jboss-as" || die
 
-	doconfd "${FILESDIR}/jboss-as.conf" jboss-as
-	doinitd "${FILESDIR}/jboss-as.init" jboss-as
+	newconfd "${FILESDIR}/jboss-as.conf" jboss-as
+	newinitd "${FILESDIR}/jboss-as.init" jboss-as
 }
