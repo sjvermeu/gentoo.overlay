@@ -26,8 +26,9 @@ src_unpack() {
 
 src_install() {
 	# Install JBoss AS in /opt
-	dodir /opt/redhat/jboss-as
-	mv "${S}/*" "${D}"/opt/redhat/jboss-as || die
+	dodir /opt/redhat
+	mv "${S}" "${D}"/opt/redhat/ || die
+	mv "${D}/opt/redhat/jboss-as-${MY_PV}" "${D}/opt/redhat/jboss-as" || die
 
 	doconfd "${FILESDIR}/jboss-as.conf" jboss-as
 	doinitd "${FILESDIR}/jboss-as.init" jboss-as
