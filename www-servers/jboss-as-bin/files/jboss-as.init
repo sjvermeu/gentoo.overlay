@@ -16,7 +16,7 @@ start() {
 		start-stop-daemon --start --quiet --background \
 		--make-pidfile --pidfile ${PIDFILE} \
 		--stdout ${LOGFILE} --stderr ${LOGFILE} \
-		--exec /opt/redhat/jboss-as-7.1.0.CR1b/bin/standalone.sh \
+		--exec /opt/redhat/jboss-as/bin/standalone.sh \
 		--user=${JBOSS_AS_USER} --group=${JBOSS_AS_GROUP} \
 		-- ${JBOSS_AS_OPTS}
 	eend $?
