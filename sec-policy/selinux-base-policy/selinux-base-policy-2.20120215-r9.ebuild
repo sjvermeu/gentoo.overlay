@@ -3,13 +3,13 @@
 # $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-dcc/selinux-dcc-2.20110726.ebuild,v 1.2 2011/10/23 12:42:45 swift Exp $
 EAPI="4"
 
+inherit eutils
+
 HOMEPAGE="http://www.gentoo.org/proj/en/hardened/selinux/"
 DESCRIPTION="SELinux policy for core modules"
 
 IUSE=""
 BASEPOL="2.20120215-r9"
-
-inherit eutils
 
 RDEPEND=">=sec-policy/selinux-base-2.20120215-r9"
 DEPEND=""

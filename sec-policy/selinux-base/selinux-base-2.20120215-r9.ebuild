@@ -1,11 +1,11 @@
 # Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-base-policy/selinux-base-policy-2.20110726-r13.ebuild,v 1.1 2012/02/23 18:17:40 swift Exp $
-
 EAPI="4"
-IUSE="+peer_perms +open_perms +ubac doc"
 
 inherit eutils
+
+IUSE="+peer_perms +open_perms +ubac doc"
 
 DESCRIPTION="Gentoo base policy for SELinux"
 HOMEPAGE="http://www.gentoo.org/proj/en/hardened/selinux/"
