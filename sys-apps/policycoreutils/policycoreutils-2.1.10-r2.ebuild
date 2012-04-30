@@ -25,8 +25,7 @@ SRC_URI="http://userspace.selinuxproject.org/releases/20120216/${P}.tar.gz
 	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.10-fix-seunshare.patch.gz
 	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.10-fix-nodbus_or_libcg.patch.gz
 	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.10-fix-rlpkg-python3.patch.gz
-	mirror://gentoo/policycoreutils-extra-${EXTRAS_VER}.tar.bz2
-	mirror://gentoo/policycoreutils-2.0.85-python3.tar.gz"
+	mirror://gentoo/policycoreutils-extra-${EXTRAS_VER}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -87,6 +86,7 @@ src_prepare() {
 	cp "${WORKDIR}/chcat" "${S}/scripts/chcat" || die "failed to copy chcat"
 	cp "${WORKDIR}/audit2allow" "${S}/audit2allow/audit2allow" || die "failed to copy audit2allow"
 	# Fix rlpkg for python3 support
+	cd "${S2}";
 	epatch "${DISTDIR}/policycoreutils-2.1.10-fix-rlpkg-python3.patch.gz"
 }
 
