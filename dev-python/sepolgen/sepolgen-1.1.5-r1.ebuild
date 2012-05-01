@@ -2,12 +2,12 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/dev-python/sepolgen/sepolgen-1.1.5.ebuild,v 1.3 2012/04/29 10:08:34 swift Exp $
 
-EAPI="3"
+EAPI="4"
 PYTHON_DEPEND="*"
 SUPPORT_PYTHON_ABIS="1"
 RESTRICT_PYTHON_ABIS="*-jython"
 
-inherit python
+inherit python eutils
 
 DESCRIPTION="SELinux policy generation library"
 HOMEPAGE="http://userspace.selinuxproject.org"
@@ -23,6 +23,7 @@ DEPEND=">=sys-libs/libselinux-2.0[python]
 RDEPEND="${DEPEND}"
 
 src_prepare() {
+	epatch "${FILESDIR}/sepolgen-1.1.5-2to3.patch"
 	# fix up default paths to not be RH specific
 	sed -i -e 's:/usr/share/selinux/devel:/usr/share/selinux/strict:' \
 		"${S}/src/sepolgen/defaults.py" || die
