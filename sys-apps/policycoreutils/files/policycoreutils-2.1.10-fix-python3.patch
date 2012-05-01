@@ -450,7 +450,7 @@ diff -ur policycoreutils-2.1.10.orig/semanage/semanage policycoreutils-2.1.10/se
  		errorExit(error.args[0])
 diff -ur policycoreutils-2.1.10.orig/semanage/seobject.py policycoreutils-2.1.10/semanage/seobject.py
 --- policycoreutils-2.1.10.orig/semanage/seobject.py	2012-05-01 15:55:21.320022889 +0200
-+++ policycoreutils-2.1.10/semanage/seobject.py	2012-05-01 16:17:50.421025769 +0200
++++ policycoreutils-2.1.10/semanage/seobject.py	2012-05-01 16:22:34.087026375 +0200
 @@ -16,8 +16,8 @@
  #
  #    You should have received a copy of the GNU General Public License
@@ -547,15 +547,17 @@ diff -ur policycoreutils-2.1.10.orig/semanage/seobject.py policycoreutils-2.1.10
  		context = "%s%s" % (filler, raw)
  	else:
  		context = raw
-@@ -146,7 +142,7 @@
+@@ -146,8 +142,8 @@
  		return trans
  	
  def untranslate(trans, prepend = 1):
 -        filler = "a:b:c:"
+- 	if prepend == 1:
 +	filler = "a:b:c:"
-  	if prepend == 1:
++	if prepend == 1:
  		context = "%s%s" % (filler, trans)
  	else:
+ 		context = trans
 @@ -163,95 +159,94 @@
  		return raw
  
