@@ -1,0 +1,890 @@
+diff -ur policycoreutils-2.1.10.orig/audit2allow/audit2allow policycoreutils-2.1.10/audit2allow/audit2allow
+--- policycoreutils-2.1.10.orig/audit2allow/audit2allow	2012-05-01 15:55:21.278022889 +0200
++++ policycoreutils-2.1.10/audit2allow/audit2allow	2012-05-01 15:57:53.988023215 +0200
+@@ -133,13 +133,13 @@
+         elif self.__options.audit:
+             try:
+                 messages = audit.get_audit_msgs()
+-            except OSError, e:
++            except OSError as e:
+                 sys.stderr.write('could not run ausearch - "%s"\n' % str(e))
+                 sys.exit(1)
+         elif self.__options.boot:
+             try:
+                 messages = audit.get_audit_boot_msgs()
+-            except OSError, e:
++            except OSError as e:
+                 sys.stderr.write('could not run ausearch - "%s"\n' % str(e))
+                 sys.exit(1)
+         else:
+@@ -150,7 +150,7 @@
+         if filename is not None:
+             try:
+                 f = open(filename)
+-            except IOError, e:
++            except IOError as e:
+                 sys.stderr.write('could not open file %s - "%s"\n' % (filename, str(e)))
+                 sys.exit(1)
+ 
+@@ -212,7 +212,7 @@
+ 
+         try:
+             fd = open(filename, "w")
+-        except IOError, e:
++        except IOError as e:
+             sys.stderr.write("could not write output file: %s\n" % str(e))
+             sys.exit(1)
+ 
+@@ -223,8 +223,8 @@
+ 
+         try:
+             mc.create_module_package(filename, self.__options.refpolicy)
+-        except RuntimeError, e:
+-            print e
++        except RuntimeError as e:
++            print(e)
+             sys.exit(1)
+ 
+         sys.stdout.write(_("******************** IMPORTANT ***********************\n"))
+@@ -238,43 +238,43 @@
+                 rc = i.type
+                 bools = i.bools
+                 if rc >= 0:
+-                    print "%s\n\tWas caused by:" % i.message
++                    print("%s\n\tWas caused by:" % i.message)
+                 if rc == audit2why.ALLOW:
+-                    print "\t\tUnknown - would be allowed by active policy\n",
+-                    print "\t\tPossible mismatch between this policy and the one under which the audit message was generated.\n"
+-                    print "\t\tPossible mismatch between current in-memory boolean settings vs. permanent ones.\n"
++                    print("\t\tUnknown - would be allowed by active policy\n", end=' ')
++                    print("\t\tPossible mismatch between this policy and the one under which the audit message was generated.\n")
++                    print("\t\tPossible mismatch between current in-memory boolean settings vs. permanent ones.\n")
+                     continue
+                 if rc == audit2why.DONTAUDIT:
+-                    print "\t\tUnknown - should be dontaudit'd by active policy\n",
+-                    print "\t\tPossible mismatch between this policy and the one under which the audit message was generated.\n"
+-                    print "\t\tPossible mismatch between current in-memory boolean settings vs. permanent ones.\n"
++                    print("\t\tUnknown - should be dontaudit'd by active policy\n", end=' ')
++                    print("\t\tPossible mismatch between this policy and the one under which the audit message was generated.\n")
++                    print("\t\tPossible mismatch between current in-memory boolean settings vs. permanent ones.\n")
+                     continue
+                 if rc == audit2why.BOOLEAN:
+                     if len(bools) > 1:
+-                        print "\tOne of the following booleans was set incorrectly."
++                        print("\tOne of the following booleans was set incorrectly.")
+                         for b in bools:
+-                            print "\tDescription:\n\t%s\n"  % seobject.boolean_desc(b[0])
+-                            print "\tAllow access by executing:\n\t# setsebool -P %s %d"  % (b[0], b[1])
++                            print("\tDescription:\n\t%s\n"  % seobject.boolean_desc(b[0]))
++                            print("\tAllow access by executing:\n\t# setsebool -P %s %d"  % (b[0], b[1]))
+                     else:
+-                        print "\tThe boolean %s was set incorrectly. " % (bools[0][0])
+-                        print "\tDescription:\n\t%s\n"  % seobject.boolean_desc(bools[0][0])
+-                        print "\tAllow access by executing:\n\t# setsebool -P %s %d"  % (bools[0][0], bools[0][1])
++                        print("\tThe boolean %s was set incorrectly. " % (bools[0][0]))
++                        print("\tDescription:\n\t%s\n"  % seobject.boolean_desc(bools[0][0]))
++                        print("\tAllow access by executing:\n\t# setsebool -P %s %d"  % (bools[0][0], bools[0][1]))
+                     continue
+ 
+                 if rc == audit2why.TERULE:
+-                    print "\t\tMissing type enforcement (TE) allow rule.\n"
+-                    print "\t\tYou can use audit2allow to generate a loadable module to allow this access.\n"
++                    print("\t\tMissing type enforcement (TE) allow rule.\n")
++                    print("\t\tYou can use audit2allow to generate a loadable module to allow this access.\n")
+                     continue
+ 
+                 if rc == audit2why.CONSTRAINT:
+-                    print "\t\tPolicy constraint violation.\n"
+-                    print "\t\tMay require adding a type attribute to the domain or type to satisfy the constraint.\n"
+-                    print "\t\tConstraints are defined in the policy sources in policy/constraints (general), policy/mcs (MCS), and policy/mls (MLS).\n"
++                    print("\t\tPolicy constraint violation.\n")
++                    print("\t\tMay require adding a type attribute to the domain or type to satisfy the constraint.\n")
++                    print("\t\tConstraints are defined in the policy sources in policy/constraints (general), policy/mcs (MCS), and policy/mls (MLS).\n")
+                     continue
+ 
+                 if rc == audit2why.RBAC:
+-                    print "\t\tMissing role allow rule.\n"
+-                    print "\t\tAdd an allow rule for the role pair.\n"
++                    print("\t\tMissing role allow rule.\n")
++                    print("\t\tAdd an allow rule for the role pair.\n")
+                     continue
+ 
+             audit2why.finish()
+@@ -285,8 +285,8 @@
+         if self.__options.audit2why:
+             try:
+                 return self.__output_audit2why()
+-            except RuntimeError, e:
+-                print e
++            except RuntimeError as e:
++                print(e)
+                 sys.exit(1)
+ 
+         g = policygen.PolicyGenerator()
+@@ -345,8 +345,8 @@
+             self.__output()
+         except KeyboardInterrupt:
+             sys.exit(0)
+-        except ValueError, e:
+-            print e
++        except ValueError as e:
++            print(e)
+             sys.exit(1)
+ 
+ if __name__ == "__main__":
+diff -ur policycoreutils-2.1.10.orig/scripts/chcat policycoreutils-2.1.10/scripts/chcat
+--- policycoreutils-2.1.10.orig/scripts/chcat	2012-05-01 15:55:21.283022889 +0200
++++ policycoreutils-2.1.10/scripts/chcat	2012-05-01 15:58:37.789023308 +0200
+@@ -22,15 +22,15 @@
+ #                                        02111-1307  USA
+ #
+ #  
+-import commands, sys, os, pwd, string, getopt, selinux
++import subprocess, sys, os, pwd, string, getopt, selinux
+ import seobject
+ import gettext
+ 
+ try:
+     gettext.install('policycoreutils')
+ except IOError:
+-       import __builtin__
+-       __builtin__.__dict__['_'] = unicode
++       import builtins
++       builtins.__dict__['_'] = str
+ 
+ def errorExit(error):
+     sys.stderr.write("%s: " % sys.argv[0])
+@@ -52,7 +52,7 @@
+     add_ind = 0
+     verify_users(users)
+     for u in users:
+-        if u in seusers.keys():
++        if u in list(seusers.keys()):
+             user = seusers[u]
+         else:
+             add_ind = 1
+@@ -80,9 +80,9 @@
+             cmd = "semanage login -a -r %s -s %s %s" % (new_serange, user[0], u)
+         else:
+             cmd = "semanage login -m -r %s -s %s %s" % (new_serange, user[0], u)
+-        rc = commands.getstatusoutput(cmd)
++        rc = subprocess.getstatusoutput(cmd)
+         if rc[0] != 0:
+-            print rc[1]
++            print(rc[1])
+             errors += 1
+ 
+     return errors
+@@ -103,11 +103,11 @@
+         con = c.split(":")[3:]
+         clist  =  translate(con)
+         if sensitivity != clist[0]:
+-                print(_("Can not modify sensitivity levels using '+' on %s") % f)
++                print((_("Can not modify sensitivity levels using '+' on %s") % f))
+ 
+         if len(clist) > 1:
+             if cat in clist[1:]:
+-                print _("%s is already in %s") % (f, orig)
++                print(_("%s is already in %s") % (f, orig))
+                 continue
+             clist.append(cat)
+             cats = clist[1:]
+@@ -118,9 +118,9 @@
+         else:
+             cat_string = cat
+         cmd = 'chcon -l %s:%s %s' % (sensitivity, cat_string, f)
+-        rc = commands.getstatusoutput(cmd)
++        rc = subprocess.getstatusoutput(cmd)
+         if rc[0] != 0:
+-            print rc[1]
++            print(rc[1])
+             errors += 1
+     return errors
+ 
+@@ -131,7 +131,7 @@
+     add_ind = 0
+     verify_users(users)
+     for u in users:
+-        if u in seusers.keys():
++        if u in list(seusers.keys()):
+             user = seusers[u]
+         else:
+             add_ind = 1
+@@ -158,9 +158,9 @@
+             cmd = "semanage login -a -r %s -s %s %s" % (new_serange, user[0], u)
+         else:
+             cmd = "semanage login -m -r %s -s %s %s" % (new_serange, user[0], u)
+-        rc = commands.getstatusoutput(cmd)
++        rc = subprocess.getstatusoutput(cmd)
+         if rc[0] != 0:
+-            print rc[1]
++            print(rc[1])
+             errors += 1
+     return errors
+         
+@@ -180,12 +180,12 @@
+         con = c.split(":")[3:]
+         clist = translate(con)
+         if sensitivity != clist[0]:
+-                print(_("Can not modify sensitivity levels using '+' on %s") % f)
++                print((_("Can not modify sensitivity levels using '+' on %s") % f))
+                 continue
+             
+         if len(clist) > 1:
+             if cat not in clist[1:]:
+-                print _("%s is not in %s") % (f, orig)
++                print(_("%s is not in %s") % (f, orig))
+                 continue
+             clist.remove(cat)
+             if len(clist) > 1:
+@@ -195,16 +195,16 @@
+             else:
+                 cat = ""
+         else:
+-                print _("%s is not in %s") % (f, orig)
++                print(_("%s is not in %s") % (f, orig))
+                 continue
+         
+         if len(cat) == 0: 
+             cmd = 'chcon -l %s %s' % (sensitivity, f)
+         else:
+             cmd = 'chcon -l %s:%s %s' % (sensitivity,cat, f)
+-        rc = commands.getstatusoutput(cmd)
++        rc = subprocess.getstatusoutput(cmd)
+         if rc[0] != 0:
+-            print rc[1]
++            print(rc[1])
+             errors += 1
+     return errors
+ 
+@@ -215,7 +215,7 @@
+     add_ind = 0
+     verify_users(users)
+     for u in users:
+-        if u in seusers.keys():
++        if u in list(seusers.keys()):
+             user = seusers[u]
+         else:
+             add_ind = 1
+@@ -229,9 +229,9 @@
+             cmd = "semanage login -a -r %s -s %s %s" % (new_serange, user[0], u)
+         else:
+             cmd = "semanage login -m -r %s -s %s %s" % (new_serange, user[0], u)
+-        rc = commands.getstatusoutput(cmd)
++        rc = subprocess.getstatusoutput(cmd)
+         if rc[0] != 0:
+-            print rc[1]
++            print(rc[1])
+             errors += 1
+     return errors
+     
+@@ -251,9 +251,9 @@
+     for f in objects:
+         cmd = "%s %s" % (cmd, f)
+ 
+-    rc = commands.getstatusoutput(cmd)
++    rc = subprocess.getstatusoutput(cmd)
+     if rc[0] != 0:
+-        print rc[1]
++        print(rc[1])
+         errors += 1
+ 
+     return errors
+@@ -322,17 +322,17 @@
+     return newcat
+     
+ def usage():
+-	print _("Usage %s CATEGORY File ...") % sys.argv[0]
+-	print _("Usage %s -l CATEGORY user ...") % sys.argv[0]
+-	print _("Usage %s [[+|-]CATEGORY],...]q File ...") % sys.argv[0]
+-	print _("Usage %s -l [[+|-]CATEGORY],...]q user ...") % sys.argv[0]
+-	print _("Usage %s -d File ...") % sys.argv[0]
+-	print _("Usage %s -l -d user ...") % sys.argv[0]
+-	print _("Usage %s -L") % sys.argv[0]
+-	print _("Usage %s -L -l user") % sys.argv[0]
+-        print _("Use -- to end option list.  For example")
+-        print _("chcat -- -CompanyConfidential /docs/businessplan.odt")
+-        print _("chcat -l +CompanyConfidential juser")
++	print(_("Usage %s CATEGORY File ...") % sys.argv[0])
++	print(_("Usage %s -l CATEGORY user ...") % sys.argv[0])
++	print(_("Usage %s [[+|-]CATEGORY],...]q File ...") % sys.argv[0])
++	print(_("Usage %s -l [[+|-]CATEGORY],...]q user ...") % sys.argv[0])
++	print(_("Usage %s -d File ...") % sys.argv[0])
++	print(_("Usage %s -l -d user ...") % sys.argv[0])
++	print(_("Usage %s -L") % sys.argv[0])
++	print(_("Usage %s -L -l user") % sys.argv[0])
++        print(_("Use -- to end option list.  For example"))
++        print(_("chcat -- -CompanyConfidential /docs/businessplan.odt"))
++        print(_("chcat -l +CompanyConfidential juser"))
+ 	sys.exit(1)
+ 
+ def listcats():
+@@ -342,7 +342,7 @@
+             continue
+         if l.find("=") != -1:
+             rec = l.split("=")
+-            print "%-30s %s" % tuple(rec)
++            print("%-30s %s" % tuple(rec))
+     fd.close()
+     return 0
+     
+@@ -356,12 +356,12 @@
+         cats = seobject.translate(selinux.getseuserbyname(u)[2])
+         cats = cats.split("-")
+         if len(cats) > 1 and cats[1] != "s0":
+-            print "%s: %s" % (u, cats[1])
++            print("%s: %s" % (u, cats[1]))
+         else:
+-            print "%s: %s" % (u, cats[0])
++            print("%s: %s" % (u, cats[0]))
+             
+ def error(msg):
+-    print "%s: %s" % (sys.argv[0], msg)
++    print("%s: %s" % (sys.argv[0], msg))
+     sys.exit(1)
+     
+ if __name__ == '__main__':
+@@ -395,10 +395,10 @@
+         if list_ind == 0 and len(cmds) < 1:
+             usage()
+ 
+-    except getopt.error, error:
++    except getopt.error as error:
+         errorExit(_("Options Error %s ") % error.msg)
+ 
+-    except ValueError, e:
++    except ValueError as e:
+         usage()
+ 
+     if delete_ind:
+@@ -433,9 +433,9 @@
+                 if len(c) > 0 and c[0] == "-":
+                     errors += chcat_remove(c[1:],translate(l), objects, login_ind)
+                     continue
+-    except ValueError, e:
++    except ValueError as e:
+         error(e)
+-    except OSError, e:
++    except OSError as e:
+         error(e)
+     
+     sys.exit(errors)
+diff -ur policycoreutils-2.1.10.orig/semanage/semanage policycoreutils-2.1.10/semanage/semanage
+--- policycoreutils-2.1.10.orig/semanage/semanage	2012-05-01 15:55:21.320022889 +0200
++++ policycoreutils-2.1.10/semanage/semanage	2012-05-01 15:59:27.747023416 +0200
+@@ -29,14 +29,9 @@
+ gettext.bindtextdomain(PROGNAME, "/usr/share/locale")
+ gettext.textdomain(PROGNAME)
+ 
+-try:
+-       gettext.install(PROGNAME,
+-                       localedir="/usr/share/locale",
+-                       unicode=False,
+-                       codeset = 'utf-8')
+-except IOError:
+-       import __builtin__
+-       __builtin__.__dict__['_'] = unicode
++gettext.install(PROGNAME,
++                localedir="/usr/share/locale",
++                codeset = 'utf-8')
+ 
+ if __name__ == '__main__':
+ 	manageditems=[ "boolean", "login", "user", "port", "interface", "node", "fcontext"]
+@@ -215,7 +210,7 @@
+ 			return
+ 		object = argv[0]
+ 		option_dict=get_options()
+-		if object not in option_dict.keys():
++		if object not in list(option_dict.keys()):
+ 			usage(_("Invalid parameter %s not defined") % object)
+ 			
+ 		args = argv[1:]
+@@ -251,7 +246,7 @@
+ 						     'prefix=',
+ 						     'mask='
+ 						     ])
+-		except getopt.error, error:
++		except getopt.error as error:
+ 			usage(_("Options Error %s ") % error.msg)
+ 
+ 		for o, a in gopts:
+@@ -386,7 +381,7 @@
+ 			
+ 		if extract:
+ 			for i in OBJECT.customized():
+-				print "%s %s" % (object, str(i))
++				print("%s %s" % (object, str(i)))
+ 			return
+ 
+ 		if len(cmds) != 1:
+@@ -541,7 +536,7 @@
+                       if output != "-":
+                              sys.stdout = open(output, 'w')
+                       for i in manageditems:
+-                             print "%s -D" % i
++                             print("%s -D" % i)
+                              process_args([i, "-E"])
+                       sys.exit(0)
+ 
+@@ -558,15 +553,15 @@
+                else:
+                       process_args(sys.argv[1:])
+ 			
+-	except getopt.error, error:
++	except getopt.error as error:
+ 		usage(_("Options Error %s ") % error.msg)
+-	except ValueError, error:
++	except ValueError as error:
+ 		errorExit(error.args[0])
+-	except KeyError, error:
++	except KeyError as error:
+ 		errorExit(_("Invalid value %s") % error.args[0])
+-	except IOError, error:
++	except IOError as error:
+ 		errorExit(error.args[1])
+-	except OSError, error:
++	except OSError as error:
+ 		errorExit(error.args[1])
+-	except RuntimeError, error:
++	except RuntimeError as error:
+ 		errorExit(error.args[0])
+diff -ur policycoreutils-2.1.10.orig/semanage/seobject.py policycoreutils-2.1.10/semanage/seobject.py
+--- policycoreutils-2.1.10.orig/semanage/seobject.py	2012-05-01 15:55:21.320022889 +0200
++++ policycoreutils-2.1.10/semanage/seobject.py	2012-05-01 16:00:01.143023486 +0200
+@@ -30,11 +30,7 @@
+ import gettext
+ gettext.bindtextdomain(PROGNAME, "/usr/share/locale")
+ gettext.textdomain(PROGNAME)
+-try:
+-       gettext.install(PROGNAME, localedir = "/usr/share/locale", unicode = 1)
+-except IOError:
+-       import __builtin__
+-       __builtin__.__dict__['_'] = unicode
++gettext.install(PROGNAME, localedir = "/usr/share/locale")
+ 
+ import syslog
+ 
+@@ -111,7 +107,7 @@
+               desc = i.find("desc").find("p").text.strip("\n")
+               desc = re.sub("\n", " ", desc)
+               booleans_dict[i.get('name')] = (_("global"), i.get('dftval'), desc)
+-except IOError, e:
++except IOError as e:
+        #print _("Failed to translate booleans.\n%s") % e
+        pass
+ 
+@@ -259,13 +255,13 @@
+ 			return 
+ 
+ 		if heading:
+-			print "\n%-25s%-10s\n" % (_("Modules Name"), _("Version"))
++			print("\n%-25s%-10s\n" % (_("Modules Name"), _("Version")))
+                 for t in all:
+                        if t[2] == 0:
+                               disabled = _("Disabled")
+                        else:
+                               disabled = ""
+-                       print "%-25s%-10s%s" % (t[0], t[1], disabled)
++                       print("%-25s%-10s%s" % (t[0], t[1], disabled))
+ 
+ 	def add(self, file):
+                rc = semanage_module_install_file(self.sh, file);
+@@ -337,24 +333,24 @@
+ 
+ 	def list(self, heading = 1, locallist = 0):
+ 		import setools
+-		all = map(lambda y: y["name"], filter(lambda x: x["permissive"], setools.seinfo(setools.TYPE)))
++		all = [y["name"] for y in [x for x in setools.seinfo(setools.TYPE) if x["permissive"]]]
+ 		if len(all) == 0:
+ 			return 
+ 
+ 		if heading:
+-			print "\n%-25s\n" % (_("Builtin Permissive Types"))
++			print("\n%-25s\n" % (_("Builtin Permissive Types")))
+ 		customized = self.get_all()
+                 for t in all:
+ 			if t not in customized:
+-				print t
++				print(t)
+ 
+ 		if len(customized) == 0:
+ 			return 
+ 
+ 		if heading:
+-			print "\n%-25s\n" % (_("Customized Permissive Types"))
++			print("\n%-25s\n" % (_("Customized Permissive Types")))
+ 		for t in customized:
+-			print t
++			print(t)
+ 
+ 	def add(self, type):
+                import glob
+@@ -473,7 +469,7 @@
+                         self.__add(name, sename, serange)
+                         self.commit()
+ 
+-		except ValueError, error:
++		except ValueError as error:
+ 			mylog.log(0, _("add SELinux user mapping"), name, sename, "", serange);
+ 			raise error
+ 		
+@@ -524,7 +520,7 @@
+                         self.__modify(name, sename, serange)
+                         self.commit()
+ 
+-		except ValueError, error:
++		except ValueError as error:
+ 			mylog.log(0, "modify selinux user mapping", name, sename, "", serange, "", "", "");
+ 			raise error
+ 		
+@@ -557,7 +553,7 @@
+                        self.__delete(name)
+                        self.commit()
+ 
+-		except ValueError, error:
++		except ValueError as error:
+ 			mylog.log(0, "delete SELinux user mapping", name);
+ 			raise error
+ 		
+@@ -590,7 +586,7 @@
+         def customized(self):
+                 l = []
+                 ddict = self.get_all(True)
+-                keys = ddict.keys()
++                keys = list(ddict.keys())
+                 keys.sort()
+                 for k in keys:
+                        l.append("-a -s %s -r '%s' %s" % (ddict[k][0], ddict[k][1], k))
+@@ -598,21 +594,21 @@
+ 
+ 	def list(self,heading = 1, locallist = 0):
+ 		ddict = self.get_all(locallist)
+-		keys = ddict.keys()
++		keys = list(ddict.keys())
+ 		if len(keys) == 0:
+ 			return 
+ 		keys.sort()
+ 
+ 		if is_mls_enabled == 1:
+ 			if heading:
+-				print "\n%-25s %-25s %-25s\n" % (_("Login Name"), _("SELinux User"), _("MLS/MCS Range"))
++				print("\n%-25s %-25s %-25s\n" % (_("Login Name"), _("SELinux User"), _("MLS/MCS Range")))
+ 			for k in keys:
+-				print "%-25s %-25s %-25s" % (k, ddict[k][0], translate(ddict[k][1]))
++				print("%-25s %-25s %-25s" % (k, ddict[k][0], translate(ddict[k][1])))
+ 		else:
+ 			if heading:
+-				print "\n%-25s %-25s\n" % (_("Login Name"), _("SELinux User"))
++				print("\n%-25s %-25s\n" % (_("Login Name"), _("SELinux User")))
+ 			for k in keys:
+-				print "%-25s %-25s" % (k, ddict[k][0])
++				print("%-25s %-25s" % (k, ddict[k][0]))
+ 
+ class seluserRecords(semanageRecords):
+ 	def __init__(self, store = ""):
+@@ -684,7 +680,7 @@
+                        self.begin()
+                        self.__add( name, roles, selevel, serange, prefix)
+                        self.commit()
+-		except ValueError, error:
++		except ValueError as error:
+ 			mylog.log(0,"add SELinux user record", name, name, seroles, serange)
+ 			raise error
+ 		
+@@ -753,7 +749,7 @@
+                         self.__modify(name, roles, selevel, serange, prefix)
+                         self.commit()
+ 
+-		except ValueError, error:
++		except ValueError as error:
+ 			mylog.log(0,"modify SELinux user record", name, "", " ".join(roles), serange, "", "", "")
+ 			raise error
+ 
+@@ -786,7 +782,7 @@
+                         self.__delete(name)
+                         self.commit()
+ 
+-		except ValueError, error:
++		except ValueError as error:
+ 			mylog.log(0,"delete SELinux user record", name)
+ 			raise error
+ 		
+@@ -825,7 +821,7 @@
+         def customized(self):
+                 l = []
+                 ddict = self.get_all(True)
+-                keys = ddict.keys()
++                keys = list(ddict.keys())
+                 keys.sort()
+                 for k in keys:
+                        l.append("-a -r %s -R '%s' %s" % (ddict[k][2], ddict[k][3], k))
+@@ -833,22 +829,22 @@
+ 
+ 	def list(self, heading = 1, locallist = 0):
+ 		ddict = self.get_all(locallist)
+-		keys = ddict.keys()
++		keys = list(ddict.keys())
+ 		if len(keys) == 0:
+ 			return 
+ 		keys.sort()
+ 
+ 		if is_mls_enabled == 1:
+ 			if heading:
+-				print "\n%-15s %-10s %-10s %-30s" % ("", _("Labeling"), _("MLS/"), _("MLS/"))
+-				print "%-15s %-10s %-10s %-30s %s\n" % (_("SELinux User"), _("Prefix"), _("MCS Level"), _("MCS Range"), _("SELinux Roles"))
++				print("\n%-15s %-10s %-10s %-30s" % ("", _("Labeling"), _("MLS/"), _("MLS/")))
++				print("%-15s %-10s %-10s %-30s %s\n" % (_("SELinux User"), _("Prefix"), _("MCS Level"), _("MCS Range"), _("SELinux Roles")))
+ 			for k in keys:
+-				print "%-15s %-10s %-10s %-30s %s" % (k, ddict[k][0], translate(ddict[k][1]), translate(ddict[k][2]), ddict[k][3])
++				print("%-15s %-10s %-10s %-30s %s" % (k, ddict[k][0], translate(ddict[k][1]), translate(ddict[k][2]), ddict[k][3]))
+ 		else:
+ 			if heading:
+-				print "%-15s %s\n" % (_("SELinux User"), _("SELinux Roles"))
++				print("%-15s %s\n" % (_("SELinux User"), _("SELinux Roles")))
+ 			for k in keys:
+-				print "%-15s %s" % (k, ddict[k][3])
++				print("%-15s %s" % (k, ddict[k][3]))
+ 
+ class portRecords(semanageRecords):
+ 	def __init__(self, store = ""):
+@@ -1069,7 +1065,7 @@
+ 			proto_str = semanage_port_get_proto_str(proto)
+ 			low = semanage_port_get_low(port)
+ 			high = semanage_port_get_high(port)
+-			if (ctype, proto_str) not in ddict.keys():
++			if (ctype, proto_str) not in list(ddict.keys()):
+ 				ddict[(ctype,proto_str)] = []
+ 			if low == high:
+ 				ddict[(ctype,proto_str)].append("%d" % low)
+@@ -1080,7 +1076,7 @@
+         def customized(self):
+                 l = []
+ 		ddict = self.get_all(True)
+-		keys = ddict.keys()
++		keys = list(ddict.keys())
+ 		keys.sort()
+                 for k in keys:
+                        if k[0] == k[1]:
+@@ -1091,19 +1087,19 @@
+ 
+ 	def list(self, heading = 1, locallist = 0):
+ 		ddict = self.get_all_by_type(locallist)
+-		keys = ddict.keys()
++		keys = list(ddict.keys())
+ 		if len(keys) == 0:
+ 			return 
+ 		keys.sort()
+ 
+ 		if heading:
+-			print "%-30s %-8s %s\n" % (_("SELinux Port Type"), _("Proto"), _("Port Number"))
++			print("%-30s %-8s %s\n" % (_("SELinux Port Type"), _("Proto"), _("Port Number")))
+ 		for i in keys:
+ 			rec = "%-30s %-8s " % i
+ 			rec += "%s" % ddict[i][0]
+ 			for p in ddict[i][1:]:
+ 				rec += ", %s" % p
+-			print rec
++			print(rec)
+ 
+ class nodeRecords(semanageRecords):
+        def __init__(self, store = ""):
+@@ -1305,7 +1301,7 @@
+        def customized(self):
+                l = []
+                ddict = self.get_all(True)
+-               keys = ddict.keys()
++               keys = list(ddict.keys())
+                keys.sort()
+                for k in keys:
+                       l.append("-a -M %s -p %s -t %s %s" % (k[1], k[2],ddict[k][2], k[0]))
+@@ -1313,22 +1309,22 @@
+ 
+        def list(self, heading = 1, locallist = 0):
+                ddict = self.get_all(locallist)
+-               keys = ddict.keys()
++               keys = list(ddict.keys())
+ 	       if len(keys) == 0:
+ 		       return 
+                keys.sort()
+ 
+                if heading:
+-                       print "%-18s %-18s %-5s %-5s\n" % ("IP Address", "Netmask", "Protocol", "Context")
++                       print("%-18s %-18s %-5s %-5s\n" % ("IP Address", "Netmask", "Protocol", "Context"))
+                if is_mls_enabled:
+ 			for k in keys:
+ 				val = ''
+ 				for fields in k:
+ 					val = val + '\t' + str(fields)
+-                                print "%-18s %-18s %-5s %s:%s:%s:%s " % (k[0],k[1],k[2],ddict[k][0], ddict[k][1],ddict[k][2], translate(ddict[k][3], False))
++                                print("%-18s %-18s %-5s %s:%s:%s:%s " % (k[0],k[1],k[2],ddict[k][0], ddict[k][1],ddict[k][2], translate(ddict[k][3], False)))
+                else:
+                        for k in keys:
+-                               print "%-18s %-18s %-5s %s:%s:%s " % (k[0],k[1],k[2],ddict[k][0], ddict[k][1],ddict[k][2])
++                               print("%-18s %-18s %-5s %s:%s:%s " % (k[0],k[1],k[2],ddict[k][0], ddict[k][1],ddict[k][2]))
+ 
+ 
+ class interfaceRecords(semanageRecords):
+@@ -1495,7 +1491,7 @@
+         def customized(self):
+                 l = []
+                 ddict = self.get_all(True)
+-                keys = ddict.keys()
++                keys = list(ddict.keys())
+                 keys.sort()
+                 for k in keys:
+                        l.append("-a -t %s %s" % (ddict[k][2], k))
+@@ -1503,19 +1499,19 @@
+ 
+ 	def list(self, heading = 1, locallist = 0):
+ 		ddict = self.get_all(locallist)
+-		keys = ddict.keys()
++		keys = list(ddict.keys())
+ 		if len(keys) == 0:
+ 			return 
+ 		keys.sort()
+ 
+ 		if heading:
+-			print "%-30s %s\n" % (_("SELinux Interface"), _("Context"))
++			print("%-30s %s\n" % (_("SELinux Interface"), _("Context")))
+ 		if is_mls_enabled:
+ 			for k in keys:
+-				print "%-30s %s:%s:%s:%s " % (k,ddict[k][0], ddict[k][1],ddict[k][2], translate(ddict[k][3], False))
++				print("%-30s %s:%s:%s:%s " % (k,ddict[k][0], ddict[k][1],ddict[k][2], translate(ddict[k][3], False)))
+ 		else:
+ 			for k in keys:
+-				print "%-30s %s:%s:%s " % (k,ddict[k][0], ddict[k][1],ddict[k][2])
++				print("%-30s %s:%s:%s " % (k,ddict[k][0], ddict[k][1],ddict[k][2]))
+ 			
+ class fcontextRecords(semanageRecords):
+ 	def __init__(self, store = ""):
+@@ -1545,7 +1541,7 @@
+                        subs_file = selinux.selinux_file_context_subs_path()
+                        tmpfile = "%s.tmp" % subs_file
+                        fd = open(tmpfile, "w")
+-                       for target in self.equiv.keys():
++                       for target in list(self.equiv.keys()):
+                               fd.write("%s %s\n" % (target, self.equiv[target]))
+                        fd.close()
+                        try:
+@@ -1558,7 +1554,7 @@
+ 
+         def add_equal(self, target, substitute):
+                 self.begin()
+-                if target in self.equiv.keys():
++                if target in list(self.equiv.keys()):
+                        raise ValueError(_("Equivalence class for %s already exists") % target)
+                 self.validate(target)
+ 
+@@ -1573,7 +1569,7 @@
+ 
+         def modify_equal(self, target, substitute):
+                 self.begin()
+-                if target not in self.equiv.keys():
++                if target not in list(self.equiv.keys()):
+                        raise ValueError(_("Equivalence class for %s does not exists") % target)
+                 self.equiv[target] = substitute
+                 self.equal_ind = True
+@@ -1756,7 +1752,7 @@
+                 self.commit()
+ 
+ 	def __delete(self, target, ftype):
+-                if target in self.equiv.keys():
++                if target in list(self.equiv.keys()):
+                        self.equiv.pop(target)
+                        self.equal_ind = True
+                        return
+@@ -1818,7 +1814,7 @@
+         def customized(self):
+                l = []
+                fcon_dict = self.get_all(True)
+-               keys = fcon_dict.keys()
++               keys = list(fcon_dict.keys())
+                keys.sort()
+                for k in keys:
+                       if fcon_dict[k]:
+@@ -1827,32 +1823,32 @@
+ 
+ 	def list(self, heading = 1, locallist = 0 ):
+ 		fcon_dict = self.get_all(locallist)
+-                keys = fcon_dict.keys()
++                keys = list(fcon_dict.keys())
+ 		if len(keys) != 0:
+ 			keys.sort()
+ 			if heading:
+-				print "%-50s %-18s %s\n" % (_("SELinux fcontext"), _("type"), _("Context"))
++				print("%-50s %-18s %s\n" % (_("SELinux fcontext"), _("type"), _("Context")))
+ 			for k in keys:
+ 				if fcon_dict[k]:
+ 					if is_mls_enabled:
+-						print "%-50s %-18s %s:%s:%s:%s " % (k[0], k[1], fcon_dict[k][0], fcon_dict[k][1], fcon_dict[k][2], translate(fcon_dict[k][3],False))
++						print("%-50s %-18s %s:%s:%s:%s " % (k[0], k[1], fcon_dict[k][0], fcon_dict[k][1], fcon_dict[k][2], translate(fcon_dict[k][3],False)))
+ 					else:
+-						print "%-50s %-18s %s:%s:%s " % (k[0], k[1], fcon_dict[k][0], fcon_dict[k][1],fcon_dict[k][2])
++						print("%-50s %-18s %s:%s:%s " % (k[0], k[1], fcon_dict[k][0], fcon_dict[k][1],fcon_dict[k][2]))
+ 				else:
+-					print "%-50s %-18s <<None>>" % (k[0], k[1])
++					print("%-50s %-18s <<None>>" % (k[0], k[1]))
+ 
+ 		if len(self.equiv_dist):
+ 		       if not locallist:
+ 			       if heading:
+-				       print _("\nSELinux Distribution fcontext Equivalence \n")
+-			       for target in self.equiv_dist.keys():
+-				       print "%s = %s" % (target, self.equiv_dist[target])
++				       print(_("\nSELinux Distribution fcontext Equivalence \n"))
++			       for target in list(self.equiv_dist.keys()):
++				       print("%s = %s" % (target, self.equiv_dist[target]))
+ 		if len(self.equiv):
+                        if heading:
+-                              print _("\nSELinux Local fcontext Equivalence \n")
++                              print(_("\nSELinux Local fcontext Equivalence \n"))
+ 
+-                       for target in self.equiv.keys():
+-                              print "%s = %s" % (target, self.equiv[target])
++                       for target in list(self.equiv.keys()):
++                              print("%s = %s" % (target, self.equiv[target]))
+ 				
+ class booleanRecords(semanageRecords):
+ 	def __init__(self, store = ""):
+@@ -1894,7 +1890,7 @@
+                 if value.upper() in self.dict:
+                        semanage_bool_set_value(b, self.dict[value.upper()])
+                 else:
+-                       raise ValueError(_("You must specify one of the following values: %s") % ", ".join(self.dict.keys()) )
++                       raise ValueError(_("You must specify one of the following values: %s") % ", ".join(list(self.dict.keys())) )
+                 
+ 		if self.modify_local and name in self.current_booleans:
+ 			rc = semanage_bool_set_active(self.sh, k, b)
+@@ -2004,7 +2000,7 @@
+         def customized(self):
+                l = []
+                ddict = self.get_all(True)
+-               keys = ddict.keys()
++               keys = list(ddict.keys())
+                keys.sort()
+                for k in keys:
+                       if ddict[k]:
+@@ -2015,18 +2011,18 @@
+                 on_off = (_("off"), _("on")) 
+ 		if use_file:
+                        ddict = self.get_all(locallist)
+-                       keys = ddict.keys()
++                       keys = list(ddict.keys())
+                        for k in keys:
+                               if ddict[k]:
+-                                     print "%s=%s" %  (k, ddict[k][2])
++                                     print("%s=%s" %  (k, ddict[k][2]))
+                        return
+ 		ddict = self.get_all(locallist)
+-		keys = ddict.keys()
++		keys = list(ddict.keys())
+ 		if len(keys) == 0:
+ 			return 
+ 
+ 		if heading:
+-			print "%-30s %s  %s %s\n" % (_("SELinux boolean"),_("State"), _("Default"), _("Description"))
++			print("%-30s %s  %s %s\n" % (_("SELinux boolean"),_("State"), _("Default"), _("Description")))
+ 		for k in keys:
+ 			if ddict[k]:
+-				print "%-30s (%-5s,%5s)  %s" %  (k, on_off[selinux.security_get_boolean_active(k)], on_off[ddict[k][2]], self.get_desc(k))
++				print("%-30s (%-5s,%5s)  %s" %  (k, on_off[selinux.security_get_boolean_active(k)], on_off[ddict[k][2]], self.get_desc(k)))
