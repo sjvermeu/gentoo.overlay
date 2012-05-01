@@ -371,7 +371,18 @@ diff -ur policycoreutils-2.1.10.orig/scripts/chcat policycoreutils-2.1.10/script
      sys.exit(errors)
 diff -ur policycoreutils-2.1.10.orig/semanage/semanage policycoreutils-2.1.10/semanage/semanage
 --- policycoreutils-2.1.10.orig/semanage/semanage	2012-05-01 15:55:21.320022889 +0200
-+++ policycoreutils-2.1.10/semanage/semanage	2012-05-01 15:59:27.747023416 +0200
++++ policycoreutils-2.1.10/semanage/semanage	2012-05-01 16:28:12.555027097 +0200
+@@ -16,8 +16,8 @@
+ #
+ #    You should have received a copy of the GNU General Public License
+ #    along with this program; if not, write to the Free Software
+-#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA     
+-#                                        02111-1307  USA
++#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA	
++#					02111-1307  USA
+ #
+ #  
+ import sys, getopt, re
 @@ -29,14 +29,9 @@
  gettext.bindtextdomain(PROGNAME, "/usr/share/locale")
  gettext.textdomain(PROGNAME)
@@ -385,12 +396,194 @@ diff -ur policycoreutils-2.1.10.orig/semanage/semanage policycoreutils-2.1.10/se
 -       import __builtin__
 -       __builtin__.__dict__['_'] = unicode
 +gettext.install(PROGNAME,
-+                localedir="/usr/share/locale",
-+                codeset = 'utf-8')
++		localedir="/usr/share/locale",
++		codeset = 'utf-8')
  
  if __name__ == '__main__':
  	manageditems=[ "boolean", "login", "user", "port", "interface", "node", "fcontext"]
-@@ -215,7 +210,7 @@
+@@ -48,7 +43,7 @@
+ 		action = True
+ 
+ 	def usage(message = ""):
+-               text = _("""
++		text = _("""
+ semanage [ -S store ] -i [ input_file | - ]
+ semanage [ -S store ] -o [ output_file | - ]
+ 
+@@ -65,23 +60,23 @@
+ 
+ Primary Options:
+ 
+-	-a, --add        Add a OBJECT record NAME
+-	-d, --delete     Delete a OBJECT record NAME
+-	-m, --modify     Modify a OBJECT record NAME
+-        -i, --input      Input multiple semange commands in a transaction 
+-	-o, --output     Output current customizations as semange commands
+-	-l, --list       List the OBJECTS
++	-a, --add	Add a OBJECT record NAME
++	-d, --delete	Delete a OBJECT record NAME
++	-m, --modify	Modify a OBJECT record NAME
++	-i, --input	Input multiple semange commands in a transaction 
++	-o, --output	Output current customizations as semange commands
++	-l, --list	List the OBJECTS
+ 	-E, --extract    extract customizable commands
+ 	-C, --locallist  List OBJECTS local customizations
+ 	-D, --deleteall  Remove all OBJECTS local customizations
+ 
+-	-h, --help       Display this message
++	-h, --help	Display this message
+ 	-n, --noheading  Do not print heading when listing OBJECTS
+-        -S, --store      Select and alternate SELinux store to manage
++	-S, --store	Select and alternate SELinux store to manage
+ 
+ Object-specific Options (see above):
+ 
+-	-f, --ftype      File Type of OBJECT 
++	-f, --ftype	File Type of OBJECT 
+ 		"" (all files) 
+ 		-- (regular file) 
+ 		-d (directory) 
+@@ -91,20 +86,20 @@
+ 		-l (symbolic link) 
+ 		-p (named pipe) 
+ 
+-        -F, --file       Treat target as an input file for command, change multiple settings
+-	-p, --proto      Port protocol (tcp or udp) or internet protocol version of node (ipv4 or ipv6)
+-	-M, --mask       Netmask
+-	-e, --equal      Substitue source path for dest path when labeling
+-	-P, --prefix     Prefix for home directory labeling
+-	-L, --level      Default SELinux Level (MLS/MCS Systems only)
+-	-R, --roles      SELinux Roles (ex: "sysadm_r staff_r")
+-	-s, --seuser     SELinux User Name
+-	-t, --type       SELinux Type for the object
+-	-r, --range      MLS/MCS Security Range (MLS/MCS Systems only)
+-	--enable         Enable a module
+-	--disable        Disable a module
++	-F, --file	Treat target as an input file for command, change multiple settings
++	-p, --proto	Port protocol (tcp or udp) or internet protocol version of node (ipv4 or ipv6)
++	-M, --mask	Netmask
++	-e, --equal	Substitue source path for dest path when labeling
++	-P, --prefix	Prefix for home directory labeling
++	-L, --level	Default SELinux Level (MLS/MCS Systems only)
++	-R, --roles	SELinux Roles (ex: "sysadm_r staff_r")
++	-s, --seuser	SELinux User Name
++	-t, --type	SELinux Type for the object
++	-r, --range	MLS/MCS Security Range (MLS/MCS Systems only)
++	--enable	 Enable a module
++	--disable	Disable a module
+ """)
+-               raise ValueError("%s\n%s" % (text, message))
++		raise ValueError("%s\n%s" % (text, message))
+ 		
+ 	def errorExit(error):
+ 		sys.stderr.write("%s: " % sys.argv[0])
+@@ -137,53 +132,53 @@
+ 		valid_option["permissive"] += [ '-a', '--add', '-d', '--delete', '-l', '--list', '-h', '--help', '-n', '--noheading', '-D', '--deleteall' ]
+ 		return valid_option
+ 
+-        def mkargv(line):
+-               dquote = "\""
+-               squote = "\'"
+-               l = line.split()
+-               ret = []
+-               i = 0
+-               while i < len(l):
+-                      cnt = len(re.findall(dquote, l[i]))
+-                      if cnt > 1:
+-                             ret.append(l[i].strip(dquote))
+-                             i = i + 1
+-                             continue
+-                      if cnt == 1:
+-                             quote = [ l[i].strip(dquote) ]
+-                             i = i + 1
+-                             
+-                             while i < len(l) and  dquote not in l[i]:
+-                                    quote.append(l[i])
+-                                    i = i + 1
+-                             quote.append(l[i].strip(dquote))
+-                             ret.append(" ".join(quote))
+-                             i = i + 1
+-                             continue
+-
+-                      cnt = len(re.findall(squote, l[i]))
+-                      if cnt > 1:
+-                             ret.append(l[i].strip(squote))
+-                             i = i + 1
+-                             continue
+-                      if cnt == 1:
+-                             quote = [ l[i].strip(squote) ]
+-                             i = i + 1
+-                             while i < len(l) and  squote not in l[i]:
+-                                    quote.append(l[i])
+-                                    i = i + 1
+-
+-                             quote.append(l[i].strip(squote))
+-                             ret.append(" ".join(quote))
+-                             i = i + 1
+-                             continue
++	def mkargv(line):
++		dquote = "\""
++		squote = "\'"
++		l = line.split()
++		ret = []
++		i = 0
++		while i < len(l):
++			cnt = len(re.findall(dquote, l[i]))
++			if cnt > 1:
++				ret.append(l[i].strip(dquote))
++				i = i + 1
++				continue
++			if cnt == 1:
++				quote = [ l[i].strip(dquote) ]
++				i = i + 1
++				
++				while i < len(l) and  dquote not in l[i]:
++					quote.append(l[i])
++					i = i + 1
++				quote.append(l[i].strip(dquote))
++				ret.append(" ".join(quote))
++				i = i + 1
++				continue
++
++			cnt = len(re.findall(squote, l[i]))
++			if cnt > 1:
++				ret.append(l[i].strip(squote))
++				i = i + 1
++				continue
++			if cnt == 1:
++				quote = [ l[i].strip(squote) ]
++				i = i + 1
++				while i < len(l) and  squote not in l[i]:
++					quote.append(l[i])
++					i = i + 1
++
++				quote.append(l[i].strip(squote))
++				ret.append(" ".join(quote))
++				i = i + 1
++				continue
+ 
+-                      ret.append(l[i])
+-                      i = i + 1
++			ret.append(l[i])
++			i = i + 1
+ 
+-               return ret
++		return ret
+ 
+-        def process_args(argv):
++	def process_args(argv):
+ 		global action
+ 		action = False
+ 		serange = ""
+@@ -208,14 +203,14 @@
+ 		list = False
+ 		locallist = False
+ 		use_file = False
+-                store = ""
++		store = ""
+ 		equal = ""
+ 
+ 		if len(argv) == 0:
  			return
  		object = argv[0]
  		option_dict=get_options()
@@ -399,16 +592,85 @@ diff -ur policycoreutils-2.1.10.orig/semanage/semanage policycoreutils-2.1.10/se
  			usage(_("Invalid parameter %s not defined") % object)
  			
  		args = argv[1:]
-@@ -251,7 +246,7 @@
- 						     'prefix=',
- 						     'mask='
- 						     ])
+@@ -224,34 +219,34 @@
+ 			gopts, cmds = getopt.getopt(args,
+ 						    '01adEe:f:i:lhmnp:s:FCDR:L:r:t:P:S:M:',
+ 						    ['add',
+-						     'delete',
+-						     'deleteall',
+-						     'enable',
+-						     'equal=',
+-						     'extract',
+-						     'disable',
+-						     'ftype=',
+-						     'file',
+-						     'help',
+-						     'input=',
+-						     'list',
+-						     'modify',
+-						     'noheading',
+-						     'localist',
+-						     'off',
+-						     'on',
+-						     'proto=',
+-						     'seuser=',
+-						     'store=',
+-						     'range=',
+-						     'locallist=',
+-						     'level=',
+-						     'roles=',
+-						     'type=',
+-						     'prefix=',
+-						     'mask='
+-						     ])
 -		except getopt.error, error:
++							'delete',
++							'deleteall',
++							'enable',
++							'equal=',
++							'extract',
++							'disable',
++							'ftype=',
++							'file',
++							'help',
++							'input=',
++							'list',
++							'modify',
++							'noheading',
++							'localist',
++							'off',
++							'on',
++							'proto=',
++							'seuser=',
++							'store=',
++							'range=',
++							'locallist=',
++							'level=',
++							'roles=',
++							'type=',
++							'prefix=',
++							'mask='
++							])
 +		except getopt.error as error:
  			usage(_("Options Error %s ") % error.msg)
  
  		for o, a in gopts:
-@@ -386,7 +381,7 @@
+@@ -375,30 +370,30 @@
+ 		
+ 		if list:
+ 			if object == "boolean":
+-                               OBJECT.list(heading, locallist, use_file)
++				OBJECT.list(heading, locallist, use_file)
+ 			else:
+-                               OBJECT.list(heading, locallist)
+-                        return
++				OBJECT.list(heading, locallist)
++			return
+ 			
+ 		if deleteall:
+ 			OBJECT.deleteall()
+-                        return
++			return
  			
  		if extract:
  			for i in OBJECT.customized():
@@ -417,18 +679,159 @@ diff -ur policycoreutils-2.1.10.orig/semanage/semanage policycoreutils-2.1.10/se
  			return
  
  		if len(cmds) != 1:
-@@ -541,7 +536,7 @@
-                       if output != "-":
-                              sys.stdout = open(output, 'w')
-                       for i in manageditems:
--                             print "%s -D" % i
-+                             print("%s -D" % i)
-                              process_args([i, "-E"])
-                       sys.exit(0)
+-                       raise ValueError(_("bad option"))
+-                        
+-                target = cmds[0]
++			raise ValueError(_("bad option"))
++			
++		target = cmds[0]
  
-@@ -558,15 +553,15 @@
-                else:
-                       process_args(sys.argv[1:])
+ 		if object == "dontaudit":
+-                       OBJECT = seobject.dontauditClass(store)
+-                       OBJECT.toggle(target)
+-                       return
+-                              
++			OBJECT = seobject.dontauditClass(store)
++			OBJECT.toggle(target)
++			return
++				
+ 		if add:
+ 			if object == "login":
+ 				OBJECT.add(target, seuser, serange)
+@@ -489,84 +484,84 @@
+ 
+ 			else:
+ 				OBJECT.delete(target)
+-                        return
++			return
+ 
+-                raise ValueError(_("Invalid command: semanage %s") % " ".join(argv))
++		raise ValueError(_("Invalid command: semanage %s") % " ".join(argv))
+ 
+ 	#
+ 	# 
+ 	#
+ 	try:
+-               output = None
+-               input = None
+-               store = ""
+-
+-               if len(sys.argv) < 3:
+-                      usage(_("Requires 2 or more arguments"))
+-                
+-               gopts, cmds = getopt.getopt(sys.argv[1:],
+-                                           '01adf:i:lhmno:p:s:FCDR:L:r:t:P:S:',
+-                                           ['add',
+-                                            'delete',
+-                                            'deleteall',
+-                                            'ftype=',
+-                                            'file',
+-                                            'help',
+-                                            'input=',
+-                                            'list', 
+-                                            'modify',
+-                                            'noheading',
+-                                            'localist',
+-                                            'off', 
+-                                            'on', 
+-                                            'output=',
+-                                            'proto=',
+-                                            'seuser=',
+-                                            'store=',
+-                                            'range=',
+-                                            'level=',
+-                                            'roles=',
+-                                            'type=',
+-                                            'prefix='
+-                                            ])
+-               for o, a in gopts:
+-                      if o == "-S" or o == '--store':
+-                             store = a
+-                      if o == "-i" or o == '--input':
+-                             input = a
+-                      if o == "-o" or o == '--output':
+-                             output = a
+-
+-               if output != None:
+-                      if output != "-":
+-                             sys.stdout = open(output, 'w')
+-                      for i in manageditems:
+-                             print "%s -D" % i
+-                             process_args([i, "-E"])
+-                      sys.exit(0)
+-
+-               if input != None:
+-                      if input == "-":
+-                             fd = sys.stdin
+-                      else:
+-                             fd = open(input, 'r')
+-                      trans = seobject.semanageRecords(store)
+-                      trans.start()
+-                      for l in fd.readlines():
+-                             process_args(mkargv(l))
+-                      trans.finish()
+-               else:
+-                      process_args(sys.argv[1:])
++		output = None
++		input = None
++		store = ""
++
++		if len(sys.argv) < 3:
++			usage(_("Requires 2 or more arguments"))
++		
++		gopts, cmds = getopt.getopt(sys.argv[1:],
++					   '01adf:i:lhmno:p:s:FCDR:L:r:t:P:S:',
++					   ['add',
++					    'delete',
++					    'deleteall',
++					    'ftype=',
++					    'file',
++					    'help',
++					    'input=',
++					    'list', 
++					    'modify',
++					    'noheading',
++					    'localist',
++					    'off', 
++					    'on', 
++					    'output=',
++					    'proto=',
++					    'seuser=',
++					    'store=',
++					    'range=',
++					    'level=',
++					    'roles=',
++					    'type=',
++					    'prefix='
++					    ])
++		for o, a in gopts:
++			if o == "-S" or o == '--store':
++				store = a
++			if o == "-i" or o == '--input':
++				input = a
++			if o == "-o" or o == '--output':
++				output = a
++
++		if output != None:
++			if output != "-":
++				sys.stdout = open(output, 'w')
++			for i in manageditems:
++				print("%s -D" % i)
++				process_args([i, "-E"])
++			sys.exit(0)
++
++		if input != None:
++			if input == "-":
++				fd = sys.stdin
++			else:
++				fd = open(input, 'r')
++			trans = seobject.semanageRecords(store)
++			trans.start()
++			for l in fd.readlines():
++				process_args(mkargv(l))
++			trans.finish()
++		else:
++			process_args(sys.argv[1:])
  			
 -	except getopt.error, error:
 +	except getopt.error as error:
