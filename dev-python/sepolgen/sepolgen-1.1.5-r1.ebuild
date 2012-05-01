@@ -11,7 +11,8 @@ inherit python eutils
 
 DESCRIPTION="SELinux policy generation library"
 HOMEPAGE="http://userspace.selinuxproject.org"
-SRC_URI="http://userspace.selinuxproject.org/releases/20120216/${P}.tar.gz"
+SRC_URI="http://userspace.selinuxproject.org/releases/20120216/${P}.tar.gz
+		http://dev.gentoo.org/~swift/patches/sepolgen/sepolgen-1.1.5-2to3.patch.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -23,7 +24,7 @@ DEPEND=">=sys-libs/libselinux-2.0[python]
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-	epatch "${FILESDIR}/sepolgen-1.1.5-2to3.patch"
+	epatch "${DISTDIR}/sepolgen-1.1.5-2to3.patch.gz"
 	# fix up default paths to not be RH specific
 	sed -i -e 's:/usr/share/selinux/devel:/usr/share/selinux/strict:' \
 		"${S}/src/sepolgen/defaults.py" || die
