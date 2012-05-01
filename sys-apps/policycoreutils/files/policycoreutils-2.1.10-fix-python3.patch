@@ -371,7 +371,7 @@ diff -ur policycoreutils-2.1.10.orig/scripts/chcat policycoreutils-2.1.10/script
      sys.exit(errors)
 diff -ur policycoreutils-2.1.10.orig/semanage/semanage policycoreutils-2.1.10/semanage/semanage
 --- policycoreutils-2.1.10.orig/semanage/semanage	2012-05-01 15:55:21.320022889 +0200
-+++ policycoreutils-2.1.10/semanage/semanage	2012-05-01 16:28:12.555027097 +0200
++++ policycoreutils-2.1.10/semanage/semanage	2012-05-01 16:45:06.383029260 +0200
 @@ -16,8 +16,8 @@
  #
  #    You should have received a copy of the GNU General Public License
@@ -575,7 +575,7 @@ diff -ur policycoreutils-2.1.10.orig/semanage/semanage policycoreutils-2.1.10/se
  		global action
  		action = False
  		serange = ""
-@@ -208,14 +203,14 @@
+@@ -208,7 +203,7 @@
  		list = False
  		locallist = False
  		use_file = False
@@ -584,14 +584,6 @@ diff -ur policycoreutils-2.1.10.orig/semanage/semanage policycoreutils-2.1.10/se
  		equal = ""
  
  		if len(argv) == 0:
- 			return
- 		object = argv[0]
- 		option_dict=get_options()
--		if object not in option_dict.keys():
-+		if object not in list(option_dict.keys()):
- 			usage(_("Invalid parameter %s not defined") % object)
- 			
- 		args = argv[1:]
 @@ -224,34 +219,34 @@
  			gopts, cmds = getopt.getopt(args,
  						    '01adEe:f:i:lhmnp:s:FCDR:L:r:t:P:S:M:',
@@ -853,7 +845,7 @@ diff -ur policycoreutils-2.1.10.orig/semanage/semanage policycoreutils-2.1.10/se
  		errorExit(error.args[0])
 diff -ur policycoreutils-2.1.10.orig/semanage/seobject.py policycoreutils-2.1.10/semanage/seobject.py
 --- policycoreutils-2.1.10.orig/semanage/seobject.py	2012-05-01 15:55:21.320022889 +0200
-+++ policycoreutils-2.1.10/semanage/seobject.py	2012-05-01 16:22:34.087026375 +0200
++++ policycoreutils-2.1.10/semanage/seobject.py	2012-05-01 16:48:17.943029670 +0200
 @@ -16,8 +16,8 @@
  #
  #    You should have received a copy of the GNU General Public License
@@ -1815,7 +1807,7 @@ diff -ur policycoreutils-2.1.10.orig/semanage/seobject.py policycoreutils-2.1.10
 +	def __modify(self, name, roles = [], selevel = "", serange = "", prefix = ""):
  		oldroles = ""
  		oldserange = ""
- 		newroles = string.join(roles, ' ');
+-		newroles = string.join(roles, ' ');
 -                if prefix == "" and len(roles) == 0  and serange == "" and selevel == "":
 -                       if is_mls_enabled == 1:
 -                              raise ValueError(_("Requires prefix, roles, level or range"))
@@ -1862,6 +1854,7 @@ diff -ur policycoreutils-2.1.10.orig/semanage/seobject.py policycoreutils-2.1.10
 -                rc = semanage_user_modify_local(self.sh, k, u)
 -                if rc < 0:
 -                       raise ValueError(_("Could not modify SELinux user %s") % name)
++		newroles = roles.join(' ');
 +		if prefix == "" and len(roles) == 0  and serange == "" and selevel == "":
 +			if is_mls_enabled == 1:
 +				raise ValueError(_("Requires prefix, roles, level or range"))
@@ -1885,7 +1878,7 @@ diff -ur policycoreutils-2.1.10.orig/semanage/seobject.py policycoreutils-2.1.10
 +		oldserange = semanage_user_get_mlsrange(u)
 +		(rc, rlist) = semanage_user_get_roles(self.sh, u)
 +		if rc >= 0:
-+			oldroles = string.join(rlist, ' ');
++			oldroles = rlist.join(' ');
 +			newroles = newroles + ' ' + oldroles;
 +
 +
@@ -2008,7 +2001,13 @@ diff -ur policycoreutils-2.1.10.orig/semanage/seobject.py policycoreutils-2.1.10
  		if rc < 0:
  			raise ValueError(_("Could not list SELinux users"))
  
-@@ -822,33 +817,33 @@
+@@ -817,38 +812,38 @@
+ 			if rc < 0:
+ 				raise ValueError(_("Could not list roles for user %s") % name)
+ 
+-			roles = string.join(rlist, ' ');
++			roles = rlist.join(' ');
+ 			ddict[semanage_user_get_name(u)] = (semanage_user_get_prefix(u), semanage_user_get_mlslevel(u), semanage_user_get_mlsrange(u), roles)
  
  		return ddict
  
