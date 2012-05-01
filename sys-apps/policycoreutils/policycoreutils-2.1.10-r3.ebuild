@@ -37,6 +37,7 @@ COMMON_DEPS=">=sys-libs/libselinux-${SELNX_VER}[python]
 	sys-libs/libcap-ng
 	>=sys-libs/libsepol-${SEPOL_VER}
 	sys-devel/gettext
+	dev-python/ipy
 	sesandbox? ( dev-libs/libcgroup )
 	dbus? (
 		sys-apps/dbus
