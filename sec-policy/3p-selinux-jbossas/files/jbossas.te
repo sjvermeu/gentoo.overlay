@@ -1,0 +1,70 @@
+policy_module(jbossas, 1.0)
+
+type jbossas_t;
+type jbossas_exec_t;
+init_daemon_domain(jbossas_t, jbossas_exec_t)
+
+# Not sure if this is best approach instead of just marking the .xml files and .conf files as etc_t?
+type jbossas_conf_t;
+files_config_file(jbossas_conf_t)
+
+type jbossas_tmp_t;
+files_tmp_file(jbossas_tmp_t)
+
+type jbossas_var_lib_t;
+files_type(jbossas_var_lib_t)
+
+type jbossas_var_log_t;
+logging_log_file(jbossas_var_log_t)
+
+##################################################
+#
+# JBoss AS local policy
+#
+
+allow jbossas_t self:fifo_file rw_fifo_file_perms;
+allow jbossas_t self:process { getsched signal execmem };
+allow jbossas_t self:tcp_socket create_stream_socket_perms;
+allow jbossas_t self:udp_socket create_socket_perms;
+allow jbossas_t self:netlink_route_socket create_netlink_socket_perms;
+
+read_files_pattern(jbossas_t, jbossas_conf_t, jbossas_conf_t)
+
+manage_dirs_pattern(jbossas_t, jbossas_tmp_t, jbossas_tmp_t)
+manage_files_pattern(jbossas_t, jbossas_tmp_t, jbossas_tmp_t)
+files_tmp_filetrans(jbossas_t, jbossas_tmp_t, { file dir })
+
+manage_dirs_pattern(jbossas_t, jbossas_var_lib_t, jbossas_var_lib_t)
+manage_files_pattern(jbossas_t, jbossas_var_lib_t, jbossas_var_lib_t)
+files_var_lib_filetrans(jbossas_t, jbossas_var_lib_t, { file dir })
+
+manage_files_pattern(jbossas_t, jbossas_var_log_t, jbossas_var_log_t)
+
+# java wants to read the system state (/proc/*)
+kernel_read_system_state(jbossas_t)
+
+# standalone.sh (jboss_exec_t) is shell script
+corecmd_exec_shell(jbossas_t)
+corecmd_exec_bin(jbossas_t)
+
+# until we can pinpoint the ports as fixed...
+corenet_tcp_bind_all_unreserved_ports(jbossas_t)
+corenet_tcp_bind_generic_node(jbossas_t)
+corenet_tcp_bind_http_cache_port(jbossas_t)
+
+dev_read_rand(jbossas_t)
+dev_read_urand(jbossas_t)
+dev_read_sysfs(jbossas_t)
+
+fs_rw_hugetlbfs_files(jbossas_t)
+
+# On gentoo, /etc/java-config/current-system-vm is link(dir) to real vm
+files_read_etc_files(jbossas_t)
+
+miscfiles_read_localization(jbossas_t)
+
+sysnet_read_config(jbossas_t)
+
+optional_policy(`
+	apache_read_sys_content(jbossas_t)
+')

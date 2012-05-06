@@ -1,0 +1,10 @@
+/opt/redhat/jboss-as/appclient/configuration/*	--	gen_context(system_u:object_r:jbossas_conf_t,s0)
+/opt/redhat/jboss-as/bin/.*			--	gen_context(system_u:object_r:bin_t,s0)
+/opt/redhat/jboss-as/bin/standalone.sh		--	gen_context(system_u:object_r:jbossas_exec_t,s0)
+/opt/redhat/jboss-as/bundles(/.*)?			gen_context(system_u:object_r:lib_t,s0)
+/opt/redhat/jboss-as/domain(/.*)?			gen_context(system_u:object_r:jbossas_var_lib_t,s0)
+/opt/redhat/jboss-as/modules(/.*)?			gen_context(system_u:object_r:lib_t,s0)
+/opt/redhat/jboss-as/standalone(/.*)?			gen_context(system_u:object_r:jbossas_var_lib_t,s0)
+/opt/redhat/jboss-as/standalone/tmp(/.*)?		gen_context(system_u:object_r:jbossas_tmp_t,s0)
+/opt/redhat/jboss-as/welcome-content(/.*)?		gen_context(system_u:object_r:httpd_sys_content_t,s0)
+
