@@ -64,6 +64,7 @@ pkg_setup() {
 src_prepare() {
 	epatch "${FILESDIR}/fix-check-role_set_expand-libsepol-2.1.0.patch" || die
 	epatch "${FILESDIR}/fix-implicit-def-fstat.patch" || die
+	epatch "${FILESDIR}/setools-3.3.7-python-bindings.patch" || die
 
 	# Disable broken check for SWIG version.
 	sed -e "s/AC_PROG_SWIG(1.3.28)/AC_PROG_SWIG/" -i configure.ac || die "sed failed"

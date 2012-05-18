@@ -1,0 +1,106 @@
+diff -ur setools-3.3.7.orig/Makefile.am setools-3.3.7/Makefile.am
+--- setools-3.3.7.orig/Makefile.am	2012-05-18 21:00:59.419005858 +0200
++++ setools-3.3.7/Makefile.am	2012-05-18 21:24:16.034008840 +0200
+@@ -10,7 +10,7 @@
+ endif
+ # sediffx is also built conditionally, from sediffx/Makefile.am
+ 
+-SUBDIRS = libqpol libapol libsefs libpoldiff libseaudit secmds sechecker sediff man packages debian $(MAYBE_APOL) $(MAYBE_GUI)
++SUBDIRS = libqpol libapol libsefs libpoldiff libseaudit secmds sechecker sediff man packages debian $(MAYBE_APOL) $(MAYBE_GUI) python
+ 
+ #old indent opts
+ #INDENT_OPTS = -npro -nbad -bap -sob -ss -l132 -di1 -nbc -br -nbbb -c40 -cd40 -ncdb -ce -cli0 -cp40 -ncs -d0 -nfc1 -nfca -i8 -ts8 -ci8 -lp -ip0 -npcs -npsl -sc
+diff -ur setools-3.3.7.orig/configure.ac setools-3.3.7/configure.ac
+--- setools-3.3.7.orig/configure.ac	2012-05-18 21:00:59.437005858 +0200
++++ setools-3.3.7/configure.ac	2012-05-18 21:24:16.035008840 +0200
+@@ -194,7 +194,7 @@
+               enable_jswig="$enableval")
+ if test "x${enable_jswig}" = xyes; then
+    if test ${do_swigify} = no; then
+-      AC_PROG_SWIG(1.3.28)
++      AC_PROG_SWIG(2.0.0)
+    fi
+    AC_JAVA_OPTIONS
+    if test "x$JAVAPREFIX" = x; then
+@@ -216,21 +216,23 @@
+    do_swigify_java=yes
+    do_swigify=yes
+ fi
++
++AM_PATH_PYTHON(2.7)
++
+ AC_ARG_ENABLE(swig-python,
+               AC_HELP_STRING([--enable-swig-python],
+                              [build SWIG interfaces for Python]),
+               enable_pyswig="$enableval")
+ if test "x${enable_pyswig}" = xyes; then
+    if test ${do_swigify} = no; then
+-      AC_PROG_SWIG(1.3.28)
++      AC_PROG_SWIG(2.0.0)
+    fi
+-   AM_PATH_PYTHON(2.3)
+    SWIG_PYTHON
+    do_swigify_python=yes
+    do_swigify=yes
+ fi
+ if test ${do_swigify} = "yes"; then
+-   AC_PROG_SWIG(1.3.28)
++   AC_PROG_SWIG(2.0.0)
+ fi
+ build_apol=yes
+ AC_ARG_ENABLE(swig-tcl,
+@@ -239,7 +241,7 @@
+               enable_tclswig="$enableval", enable_tclswig="yes")
+ if test "x${enable_tclswig}" = xyes; then
+    if test ${do_swigify} = no; then
+-      AC_PROG_SWIG(1.3.28)
++      AC_PROG_SWIG(2.0.0)
+    fi
+    TEA_INIT(3.5)
+    TEA_PATH_TCLCONFIG
+@@ -888,6 +890,8 @@
+                  sediff/Makefile \
+                  man/Makefile \
+                  debian/Makefile \
++   		 python/Makefile \
++   		 python/setools/Makefile \
+                  packages/Makefile packages/rpm/Makefile \
+                  packages/libqpol.pc packages/libapol.pc packages/libpoldiff.pc packages/libseaudit.pc packages/libsefs.pc])
+ 
+diff -ur setools-3.3.7.orig/m4/ac_python_devel.m4 setools-3.3.7/m4/ac_python_devel.m4
+--- setools-3.3.7.orig/m4/ac_python_devel.m4	2012-05-18 21:00:59.443005858 +0200
++++ setools-3.3.7/m4/ac_python_devel.m4	2012-05-18 21:04:00.955006247 +0200
+@@ -90,32 +90,6 @@
+ 	fi
+ 
+ 	#
+-	# Check for a version of Python >= 2.1.0
+-	#
+-	AC_MSG_CHECKING([for a version of Python >= '2.1.0'])
+-	ac_supports_python_ver=`$PYTHON -c "import sys, string; \
+-		ver = string.split(sys.version)[[0]]; \
+-		print ver >= '2.1.0'"`
+-	if test "$ac_supports_python_ver" != "True"; then
+-		if test -z "$PYTHON_NOVERSIONCHECK"; then
+-			AC_MSG_RESULT([no])
+-			AC_MSG_FAILURE([
+-This version of the AC@&t@_PYTHON_DEVEL macro
+-doesn't work properly with versions of Python before
+-2.1.0. You may need to re-run configure, setting the
+-variables PYTHON_CPPFLAGS, PYTHON_LDFLAGS, PYTHON_SITE_PKG,
+-PYTHON_EXTRA_LIBS and PYTHON_EXTRA_LDFLAGS by hand.
+-Moreover, to disable this check, set PYTHON_NOVERSIONCHECK
+-to something else than an empty string.
+-])
+-		else
+-			AC_MSG_RESULT([skip at user request])
+-		fi
+-	else
+-		AC_MSG_RESULT([yes])
+-	fi
+-
+-	#
+ 	# if the macro parameter ``version'' is set, honour it
+ 	#
+ 	if test -n "$1"; then
+Only in setools-3.3.7: python
