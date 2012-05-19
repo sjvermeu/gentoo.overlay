@@ -7,7 +7,7 @@ PYTHON_DEPEND="python? 2"
 SUPPORT_PYTHON_ABIS="1"
 RESTRICT_PYTHON_ABIS="3.* *-jython"
 
-inherit autotools java-pkg-opt-2 python
+inherit autotools java-pkg-opt-2 python eutils
 
 DESCRIPTION="SELinux policy tools"
 HOMEPAGE="http://www.tresys.com/selinux/selinux_policy_tools.shtml"
@@ -62,7 +62,12 @@ pkg_setup() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}/fedora-setools-patches.tar.gz" || die
+	unpack "${FILESDIR}/fedora-setools-patches.tar.gz"
+	EPATCH_MULTI_MSG="Applying various setools fixes ... " \
+	EPATCH_SUFFIX="patch" \
+	EPATCH_SOURCE="$(pwd)" \
+	EPATCH_FORCE="yes" \
+	epatch
 	epatch "${FILESDIR}/fix-implicit-def-fstat.patch" || die
 
 	# Disable broken check for SWIG version.
