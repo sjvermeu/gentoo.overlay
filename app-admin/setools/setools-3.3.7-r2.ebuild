@@ -3,9 +3,9 @@
 # $Header: /var/cvsroot/gentoo-x86/app-admin/setools/setools-3.3.7-r1.ebuild,v 1.3 2012/05/03 18:02:22 jdhore Exp $
 
 EAPI="2"
-PYTHON_DEPEND="python? *"
+PYTHON_DEPEND="python? 2"
 SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="*-jython"
+RESTRICT_PYTHON_ABIS="3.* *-jython"
 
 inherit autotools java-pkg-opt-2 python
 
@@ -29,7 +29,7 @@ DEPEND=">=sys-libs/libsepol-2.1.0
 		>=dev-lang/swig-1.3.28
 		>=virtual/jdk-1.4
 	)
-	python? ( >=dev-lang/swig-1.3.28 )
+	python? ( >=dev-lang/swig-2.0.4 )
 	X? (
 		>=dev-lang/tk-8.4.9
 		>=gnome-base/libglade-2.0
@@ -57,17 +57,16 @@ pkg_setup() {
 
 	if use python; then
 		python_pkg_setup
-		PYTHON_DIRS="libapol/swig/python libpoldiff/swig/python libqpol/swig/python libseaudit/swig/python libsefs/swig/python"
+		PYTHON_DIRS="libapol/swig/python libpoldiff/swig/python libqpol/swig/python libseaudit/swig/python libsefs/swig/python python"
 	fi
 }
 
 src_prepare() {
-	epatch "${FILESDIR}/fix-check-role_set_expand-libsepol-2.1.0.patch" || die
+	epatch "${FILESDIR}/fedora-setools-patches.tar.gz" || die
 	epatch "${FILESDIR}/fix-implicit-def-fstat.patch" || die
-	epatch "${FILESDIR}/setools-3.3.7-python-bindings.patch" || die
 
 	# Disable broken check for SWIG version.
-	sed -e "s/AC_PROG_SWIG(1.3.28)/AC_PROG_SWIG/" -i configure.ac || die "sed failed"
+	sed -e "s/AC_PROG_SWIG(2.0.0)/AC_PROG_SWIG/" -i configure.ac || die "sed failed"
 	# Fix build failure due to double __init__.py installation
 	sed -e "s/^wrappedpy_DATA = qpol.py \$(pkgpython_PYTHON)/wrappedpy_DATA = qpol.py/" -i libqpol/swig/python/Makefile.am || die
 
