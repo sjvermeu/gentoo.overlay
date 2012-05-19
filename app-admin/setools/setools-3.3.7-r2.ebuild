@@ -62,7 +62,7 @@ pkg_setup() {
 }
 
 src_prepare() {
-	unpack "${FILESDIR}/fedora-setools-patches.tar.gz"
+	tar xvzf "${FILESDIR}/fedora-setools-patches.tar.gz"
 	EPATCH_MULTI_MSG="Applying various setools fixes ... " \
 	EPATCH_SUFFIX="patch" \
 	EPATCH_SOURCE="$(pwd)" \
