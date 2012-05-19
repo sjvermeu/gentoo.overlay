@@ -69,6 +69,7 @@ src_prepare() {
 	EPATCH_FORCE="yes" \
 	epatch
 	epatch "${FILESDIR}/fix-implicit-def-fstat.patch" || die
+	epatch "${FILESDIR}/make-python-optional-again.patch" || die
 
 	# Disable broken check for SWIG version.
 	sed -e "s/AC_PROG_SWIG(2.0.0)/AC_PROG_SWIG/" -i configure.ac || die "sed failed"
