@@ -71,6 +71,7 @@ src_prepare() {
 	epatch "${FILESDIR}/fix-implicit-def-fstat.patch" || die
 	epatch "${FILESDIR}/fix-implicit-defines-from-fedora-patches.patch" || die
 	epatch "${FILESDIR}/make-python-optional-again.patch" || die
+	epatch "${FILESDIR}/support-python3.patch" || die
 
 	# Disable broken check for SWIG version.
 	sed -e "s/AC_PROG_SWIG(2.0.0)/AC_PROG_SWIG/" -i configure.ac || die "sed failed"

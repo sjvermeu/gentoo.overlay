@@ -1,0 +1,57 @@
+diff -ur setools-3.3.7.orig/m4/ac_python_devel.m4 setools-3.3.7/m4/ac_python_devel.m4
+--- setools-3.3.7.orig/m4/ac_python_devel.m4	2012-05-20 10:14:30.945291899 +0200
++++ setools-3.3.7/m4/ac_python_devel.m4	2012-05-20 10:16:19.773292132 +0200
+@@ -90,53 +90,6 @@
+ 	fi
+ 
+ 	#
+-	# Check for a version of Python >= 2.1.0
+-	#
+-	AC_MSG_CHECKING([for a version of Python >= '2.1.0'])
+-	ac_supports_python_ver=`$PYTHON -c "import sys, string; \
+-		ver = string.split(sys.version)[[0]]; \
+-		print ver >= '2.1.0'"`
+-	if test "$ac_supports_python_ver" != "True"; then
+-		if test -z "$PYTHON_NOVERSIONCHECK"; then
+-			AC_MSG_RESULT([no])
+-			AC_MSG_FAILURE([
+-This version of the AC@&t@_PYTHON_DEVEL macro
+-doesn't work properly with versions of Python before
+-2.1.0. You may need to re-run configure, setting the
+-variables PYTHON_CPPFLAGS, PYTHON_LDFLAGS, PYTHON_SITE_PKG,
+-PYTHON_EXTRA_LIBS and PYTHON_EXTRA_LDFLAGS by hand.
+-Moreover, to disable this check, set PYTHON_NOVERSIONCHECK
+-to something else than an empty string.
+-])
+-		else
+-			AC_MSG_RESULT([skip at user request])
+-		fi
+-	else
+-		AC_MSG_RESULT([yes])
+-	fi
+-
+-	#
+-	# if the macro parameter ``version'' is set, honour it
+-	#
+-	if test -n "$1"; then
+-		AC_MSG_CHECKING([for a version of Python $1])
+-		ac_supports_python_ver=`$PYTHON -c "import sys, string; \
+-			ver = string.split(sys.version)[[0]]; \
+-			print ver $1"`
+-		if test "$ac_supports_python_ver" = "True"; then
+-	   	   AC_MSG_RESULT([yes])
+-		else
+-			AC_MSG_RESULT([no])
+-			AC_MSG_ERROR([this package requires Python $1.
+-If you have it installed, but it isn't the default Python
+-interpreter in your system path, please pass the PYTHON_VERSION
+-variable to configure. See ``configure --help'' for reference.
+-])
+-			PYTHON_VERSION=""
+-		fi
+-	fi
+-
+-	#
+ 	# Check if you have distutils, else fail
+ 	#
+ 	AC_MSG_CHECKING([for the distutils Python package])
