@@ -63,12 +63,13 @@ pkg_setup() {
 }
 
 src_prepare() {
-	EPATCH_MULTI_MSG="Applying various setools fixes ... " \
+	EPATCH_MULTI_MSG="Applying various (Fedora-provided) setools fixes... " \
 	EPATCH_SUFFIX="patch" \
 	EPATCH_SOURCE="${WORKDIR}" \
 	EPATCH_FORCE="yes" \
 	epatch
 	epatch "${FILESDIR}/fix-implicit-def-fstat.patch" || die
+	epatch "${FILESDIR}/fix-implicit-defines-from-fedora-patches.patch" || die
 	epatch "${FILESDIR}/make-python-optional-again.patch" || die
 
 	# Disable broken check for SWIG version.
