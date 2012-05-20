@@ -63,10 +63,9 @@ pkg_setup() {
 }
 
 src_prepare() {
-	cd "${S}"
 	EPATCH_MULTI_MSG="Applying various setools fixes ... " \
 	EPATCH_SUFFIX="patch" \
-	EPATCH_SOURCE="$(pwd)" \
+	EPATCH_SOURCE="${WORKDIR}" \
 	EPATCH_FORCE="yes" \
 	epatch
 	epatch "${FILESDIR}/fix-implicit-def-fstat.patch" || die
