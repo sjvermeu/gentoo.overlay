@@ -12,7 +12,8 @@ inherit autotools java-pkg-opt-2 python eutils
 DESCRIPTION="SELinux policy tools"
 HOMEPAGE="http://www.tresys.com/selinux/selinux_policy_tools.shtml"
 SRC_URI="http://oss.tresys.com/projects/setools/chrome/site/dists/${P}/${P}.tar.bz2
-	http://dev.gentoo.org/~swift/patches/setools/setools-3.3.7-fedora-patches.tar.gz"
+	http://dev.gentoo.org/~swift/patches/setools/${P}-01-fedora-patches.tar.gz
+	http://dev.gentoo.org/~swift/patches/setools/${P}-02-gentoo-patches.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -68,10 +69,12 @@ src_prepare() {
 	EPATCH_SOURCE="${WORKDIR}" \
 	EPATCH_FORCE="yes" \
 	epatch
-	epatch "${FILESDIR}/fix-implicit-def-fstat.patch" || die
-	epatch "${FILESDIR}/fix-implicit-defines-from-fedora-patches.patch" || die
-	epatch "${FILESDIR}/make-python-optional-again.patch" || die
-	epatch "${FILESDIR}/support-python3.patch" || die
+
+	EPATCH_MULTI_MSG="Applying various (Gentoo) setool fixes... " \
+	EPATCH_SUFFIX="patch" \
+	EPATCH_SOURCE="${WORKDIR}/gentoo-patches" \
+	EPATCH_FORCE="yes" \
+	epatch
 
 	# Disable broken check for SWIG version.
 	sed -e "s/AC_PROG_SWIG(2.0.0)/AC_PROG_SWIG/" -i configure.ac || die "sed failed"
