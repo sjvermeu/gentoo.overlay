@@ -11,14 +11,15 @@ inherit autotools java-pkg-opt-2 python eutils
 
 DESCRIPTION="SELinux policy tools"
 HOMEPAGE="http://www.tresys.com/selinux/selinux_policy_tools.shtml"
-SRC_URI="http://oss.tresys.com/projects/setools/chrome/site/dists/${P}/${P}.tar.bz2"
+SRC_URI="http://oss.tresys.com/projects/setools/chrome/site/dists/${P}/${P}.tar.bz2
+	http://dev.gentoo.org/~swift/patches/setools/setools-3.3.7-fedora-patches.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="X debug java python"
 
-DEPEND=">=sys-libs/libsepol-2.1.0
+DEPEND=">=sys-libs/libsepol-2.1.4
 	sys-libs/libselinux
 	sys-devel/bison
 	sys-devel/flex
@@ -26,7 +27,7 @@ DEPEND=">=sys-libs/libsepol-2.1.0
 	dev-libs/libxml2:2
 	virtual/pkgconfig
 	java? (
-		>=dev-lang/swig-1.3.28
+		>=dev-lang/swig-2.0.4
 		>=virtual/jdk-1.4
 	)
 	python? ( >=dev-lang/swig-2.0.4 )
@@ -36,7 +37,7 @@ DEPEND=">=sys-libs/libsepol-2.1.0
 		>=x11-libs/gtk+-2.8:2
 	)"
 
-RDEPEND=">=sys-libs/libsepol-2.1.0
+RDEPEND=">=sys-libs/libsepol-2.1.4
 	sys-libs/libselinux
 	>=dev-db/sqlite-3.2:3
 	dev-libs/libxml2:2
@@ -62,7 +63,6 @@ pkg_setup() {
 }
 
 src_prepare() {
-	tar xvzf "${FILESDIR}/fedora-setools-patches.tar.gz"
 	EPATCH_MULTI_MSG="Applying various setools fixes ... " \
 	EPATCH_SUFFIX="patch" \
 	EPATCH_SOURCE="$(pwd)" \
