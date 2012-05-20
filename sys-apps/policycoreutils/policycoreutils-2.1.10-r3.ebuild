@@ -20,10 +20,7 @@ IUSE="audit pam dbus sesandbox"
 DESCRIPTION="SELinux core utilities"
 HOMEPAGE="http://userspace.selinuxproject.org"
 SRC_URI="http://userspace.selinuxproject.org/releases/20120216/${P}.tar.gz
-	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.10-sesandbox.patch.gz
-	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.10-fix-makefile-pam-audit.patch.gz
-	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.10-fix-seunshare.patch.gz
-	http://dev.gentoo.org/~swift/patches/policycoreutils/policycoreutils-2.1.10-fix-nodbus_or_libcg.patch.gz
+	http://dev.gentoo.org/~swift/patches/policycoreutils/patchbundle-${P}-gentoo-r1.tar.gz
 	mirror://gentoo/policycoreutils-extra-${EXTRAS_VER}.tar.bz2"
 
 LICENSE="GPL-2"
@@ -64,24 +61,18 @@ src_prepare() {
 		|| die "fixfiles sed 1 failed"
 	sed -i -e '/fixfiles/d' "${S}/scripts/Makefile" \
 		|| die "fixfiles sed 2 failed"
-	# We currently do not support MCS, so the sandbox code in policycoreutils
-	# is not usable yet. However, work for MCS is on the way and a reported
-	# vulnerability (bug #374897) might go by unnoticed if we ignore it now.
-	# As such, we will
-	# - prepare support for switching name from "sandbox" to "sesandbox"
-	epatch "${DISTDIR}/policycoreutils-2.1.10-sesandbox.patch.gz"
-	# Disable auto-detection of PAM and audit related stuff and override
-	epatch "${DISTDIR}/policycoreutils-2.1.10-fix-makefile-pam-audit.patch.gz"
-	# - Fix build failure on seunshare
-	epatch "${DISTDIR}/policycoreutils-2.1.10-fix-seunshare.patch.gz"
-	# - Make sandbox & dbus-depending stuff (restorecond) USE-triggered
-	epatch "${DISTDIR}/policycoreutils-2.1.10-fix-nodbus_or_libcg.patch.gz"
+
+	EPATCH_MULTI_MSG="Applying policycoreutils patches ... " \
+	EPATCH_SUFFIX="patch" \
+	EPATCH_SOURCE="${WORKDIR}/gentoo-patches" \
+	EPATCH_FORCE="yes" \
+	epatch
+
 	# Overwrite gl.po, id.po and et.po with valid PO file
 	cp "${S}/po/sq.po" "${S}/po/gl.po" || die "failed to copy ${S}/po/sq.po to gl.po"
 	cp "${S}/po/sq.po" "${S}/po/id.po" || die "failed to copy ${S}/po/sq.po to id.po"
 	cp "${S}/po/sq.po" "${S}/po/et.po" || die "failed to copy ${S}/po/sq.po to et.po"
-	# Fixes for Python 3 support
-	epatch "${FILESDIR}/policycoreutils-2.1.10-fix-python3.patch"
+	# Fixes for Python 3 support in the extras
 	cd "${S2}";
 	epatch "${FILESDIR}/policycoreutils-extra-1.21-fix-python3.patch"
 }
