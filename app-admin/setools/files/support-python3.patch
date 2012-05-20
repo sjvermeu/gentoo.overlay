@@ -1,6 +1,6 @@
 diff -ur setools-3.3.7.orig/m4/ac_python_devel.m4 setools-3.3.7/m4/ac_python_devel.m4
 --- setools-3.3.7.orig/m4/ac_python_devel.m4	2012-05-20 10:14:30.945291899 +0200
-+++ setools-3.3.7/m4/ac_python_devel.m4	2012-05-20 10:37:30.247294842 +0200
++++ setools-3.3.7/m4/ac_python_devel.m4	2012-05-20 10:43:00.974295548 +0200
 @@ -90,53 +90,6 @@
  	fi
  
@@ -85,7 +85,7 @@ diff -ur setools-3.3.7.orig/m4/ac_python_devel.m4 setools-3.3.7/m4/ac_python_dev
 -			print '-L' + get_python_lib(1,1), \
 -		      	'-lpython';"`$py_version
 +			print('-L' + get_python_lib(1,1), \
-+		      	'-lpython';"`$py_version)
++		      	'-lpython' + $py_version)
  	fi
  	AC_MSG_RESULT([$PYTHON_LDFLAGS])
  	AC_SUBST([PYTHON_LDFLAGS])
