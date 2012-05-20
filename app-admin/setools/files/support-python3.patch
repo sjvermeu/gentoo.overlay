@@ -117,3 +117,18 @@ diff -ur setools-3.3.7.orig/m4/ac_python_devel.m4 setools-3.3.7/m4/ac_python_dev
  	fi
  	AC_MSG_RESULT([$PYTHON_EXTRA_LDFLAGS])
  	AC_SUBST(PYTHON_EXTRA_LDFLAGS)
+diff -ur setools-3.3.7.orig/python/setools/setup.py setools-3.3.7/python/setools/setup.py
+--- setools-3.3.7.orig/python/setools/setup.py	2012-05-20 10:14:30.950291899 +0200
++++ setools-3.3.7/python/setools/setup.py	2012-05-20 11:42:21.345303148 +0200
+@@ -7,8 +7,8 @@
+ 
+ try:
+     inc=os.getenv("INCLUDES").split(" ")    
+-    INCLUDES=map(lambda x: x[2:], inc)
+-    LIBDIRS=map(lambda x: "/".join(x.split("/")[:-1]), os.getenv("LIBS").split())
++    INCLUDES=[x[2:] for x in inc]
++    LIBDIRS=["/".join(x.split("/")[:-1]) for x in os.getenv("LIBS").split()]
+ except:
+     INCLUDES=""
+     LIBDIRS=""
+Only in setools-3.3.7/python/setools: setup.py.bak
