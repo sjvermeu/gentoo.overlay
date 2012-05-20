@@ -7,7 +7,7 @@ PYTHON_DEPEND=""
 SUPPORT_PYTHON_ABIS="1"
 RESTRICT_PYTHON_ABIS="*-jython"
 
-inherit python
+inherit python eutils
 
 DESCRIPTION="SELinux policy generation library"
 HOMEPAGE="http://userspace.selinuxproject.org"
