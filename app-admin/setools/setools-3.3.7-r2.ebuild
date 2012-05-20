@@ -3,9 +3,9 @@
 # $Header: /var/cvsroot/gentoo-x86/app-admin/setools/setools-3.3.7-r1.ebuild,v 1.3 2012/05/03 18:02:22 jdhore Exp $
 
 EAPI="2"
-PYTHON_DEPEND="python? 2"
+PYTHON_DEPEND="python? *"
 SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="3.* *-jython"
+RESTRICT_PYTHON_ABIS="*-jython"
 
 inherit autotools java-pkg-opt-2 python eutils
 
