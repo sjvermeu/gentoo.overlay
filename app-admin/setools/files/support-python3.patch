@@ -1,6 +1,6 @@
 diff -ur setools-3.3.7.orig/m4/ac_python_devel.m4 setools-3.3.7/m4/ac_python_devel.m4
 --- setools-3.3.7.orig/m4/ac_python_devel.m4	2012-05-20 10:14:30.945291899 +0200
-+++ setools-3.3.7/m4/ac_python_devel.m4	2012-05-20 10:50:49.410296548 +0200
++++ setools-3.3.7/m4/ac_python_devel.m4	2012-05-20 11:13:25.854299444 +0200
 @@ -90,53 +90,6 @@
  	fi
  
@@ -69,7 +69,7 @@ diff -ur setools-3.3.7.orig/m4/ac_python_devel.m4 setools-3.3.7/m4/ac_python_dev
  		py_version=`$PYTHON -c "from distutils.sysconfig import *; \
  			from string import join; \
 -			print join(get_config_vars('VERSION'))"`
-+			print(" ".join(get_config_vars('VERSION')))"`
++			print(' '.join(get_config_vars('VERSION')))"`
  		if test "$py_version" == "[None]"; then
  			if test -n "$PYTHON_VERSION"; then
  				py_version=$PYTHON_VERSION
