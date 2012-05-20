@@ -1,6 +1,6 @@
 diff -ur setools-3.3.7.orig/m4/ac_python_devel.m4 setools-3.3.7/m4/ac_python_devel.m4
 --- setools-3.3.7.orig/m4/ac_python_devel.m4	2012-05-20 10:14:30.945291899 +0200
-+++ setools-3.3.7/m4/ac_python_devel.m4	2012-05-20 11:13:25.854299444 +0200
++++ setools-3.3.7/m4/ac_python_devel.m4	2012-05-20 11:26:13.008301081 +0200
 @@ -90,53 +90,6 @@
  	fi
  
@@ -64,10 +64,11 @@ diff -ur setools-3.3.7.orig/m4/ac_python_devel.m4 setools-3.3.7/m4/ac_python_dev
  		if test -n "${python_path}"; then
  		   	python_path="-I$python_path"
  		fi
-@@ -175,20 +128,20 @@
+@@ -174,21 +127,19 @@
+ 		# (makes two attempts to ensure we've got a version number
  		# from the interpreter)
  		py_version=`$PYTHON -c "from distutils.sysconfig import *; \
- 			from string import join; \
+-			from string import join; \
 -			print join(get_config_vars('VERSION'))"`
 +			print(' '.join(get_config_vars('VERSION')))"`
  		if test "$py_version" == "[None]"; then
@@ -81,7 +82,7 @@ diff -ur setools-3.3.7.orig/m4/ac_python_devel.m4 setools-3.3.7/m4/ac_python_dev
  		fi
  
  		PYTHON_LDFLAGS=`$PYTHON -c "from distutils.sysconfig import *; \
- 			from string import join; \
+-			from string import join; \
 -			print '-L' + get_python_lib(1,1), \
 -		      	'-lpython';"`$py_version
 +			print('-L' + get_python_lib(1,1), \
@@ -89,7 +90,7 @@ diff -ur setools-3.3.7.orig/m4/ac_python_devel.m4 setools-3.3.7/m4/ac_python_dev
  	fi
  	AC_MSG_RESULT([$PYTHON_LDFLAGS])
  	AC_SUBST([PYTHON_LDFLAGS])
-@@ -199,7 +152,7 @@
+@@ -199,7 +150,7 @@
  	AC_MSG_CHECKING([for Python site-packages path])
  	if test -z "$PYTHON_SITE_PKG"; then
  		PYTHON_SITE_PKG=`$PYTHON -c "import distutils.sysconfig; \
@@ -98,7 +99,7 @@ diff -ur setools-3.3.7.orig/m4/ac_python_devel.m4 setools-3.3.7/m4/ac_python_dev
  	fi
  	AC_MSG_RESULT([$PYTHON_SITE_PKG])
  	AC_SUBST([PYTHON_SITE_PKG])
-@@ -211,7 +164,7 @@
+@@ -211,7 +162,7 @@
  	if test -z "$PYTHON_EXTRA_LIBS"; then
  	   PYTHON_EXTRA_LIBS=`$PYTHON -c "import distutils.sysconfig; \
                  conf = distutils.sysconfig.get_config_var; \
@@ -107,7 +108,7 @@ diff -ur setools-3.3.7.orig/m4/ac_python_devel.m4 setools-3.3.7/m4/ac_python_dev
  	fi
  	AC_MSG_RESULT([$PYTHON_EXTRA_LIBS])
  	AC_SUBST(PYTHON_EXTRA_LIBS)
-@@ -223,7 +176,7 @@
+@@ -223,7 +174,7 @@
  	if test -z "$PYTHON_EXTRA_LDFLAGS"; then
  		PYTHON_EXTRA_LDFLAGS=`$PYTHON -c "import distutils.sysconfig; \
  			conf = distutils.sysconfig.get_config_var; \
