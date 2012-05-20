@@ -11,7 +11,8 @@ inherit python
 
 DESCRIPTION="SELinux policy generation library"
 HOMEPAGE="http://userspace.selinuxproject.org"
-SRC_URI="http://userspace.selinuxproject.org/releases/20120216/${P}.tar.gz"
+SRC_URI="http://userspace.selinuxproject.org/releases/20120216/${P}.tar.gz
+	http://dev.gentoo.org/~swift/patches/sepolgen/sepolgen-1.1.5-2to3.patch.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -28,6 +29,7 @@ src_prepare() {
 		"${S}/src/sepolgen/defaults.py" || die
 	sed -i -e 's:/usr/share/selinux/devel:/usr/share/selinux/strict/include:' \
 		"${S}/src/sepolgen/module.py" || die
+	epatch "${WORKDIR}/sepolgen-1.1.5-2to3.patch" || die
 }
 
 src_compile() {
