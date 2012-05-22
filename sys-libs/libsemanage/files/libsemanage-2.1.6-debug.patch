@@ -1,6 +1,6 @@
 diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcontext_record.c
 --- libsemanage-2.1.6.orig/src/fcontext_record.c	2012-05-22 21:50:23.416071391 +0200
-+++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-22 22:22:31.903075508 +0200
++++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-22 22:31:21.847076638 +0200
 @@ -48,6 +48,8 @@
  	tmp_key->expr = expr;
  	tmp_key->type = type;
@@ -10,3 +10,27 @@ diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcon
  	*key_ptr = tmp_key;
  	return STATUS_SUCCESS;
  }
+@@ -74,6 +76,7 @@
+ 
+ void semanage_fcontext_key_free(semanage_fcontext_key_t * key)
+ {
++	fprintf(stderr, "key is %d (or %u)\n", tmp_key, tmp_key);
+ 	free(key);
+ }
+ 
+@@ -83,6 +86,7 @@
+ 			      const semanage_fcontext_key_t * key)
+ {
+ 
++	fprintf(stderr, "key is %d (or %u)\n", tmp_key, tmp_key);
+ 	int rv = strcmp(fcontext->expr, key->expr);
+ 	if (rv != 0)
+ 		return rv;
+@@ -105,6 +109,7 @@
+ {
+ 
+ 	int rv = strcmp(fcontext->expr, fcontext2->expr);
++	fprintf(stderr, "key is %d (or %u)\n", tmp_key, tmp_key);
+ 	if (rv != 0)
+ 		return rv;
+ 	else {
