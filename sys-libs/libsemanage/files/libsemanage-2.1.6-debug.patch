@@ -1,11 +1,11 @@
 diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcontext_record.c
 --- libsemanage-2.1.6.orig/src/fcontext_record.c	2012-05-22 21:50:23.416071391 +0200
-+++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-22 22:20:20.792075228 +0200
++++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-22 22:22:31.903075508 +0200
 @@ -48,6 +48,8 @@
  	tmp_key->expr = expr;
  	tmp_key->type = type;
  
-+	fprintf(stderr, "key is %d\n", tmp_key);
++	fprintf(stderr, "key is %d (or %u)\n", tmp_key, tmp_key);
 +
  	*key_ptr = tmp_key;
  	return STATUS_SUCCESS;
