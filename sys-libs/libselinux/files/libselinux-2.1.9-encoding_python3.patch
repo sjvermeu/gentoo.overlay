@@ -1,7 +1,7 @@
 diff -ur libselinux-2.1.9.orig/src/audit2why.c libselinux-2.1.9/src/audit2why.c
 --- libselinux-2.1.9.orig/src/audit2why.c	2012-05-22 20:57:49.868101910 +0200
-+++ libselinux-2.1.9/src/audit2why.c	2012-05-22 21:05:06.465065592 +0200
-@@ -363,7 +363,7 @@
++++ libselinux-2.1.9/src/audit2why.c	2012-05-22 21:14:47.800066833 +0200
+@@ -363,10 +363,11 @@
  		
  		/* make it a string */
  #if PY_MAJOR_VERSION >= 3
@@ -10,3 +10,7 @@ diff -ur libselinux-2.1.9.orig/src/audit2why.c libselinux-2.1.9/src/audit2why.c
  #else
  		permstr = PyString_AsString( strObj );
  #endif
++		printf(stderr, "DEBUG - String is \"%s\"\n", permstr)
+ 		
+ 		perm = string_to_av_perm(tclass, permstr);
+ 		if (!perm) {
