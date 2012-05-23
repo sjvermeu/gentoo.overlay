@@ -1,3 +1,15 @@
+diff -ur libsemanage-2.1.6.orig/src/database.c libsemanage-2.1.6/src/database.c
+--- libsemanage-2.1.6.orig/src/database.c	2012-05-22 21:50:23.414071391 +0200
++++ libsemanage-2.1.6/src/database.c	2012-05-23 21:05:24.203250047 +0200
+@@ -141,6 +141,8 @@
+ 		 const record_key_t * key, int *response)
+ {
+ 
++	fprintf(stderr, "dbase_exists: key->expr = \"%s\"\n", key->expr);
++
+ 	if (enter_ro(handle, dconfig) < 0)
+ 		return STATUS_ERR;
+ 
 diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcontext_record.c
 --- libsemanage-2.1.6.orig/src/fcontext_record.c	2012-05-22 21:50:23.416071391 +0200
 +++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-23 20:21:22.663244407 +0200
