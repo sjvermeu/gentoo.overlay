@@ -12,178 +12,112 @@ diff -ur libsemanage-2.1.6.orig/src/database.c libsemanage-2.1.6/src/database.c
  
 diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcontext_record.c
 --- libsemanage-2.1.6.orig/src/fcontext_record.c	2012-05-22 21:50:23.416071391 +0200
-+++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-25 21:40:25.260026058 +0200
-@@ -49,6 +49,9 @@
++++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-25 21:55:34.078027998 +0200
+@@ -48,6 +48,8 @@
+ 	tmp_key->expr = expr;
  	tmp_key->type = type;
  
++	fprintf(stderr, "DEBUG - created key for \"%s\" (@ %p), expression \"%s\" is at %p\n", tmp_key, tmp_key, tmp_key->expr, tmp_key->expr);
++
  	*key_ptr = tmp_key;
-+
-+	fprintf(stderr, "DEBUG %s:%d key (@ %p) expr \"%s\" (@ %p)\n", __FILE__, __LINE__, tmp_key, tmp_key->expr, tmp_key->expr);
-+
  	return STATUS_SUCCESS;
  }
+@@ -74,7 +76,7 @@
  
-@@ -72,9 +75,11 @@
- 
- hidden_def(semanage_fcontext_key_extract)
- 
--void semanage_fcontext_key_free(semanage_fcontext_key_t * key)
-+void semanage_fcontext_key_fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, semanage_fcontext_key_t * key); free(semanage_fcontext_key_t * key);)
+ void semanage_fcontext_key_free(semanage_fcontext_key_t * key)
  {
 -	free(key);
-+	fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, key); free(key););
++	fprintf(stderr, "DEBUG - %s.%d free location %p\n", __FILE__, __LINE__, key);	free(key);
  }
  
  hidden_def(semanage_fcontext_key_free)
-@@ -84,6 +89,7 @@
- {
- 
- 	int rv = strcmp(fcontext->expr, key->expr);
-+	fprintf(stderr, "DEBUG %s:%d key (@ %p) expr \"%s\" (@ %p)\n", __FILE__, __LINE__, key, key->expr, key->expr);
- 	if (rv != 0)
- 		return rv;
- 	else {
-@@ -172,7 +178,8 @@
+@@ -172,7 +174,7 @@
  		ERR(handle, "out of memory, " "could not set regexp string");
  		return STATUS_ERR;
  	}
 -	free(fcontext->expr);
-+	fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, fcontext->expr); free(fcontext->expr););
++	fprintf(stderr, "DEBUG - %s.%d free location %p\n", __FILE__, __LINE__, fcontext->expr);	free(fcontext->expr);
  	fcontext->expr = tmp_expr;
  	return STATUS_SUCCESS;
  }
-@@ -245,7 +252,8 @@
- 		return STATUS_ERR;
- 	}
- 
--	semanage_context_free(fcontext->con);
-+	semanage_context_fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, fcontext->con); free(fcontext->con););
- 	fcontext->con = newcon;
- 	return STATUS_SUCCESS;
- }
-@@ -278,22 +286,27 @@
- 
-       err:
- 	ERR(handle, "could not clone file context record");
--	semanage_fcontext_free(new_fcontext);
-+	semanage_fcontext_fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, new_fcontext); free(new_fcontext););
- 	return STATUS_ERR;
- }
- 
- hidden_def(semanage_fcontext_clone)
- 
- /* Destroy */
--void semanage_fcontext_free(semanage_fcontext_t * fcontext)
-+void semanage_fcontext_fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, semanage_fcontext_t * fcontext); free(semanage_fcontext_t * fcontext);)
- {
- 
+@@ -291,9 +293,9 @@
  	if (!fcontext)
  		return;
  
 -	free(fcontext->expr);
--	semanage_context_free(fcontext->con);
++	fprintf(stderr, "DEBUG - %s.%d free location %p\n", __FILE__, __LINE__, fcontext->expr);	free(fcontext->expr);
+ 	semanage_context_free(fcontext->con);
 -	free(fcontext);
-+	fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, fcontext->expr); free(fcontext->expr););
-+	semanage_context_fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, fcontext->con); free(fcontext->con););
-+	fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, fcontext); free(fcontext););
++	fprintf(stderr, "DEBUG - %s.%d free location %p\n", __FILE__, __LINE__, fcontext);	free(fcontext);
  }
  
  hidden_def(semanage_fcontext_free)
 diff -ur libsemanage-2.1.6.orig/src/fcontexts_file.c libsemanage-2.1.6/src/fcontexts_file.c
 --- libsemanage-2.1.6.orig/src/fcontexts_file.c	2012-05-22 21:50:23.415071391 +0200
-+++ libsemanage-2.1.6/src/fcontexts_file.c	2012-05-25 21:40:25.261026058 +0200
-@@ -63,7 +63,8 @@
++++ libsemanage-2.1.6/src/fcontexts_file.c	2012-05-25 21:55:34.079027998 +0200
+@@ -63,7 +63,7 @@
  			goto err;
  		if (fprintf(str, "%s\n", con_str) < 0)
  			goto err;
 -		free(con_str);
-+		fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, con_str); free(con_str););
++		fprintf(stderr, "DEBUG - %s.%d free location %p\n", __FILE__, __LINE__, con_str);	free(con_str);
  		con_str = NULL;
  	} else {
  		if (fprintf(str, "<<none>>\n") < 0)
-@@ -74,7 +75,8 @@
+@@ -74,7 +74,7 @@
        err:
  	ERR(handle, "could not print file context for "
  	    "%s (%s) to stream", expr, tstr);
 -	free(con_str);
-+	fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, con_str); free(con_str););
++	fprintf(stderr, "DEBUG - %s.%d free location %p\n", __FILE__, __LINE__, con_str);	free(con_str);
  	return STATUS_ERR;
  }
  
-@@ -95,7 +97,8 @@
+@@ -95,7 +95,7 @@
  		goto err;
  	if (semanage_fcontext_set_expr(handle, fcontext, str) < 0)
  		goto err;
 -	free(str);
-+	fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, str); free(str););
++	fprintf(stderr, "DEBUG - %s.%d free location %p\n", __FILE__, __LINE__, str);	free(str);
  	str = NULL;
  
  	/* Type */
-@@ -119,7 +122,8 @@
+@@ -119,7 +119,7 @@
  		semanage_fcontext_set_type(fcontext, SEMANAGE_FCONTEXT_REG);
  	else
  		goto process_context;
 -	free(str);
-+	fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, str); free(str););
++	fprintf(stderr, "DEBUG - %s.%d free location %p\n", __FILE__, __LINE__, str);	free(str);
  	str = NULL;
  
  	/* Context */
-@@ -134,7 +138,8 @@
+@@ -134,7 +134,7 @@
  		    str, info->filename, info->lineno, info->orig_line);
  		goto err;
  	}
 -	free(str);
-+	fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, str); free(str););
++	fprintf(stderr, "DEBUG - %s.%d free location %p\n", __FILE__, __LINE__, str);	free(str);
  	str = NULL;
  
  	if (con && semanage_fcontext_set_con(handle, fcontext, con) < 0)
-@@ -143,7 +148,8 @@
- 	if (parse_assert_space(handle, info) < 0)
- 		goto err;
- 
--	semanage_context_free(con);
-+	semanage_context_fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, con); free(con););
- 	return STATUS_SUCCESS;
- 
-       last:
-@@ -152,8 +158,10 @@
+@@ -152,7 +152,7 @@
  
        err:
  	ERR(handle, "could not parse file context record");
 -	free(str);
--	semanage_context_free(con);
-+	fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, str); free(str););
-+	semanage_context_fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, con); free(con););
++	fprintf(stderr, "DEBUG - %s.%d free location %p\n", __FILE__, __LINE__, str);	free(str);
+ 	semanage_context_free(con);
  	parse_dispose_line(info);
  	return STATUS_ERR;
- }
 diff -ur libsemanage-2.1.6.orig/src/fcontexts_local.c libsemanage-2.1.6/src/fcontexts_local.c
 --- libsemanage-2.1.6.orig/src/fcontexts_local.c	2012-05-22 21:50:23.415071391 +0200
-+++ libsemanage-2.1.6/src/fcontexts_local.c	2012-05-25 21:40:25.262026058 +0200
-@@ -111,7 +111,8 @@
++++ libsemanage-2.1.6/src/fcontexts_local.c	2012-05-25 21:55:34.080027998 +0200
+@@ -111,7 +111,7 @@
  	if (semanage_context_to_string(handle, con, &str) >= 0) {
  		ERR(handle, "invalid context %s specified for %s [%s]",
  		    str, expr, type_str);
 -		free(str);
-+		fprintf(stderr, "DEBUG - %s.%d free location %p
-+", __FILE__, __LINE__, str); free(str););
++		fprintf(stderr, "DEBUG - %s.%d free location %p\n", __FILE__, __LINE__, str);	free(str);
  	} else
  		ERR(handle, "invalid context specified for %s [%s]",
  		    expr, type_str);
