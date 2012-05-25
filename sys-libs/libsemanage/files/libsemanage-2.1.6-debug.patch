@@ -12,13 +12,13 @@ diff -ur libsemanage-2.1.6.orig/src/database.c libsemanage-2.1.6/src/database.c
  
 diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcontext_record.c
 --- libsemanage-2.1.6.orig/src/fcontext_record.c	2012-05-22 21:50:23.416071391 +0200
-+++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-25 20:53:36.466020063 +0200
++++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-25 20:55:44.405020336 +0200
 @@ -49,6 +49,9 @@
  	tmp_key->type = type;
  
  	*key_ptr = tmp_key;
 +
-+	fprintf(stderr, "DEBUG %s:%s key (@ %p) expr \"%s\" (@ %p)\n", __FILE__, __LINE__, tmp_key, tmp_key->expr, tmp_key->expr);
++	fprintf(stderr, "DEBUG %s:%d key (@ %p) expr \"%s\" (@ %p)\n", __FILE__, __LINE__, tmp_key, tmp_key->expr, tmp_key->expr);
 +
  	return STATUS_SUCCESS;
  }
@@ -27,7 +27,7 @@ diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcon
  {
  
  	int rv = strcmp(fcontext->expr, key->expr);
-+	fprintf(stderr, "DEBUG %s:%s key (@ %p) expr \"%s\" (@ %p)\n", __FILE__, __LINE__, key, key->expr, key->expr);
++	fprintf(stderr, "DEBUG %s:%d key (@ %p) expr \"%s\" (@ %p)\n", __FILE__, __LINE__, key, key->expr, key->expr);
  	if (rv != 0)
  		return rv;
  	else {
