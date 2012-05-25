@@ -12,7 +12,7 @@ diff -ur libsemanage-2.1.6.orig/src/database.c libsemanage-2.1.6/src/database.c
  
 diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcontext_record.c
 --- libsemanage-2.1.6.orig/src/fcontext_record.c	2012-05-22 21:50:23.416071391 +0200
-+++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-25 20:27:14.138016686 +0200
++++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-25 20:32:01.083017298 +0200
 @@ -48,6 +48,8 @@
  	tmp_key->expr = expr;
  	tmp_key->type = type;
@@ -27,10 +27,10 @@ diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcon
  hidden_def(semanage_fcontext_key_extract)
  
 -void semanage_fcontext_key_free(semanage_fcontext_key_t * key)
-+void semanage_fcontext_key_fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, semanage_fcontext_key_t * key); free(semanage_fcontext_key_t * key)
++void semanage_fcontext_key_fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, semanage_fcontext_key_t * key);(semanage_fcontext_key_t * key)); free(semanage_fcontext_key_t * key)
  {
 -	free(key);
-+	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, key); free(key);
++	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, key);(key)); free(key);
  }
  
  hidden_def(semanage_fcontext_key_free)
@@ -47,7 +47,7 @@ diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcon
  		return STATUS_ERR;
  	}
 -	free(fcontext->expr);
-+	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, fcontext->expr); free(fcontext->expr);
++	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, fcontext->expr);(fcontext->expr)); free(fcontext->expr);
  	fcontext->expr = tmp_expr;
  	return STATUS_SUCCESS;
  }
@@ -56,7 +56,7 @@ diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcon
  	}
  
 -	semanage_context_free(fcontext->con);
-+	semanage_context_fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, fcontext->con); free(fcontext->con);
++	semanage_context_fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, fcontext->con);(fcontext->con)); free(fcontext->con);
  	fcontext->con = newcon;
  	return STATUS_SUCCESS;
  }
@@ -65,7 +65,7 @@ diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcon
        err:
  	ERR(handle, "could not clone file context record");
 -	semanage_fcontext_free(new_fcontext);
-+	semanage_fcontext_fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, new_fcontext); free(new_fcontext);
++	semanage_fcontext_fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, new_fcontext);(new_fcontext)); free(new_fcontext);
  	return STATUS_ERR;
  }
  
@@ -73,7 +73,7 @@ diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcon
  
  /* Destroy */
 -void semanage_fcontext_free(semanage_fcontext_t * fcontext)
-+void semanage_fcontext_fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, semanage_fcontext_t * fcontext); free(semanage_fcontext_t * fcontext)
++void semanage_fcontext_fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, semanage_fcontext_t * fcontext);(semanage_fcontext_t * fcontext)); free(semanage_fcontext_t * fcontext)
  {
  
  	if (!fcontext)
@@ -82,21 +82,21 @@ diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcon
 -	free(fcontext->expr);
 -	semanage_context_free(fcontext->con);
 -	free(fcontext);
-+	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, fcontext->expr); free(fcontext->expr);
-+	semanage_context_fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, fcontext->con); free(fcontext->con);
-+	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, fcontext); free(fcontext);
++	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, fcontext->expr);(fcontext->expr)); free(fcontext->expr);
++	semanage_context_fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, fcontext->con);(fcontext->con)); free(fcontext->con);
++	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, fcontext);(fcontext)); free(fcontext);
  }
  
  hidden_def(semanage_fcontext_free)
 diff -ur libsemanage-2.1.6.orig/src/fcontexts_file.c libsemanage-2.1.6/src/fcontexts_file.c
 --- libsemanage-2.1.6.orig/src/fcontexts_file.c	2012-05-22 21:50:23.415071391 +0200
-+++ libsemanage-2.1.6/src/fcontexts_file.c	2012-05-25 20:27:14.139016686 +0200
++++ libsemanage-2.1.6/src/fcontexts_file.c	2012-05-25 20:32:01.084017298 +0200
 @@ -63,7 +63,7 @@
  			goto err;
  		if (fprintf(str, "%s\n", con_str) < 0)
  			goto err;
 -		free(con_str);
-+		fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, con_str); free(con_str);
++		fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, con_str);(con_str)); free(con_str);
  		con_str = NULL;
  	} else {
  		if (fprintf(str, "<<none>>\n") < 0)
@@ -105,7 +105,7 @@ diff -ur libsemanage-2.1.6.orig/src/fcontexts_file.c libsemanage-2.1.6/src/fcont
  	ERR(handle, "could not print file context for "
  	    "%s (%s) to stream", expr, tstr);
 -	free(con_str);
-+	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, con_str); free(con_str);
++	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, con_str);(con_str)); free(con_str);
  	return STATUS_ERR;
  }
  
@@ -114,7 +114,7 @@ diff -ur libsemanage-2.1.6.orig/src/fcontexts_file.c libsemanage-2.1.6/src/fcont
  	if (semanage_fcontext_set_expr(handle, fcontext, str) < 0)
  		goto err;
 -	free(str);
-+	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, str); free(str);
++	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, str);(str)); free(str);
  	str = NULL;
  
  	/* Type */
@@ -123,7 +123,7 @@ diff -ur libsemanage-2.1.6.orig/src/fcontexts_file.c libsemanage-2.1.6/src/fcont
  	else
  		goto process_context;
 -	free(str);
-+	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, str); free(str);
++	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, str);(str)); free(str);
  	str = NULL;
  
  	/* Context */
@@ -132,7 +132,7 @@ diff -ur libsemanage-2.1.6.orig/src/fcontexts_file.c libsemanage-2.1.6/src/fcont
  		goto err;
  	}
 -	free(str);
-+	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, str); free(str);
++	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, str);(str)); free(str);
  	str = NULL;
  
  	if (con && semanage_fcontext_set_con(handle, fcontext, con) < 0)
@@ -141,7 +141,7 @@ diff -ur libsemanage-2.1.6.orig/src/fcontexts_file.c libsemanage-2.1.6/src/fcont
  		goto err;
  
 -	semanage_context_free(con);
-+	semanage_context_fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, con); free(con);
++	semanage_context_fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, con);(con)); free(con);
  	return STATUS_SUCCESS;
  
        last:
@@ -151,20 +151,20 @@ diff -ur libsemanage-2.1.6.orig/src/fcontexts_file.c libsemanage-2.1.6/src/fcont
  	ERR(handle, "could not parse file context record");
 -	free(str);
 -	semanage_context_free(con);
-+	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, str); free(str);
-+	semanage_context_fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, con); free(con);
++	fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, str);(str)); free(str);
++	semanage_context_fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, con);(con)); free(con);
  	parse_dispose_line(info);
  	return STATUS_ERR;
  }
 diff -ur libsemanage-2.1.6.orig/src/fcontexts_local.c libsemanage-2.1.6/src/fcontexts_local.c
 --- libsemanage-2.1.6.orig/src/fcontexts_local.c	2012-05-22 21:50:23.415071391 +0200
-+++ libsemanage-2.1.6/src/fcontexts_local.c	2012-05-25 20:27:14.139016686 +0200
++++ libsemanage-2.1.6/src/fcontexts_local.c	2012-05-25 20:32:01.085017298 +0200
 @@ -111,7 +111,7 @@
  	if (semanage_context_to_string(handle, con, &str) >= 0) {
  		ERR(handle, "invalid context %s specified for %s [%s]",
  		    str, expr, type_str);
 -		free(str);
-+		fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, str); free(str);
++		fprintf(stderr, "DEBUG %s.%d addr is %u\n", __FILE__, __LINE__, __LINE__, str);(str)); free(str);
  	} else
  		ERR(handle, "invalid context specified for %s [%s]",
  		    expr, type_str);
