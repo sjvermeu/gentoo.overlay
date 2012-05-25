@@ -12,12 +12,12 @@ diff -ur libsemanage-2.1.6.orig/src/database.c libsemanage-2.1.6/src/database.c
  
 diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcontext_record.c
 --- libsemanage-2.1.6.orig/src/fcontext_record.c	2012-05-22 21:50:23.416071391 +0200
-+++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-25 21:55:34.078027998 +0200
++++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-25 21:58:25.198028363 +0200
 @@ -48,6 +48,8 @@
  	tmp_key->expr = expr;
  	tmp_key->type = type;
  
-+	fprintf(stderr, "DEBUG - created key for \"%s\" (@ %p), expression \"%s\" is at %p\n", tmp_key, tmp_key, tmp_key->expr, tmp_key->expr);
++	fprintf(stderr, "DEBUG - created key for %p, expression \"%s\" is at %p\n", tmp_key, tmp_key->expr, tmp_key->expr);
 +
  	*key_ptr = tmp_key;
  	return STATUS_SUCCESS;
