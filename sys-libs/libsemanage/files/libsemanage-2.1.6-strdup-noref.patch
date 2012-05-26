@@ -1,6 +1,6 @@
 diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcontext_record.c
 --- libsemanage-2.1.6.orig/src/fcontext_record.c	2012-05-22 21:50:23.416071391 +0200
-+++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-26 09:00:36.977113168 +0200
++++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-26 09:08:22.125114161 +0200
 @@ -45,7 +45,12 @@
  		    "create file context key");
  		return STATUS_ERR;
@@ -23,13 +23,3 @@ diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcon
  	free(key);
  }
  
-@@ -144,6 +150,9 @@
- 		return STATUS_ERR;
- 	}
- 
-+	if (!tmp_fcontext->expr) {
-+		free(tmp_fcontext->expr);
-+	}
- 	tmp_fcontext->expr = NULL;
- 	tmp_fcontext->type = SEMANAGE_FCONTEXT_ALL;
- 	tmp_fcontext->con = NULL;

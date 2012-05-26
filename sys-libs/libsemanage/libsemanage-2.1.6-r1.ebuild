@@ -69,7 +69,7 @@ src_prepare() {
 
 	# Apply patch to support non-leveled types (like strict or targeted)
 	epatch "${DISTDIR}/libsemanage-2.1.6-nolevel.patch.gz"
-	epatch "${FILESDIR}/libsemanage-2.1.6-debug.patch"
+	epatch "${FILESDIR}/libsemanage-2.1.6-strdup-noref.patch"
 }
 
 src_compile() {
