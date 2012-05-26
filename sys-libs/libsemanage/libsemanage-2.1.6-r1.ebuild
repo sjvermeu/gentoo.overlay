@@ -16,7 +16,7 @@ SELNX_VER="2.1.9"
 DESCRIPTION="SELinux kernel and policy management library"
 HOMEPAGE="http://userspace.selinuxproject.org"
 SRC_URI="http://userspace.selinuxproject.org/releases/20120216/${P}.tar.gz
-		http://dev.gentoo.org/~swift/patches/libsemanage/libsemanage-2.1.6-nolevel.patch.gz"
+		http://dev.gentoo.org/~swift/patches/libsemanage/patchbundle-libsemanage-2.1.6-gentoo-r1.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -67,9 +67,11 @@ src_prepare() {
 	echo "# decompression of modules in the module store." >> "${S}/src/semanage.conf"
 	echo "bzip-small=true" >> "${S}/src/semanage.conf"
 
-	# Apply patch to support non-leveled types (like strict or targeted)
-	epatch "${DISTDIR}/libsemanage-2.1.6-nolevel.patch.gz"
-	epatch "${FILESDIR}/libsemanage-2.1.6-strdup-noref.patch"
+	EPATCH_MULTI_MSG="Applying libsemanage patches ... " \
+	EPATCH_SUFFIX="patch" \
+	EPATCH_SOURCE="${WORKDIR}/gentoo-patches" \
+	EPATCH_FORCE="yes" \
+	epatch
 }
 
 src_compile() {
