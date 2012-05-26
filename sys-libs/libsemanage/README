@@ -1,0 +1,3 @@
+The updated patchbundle removes an unnecessary strcpy (first I did strdup, then
+strcpy, but the latter isn't needed anymore). Keeping track of this here so that
+I don't forget this patch later.
