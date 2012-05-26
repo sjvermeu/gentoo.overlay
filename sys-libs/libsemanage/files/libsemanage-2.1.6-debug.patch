@@ -12,9 +12,18 @@ diff -ur libsemanage-2.1.6.orig/src/database.c libsemanage-2.1.6/src/database.c
  
 diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcontext_record.c
 --- libsemanage-2.1.6.orig/src/fcontext_record.c	2012-05-22 21:50:23.416071391 +0200
-+++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-25 21:58:25.198028363 +0200
-@@ -48,6 +48,8 @@
- 	tmp_key->expr = expr;
++++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-26 08:23:48.902108455 +0200
+@@ -45,9 +45,16 @@
+ 		    "create file context key");
+ 		return STATUS_ERR;
+ 	}
+-	tmp_key->expr = expr;
++	tmp_key->expr = (char *) malloc(sizeof(expr));
++	if (!tmp_key->expr) {
++		ERR(handle, "out of memory, could not create file context key.");
++		return STATUS_ERR;
++	}
++	strcpy(tmp_key->expr, expr);
  	tmp_key->type = type;
  
 +	fprintf(stderr, "DEBUG - created key for %p, expression \"%s\" is at %p\n", tmp_key, tmp_key->expr, tmp_key->expr);
@@ -22,7 +31,7 @@ diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcon
  	*key_ptr = tmp_key;
  	return STATUS_SUCCESS;
  }
-@@ -74,7 +76,7 @@
+@@ -74,7 +81,7 @@
  
  void semanage_fcontext_key_free(semanage_fcontext_key_t * key)
  {
@@ -31,7 +40,7 @@ diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcon
  }
  
  hidden_def(semanage_fcontext_key_free)
-@@ -172,7 +174,7 @@
+@@ -172,7 +179,7 @@
  		ERR(handle, "out of memory, " "could not set regexp string");
  		return STATUS_ERR;
  	}
@@ -40,7 +49,7 @@ diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcon
  	fcontext->expr = tmp_expr;
  	return STATUS_SUCCESS;
  }
-@@ -291,9 +293,9 @@
+@@ -291,9 +298,9 @@
  	if (!fcontext)
  		return;
  
