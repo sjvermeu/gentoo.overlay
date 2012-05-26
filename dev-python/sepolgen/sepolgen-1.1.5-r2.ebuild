@@ -12,7 +12,7 @@ inherit python eutils
 DESCRIPTION="SELinux policy generation library"
 HOMEPAGE="http://userspace.selinuxproject.org"
 SRC_URI="http://userspace.selinuxproject.org/releases/20120216/${P}.tar.gz
-	http://dev.gentoo.org/~swift/patches/sepolgen/sepolgen-1.1.5-gentoo-01.tar.gz"
+	http://dev.gentoo.org/~swift/patches/sepolgen/sepolgen-1.1.5-gentoo-r2.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
