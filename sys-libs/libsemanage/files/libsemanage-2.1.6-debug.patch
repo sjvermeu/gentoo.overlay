@@ -1,12 +1,12 @@
 diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcontext_record.c
 --- libsemanage-2.1.6.orig/src/fcontext_record.c	2012-05-22 21:50:23.416071391 +0200
-+++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-26 08:43:57.053111034 +0200
++++ libsemanage-2.1.6/src/fcontext_record.c	2012-05-26 09:00:36.977113168 +0200
 @@ -45,7 +45,12 @@
  		    "create file context key");
  		return STATUS_ERR;
  	}
 -	tmp_key->expr = expr;
-+	tmp_key->expr = (char *) calloc(strlen(expr)+1, sizeof(char));
++	tmp_key->expr = strdup(expr);
 +	if (!tmp_key->expr) {
 +		ERR(handle, "out of memory, could not create file context key.");
 +		return STATUS_ERR;
@@ -15,3 +15,21 @@ diff -ur libsemanage-2.1.6.orig/src/fcontext_record.c libsemanage-2.1.6/src/fcon
  	tmp_key->type = type;
  
  	*key_ptr = tmp_key;
+@@ -74,6 +79,7 @@
+ 
+ void semanage_fcontext_key_free(semanage_fcontext_key_t * key)
+ {
++	free(key->expr);
+ 	free(key);
+ }
+ 
+@@ -144,6 +150,9 @@
+ 		return STATUS_ERR;
+ 	}
+ 
++	if (!tmp_fcontext->expr) {
++		free(tmp_fcontext->expr);
++	}
+ 	tmp_fcontext->expr = NULL;
+ 	tmp_fcontext->type = SEMANAGE_FCONTEXT_ALL;
+ 	tmp_fcontext->con = NULL;
