@@ -142,4 +142,3 @@ pkg_preinst() {
 	has_version "<${CATEGORY}/${PN}-2.20101213-r13"
 	previous_less_than_r13=$?
 }
-
