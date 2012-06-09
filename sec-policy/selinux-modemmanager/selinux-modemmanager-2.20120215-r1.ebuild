@@ -12,3 +12,5 @@ inherit selinux-policy-2
 DESCRIPTION="SELinux policy for modemmanager"
 
 KEYWORDS="~amd64 ~x86"
+DEPEND=">=sec-policy/selinux-dbus-2.20120215"
+RDEPEND="${DEPEND}"
