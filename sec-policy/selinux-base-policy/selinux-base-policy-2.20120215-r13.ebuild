@@ -9,9 +9,9 @@ HOMEPAGE="http://www.gentoo.org/proj/en/hardened/selinux/"
 DESCRIPTION="SELinux policy for core modules"
 
 IUSE=""
-BASEPOL="2.20120215-r12"
+BASEPOL="2.20120215-r13"
 
-RDEPEND=">=sec-policy/selinux-base-2.20120215-r12"
+RDEPEND=">=sec-policy/selinux-base-2.20120215-r13"
 DEPEND=""
 SRC_URI="http://oss.tresys.com/files/refpolicy/refpolicy-${PV}.tar.bz2
 		http://dev.gentoo.org/~swift/patches/${PN}/patchbundle-${PN}-${BASEPOL}.tar.bz2"
