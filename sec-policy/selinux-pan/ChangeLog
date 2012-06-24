@@ -1,0 +1,44 @@
+
+
+  01 Jun 2012; <swift@gentoo.org> selinux-pan-2.20120215.ebuild:
+  Add dependency on selinux-xserver, fixes build failure
+
+  13 May 2012; <swift@gentoo.org> -selinux-pan-2.20110726-r1.ebuild,
+  -selinux-pan-2.20110726-r2.ebuild:
+  Removing deprecated ebuilds (cleanup)
+
+  29 Apr 2012; <swift@gentoo.org> selinux-pan-2.20120215.ebuild:
+  Stabilizing revision 7
+
+*selinux-pan-2.20120215 (31 Mar 2012)
+
+  31 Mar 2012; <swift@gentoo.org> +selinux-pan-2.20120215.ebuild:
+  Bumping to 2.20120215 policies
+
+  27 Nov 2011; <swift@gentoo.org> selinux-pan-2.20110726-r2.ebuild:
+  Stable on x86/amd64
+
+  12 Nov 2011; <swift@gentoo.org> -files/fix-apps-pan-r1.patch,
+  -selinux-pan-2.20101213-r1.ebuild:
+  Removing old policies
+
+  23 Oct 2011; <swift@gentoo.org> selinux-pan-2.20110726-r1.ebuild:
+  Stabilization (tracker #384231)
+
+*selinux-pan-2.20110726-r2 (23 Oct 2011)
+
+  23 Oct 2011; <swift@gentoo.org> +selinux-pan-2.20110726-r2.ebuild:
+  Add support for XDG
+
+*selinux-pan-2.20110726-r1 (28 Aug 2011)
+
+  28 Aug 2011; <swift@gentoo.org> +selinux-pan-2.20110726-r1.ebuild:
+  Updating policy builds to refpolicy 20110726
+
+*selinux-pan-2.20101213-r1 (07 Aug 2011)
+
+  07 Aug 2011; Anthony G. Basile <blueness@gentoo.org>
+  +files/fix-apps-pan-r1.patch, +selinux-pan-2.20101213-r1.ebuild,
+  +metadata.xml:
+  Initial commit policy for pan
+

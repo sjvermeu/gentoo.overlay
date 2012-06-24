@@ -1,0 +1,40 @@
+# ChangeLog for sec-policy/selinux-zabbix
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-zabbix/ChangeLog,v 1.9 2012/05/13 11:50:12 swift Exp $
+
+  13 May 2012; <swift@gentoo.org> -selinux-zabbix-2.20110726-r2.ebuild:
+  Removing deprecated ebuilds (cleanup)
+
+  29 Apr 2012; <swift@gentoo.org> selinux-zabbix-2.20120215.ebuild:
+  Stabilizing revision 7
+
+*selinux-zabbix-2.20120215 (31 Mar 2012)
+
+  31 Mar 2012; <swift@gentoo.org> +selinux-zabbix-2.20120215.ebuild:
+  Bumping to 2.20120215 policies
+
+  12 Nov 2011; <swift@gentoo.org> -files/fix-services-zabbix-r1.patch,
+  -selinux-zabbix-2.20101213.ebuild, -selinux-zabbix-2.20101213-r1.ebuild:
+  Removing old policies
+
+  23 Oct 2011; <swift@gentoo.org> selinux-zabbix-2.20110726-r2.ebuild:
+  Stabilization (tracker #384231)
+
+*selinux-zabbix-2.20110726-r2 (28 Aug 2011)
+
+  28 Aug 2011; <swift@gentoo.org> +selinux-zabbix-2.20110726-r2.ebuild:
+  Updating policy builds to refpolicy 20110726
+
+*selinux-zabbix-2.20101213-r1 (30 Jun 2011)
+
+  30 Jun 2011; Anthony G. Basile <blueness@gentoo.org>
+  +files/fix-services-zabbix-r1.patch, +selinux-zabbix-2.20101213-r1.ebuild:
+  Make sure zabbix agent works, bump to EAPI=4
+
+  02 Jun 2011; Anthony G. Basile <blueness@gentoo.org>
+  selinux-zabbix-2.20101213.ebuild:
+  Stable amd64 x86
+
+  05 Feb 2011; Anthony G. Basile <blueness@gentoo.org> ChangeLog:
+  Initial commit to portage.
+

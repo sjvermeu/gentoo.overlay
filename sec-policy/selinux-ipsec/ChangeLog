@@ -1,0 +1,33 @@
+# ChangeLog for sec-policy/selinux-ipsec
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-ipsec/ChangeLog,v 1.6 2012/05/20 18:40:09 swift Exp $
+
+*selinux-ipsec-2.20120215-r1 (20 May 2012)
+
+  20 May 2012; <swift@gentoo.org> +selinux-ipsec-2.20120215-r1.ebuild:
+  Bumping to rev 9
+
+  13 May 2012; <swift@gentoo.org> -selinux-ipsec-2.20110726.ebuild:
+  Removing deprecated ebuilds (cleanup)
+
+  29 Apr 2012; <swift@gentoo.org> selinux-ipsec-2.20120215.ebuild:
+  Stabilizing revision 7
+
+  31 Mar 2012; <swift@gentoo.org> selinux-ipsec-2.20110726.ebuild,
+  +selinux-ipsec-2.20120215.ebuild:
+  Remove deprecated dependency
+
+*selinux-ipsec-2.20120215 (31 Mar 2012)
+
+  31 Mar 2012; <swift@gentoo.org> +selinux-ipsec-2.20120215.ebuild:
+  Bumping to 2.20120215 policies
+
+  23 Oct 2011; <swift@gentoo.org> selinux-ipsec-2.20110726.ebuild:
+  Stabilization (tracker #384231)
+
+*selinux-ipsec-2.20110726 (28 Aug 2011)
+
+  28 Aug 2011; <swift@gentoo.org> +selinux-ipsec-2.20110726.ebuild,
+  +metadata.xml:
+  New policy based on refpolicy 20110726 sources
+
