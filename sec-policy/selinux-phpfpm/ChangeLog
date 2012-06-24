@@ -1,0 +1,10 @@
+# ChangeLog for sec-policy/selinux-phpfpm
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+*selinux-phpfpm-2.20120215 (24 Jun 2012)
+
+  24 Jun 2012; <swift@gentoo.org> +selinux-phpfpm-2.20120215.ebuild,
+  +metadata.xml:
+  Introducing phpfpm module
+
