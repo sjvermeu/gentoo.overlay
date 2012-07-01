@@ -130,6 +130,10 @@ src_install() {
 		if use doc; then
 			dohtml doc/html/*;
 		fi
+
+		insinto /usr/share/selinux/devel;
+		doins doc/policy.xml;
+
 	done
 
 	dodoc doc/Makefile.example doc/example.{te,fc,if}
