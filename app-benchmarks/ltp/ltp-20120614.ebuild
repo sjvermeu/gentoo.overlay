@@ -18,3 +18,8 @@ S="${WORKDIR}/${MY_P}"
 
 SRC_URI="mirror://sourceforge/project/ltp/LTP%20Source/${P}/${MY_P}.bz2"
 
+src_unpack() {
+	unpack ${A}
+	cd ${WORKDIR} && tar xf ${MY_P}
+}
+
