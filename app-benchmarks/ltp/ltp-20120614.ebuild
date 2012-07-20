@@ -16,5 +16,5 @@ IUSE=""
 MY_P="${PN}-full-${PV}"
 S="${WORKDIR}/${MY_P}"
 
-SRC_URI="mirror://sourceforge/ltp/files/LTP%20Source/${P}/${MY_P}.bz2"
+SRC_URI="mirror://sourceforge/project/ltp/LTP%20Source/${P}/${MY_P}.bz2"
 
