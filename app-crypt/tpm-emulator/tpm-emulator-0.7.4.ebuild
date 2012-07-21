@@ -15,7 +15,9 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="modules"
-DEPEND="dev-libs/gmp"
+DEPEND="
+	dev-libs/gmp
+	dev-util/cmake"
 RDEPEND=""
 S="${WORKDIR}"/${P/-/_}
 
@@ -30,22 +32,8 @@ pkg_setup() {
 	enewuser tss -1 -1 /var/lib/tpm tss
 }
 
-src_prepare() {
-	sed -i 's/LDFLAGS :=/override LDFLAGS +=/g' tpmd/Makefile
-	sed -i 's#/var/tpm#/var/run/tpm#g' tpmd/tpmd.c tddl/tddl.c tpmd_dev/tpmd_dev.c
-
-	# use kernel object directory found by linux-info getversion() (bug 241956)
-	sed -i 's#/lib/modules/\$(KERNEL_RELEASE)/build#'"${KV_OUT_DIR}#" tpmd_dev/Makefile
-
-	# reorder -lgmp so --as-needed works (bug 264073)
-	sed -i 's/LDFLAGS/LDLIBS/' tpmd/Makefile
-
-	# fix parallel make
-	epatch "${FILESDIR}"/${P}-parallel-make.patch
-}
-
 src_compile() {
-	emake user || die "Failed to build userspace"
+	emake 
 	if use modules; then
 		linux-mod_src_compile || die "Failed to build kernelspace"
 	fi
@@ -60,10 +48,9 @@ src_install() {
 	fi
 
 	use modules && linux-mod_src_install
-	dodoc README
 
-	emake user_install DESTDIR="${D}" LIBDIR="/usr/$(get_libdir)" \
-		|| die "Failed to install userspace"
+	#emake install DESTDIR="${D}" LIBDIR="/usr/$(get_libdir)" \
+	emake install 
 
 	newinitd "${FILESDIR}"/${PN}.initd-0.5.1 ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd-0.5.1 ${PN}
