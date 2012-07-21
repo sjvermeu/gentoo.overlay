@@ -3,7 +3,7 @@
 # $Header: /var/cvsroot/gentoo-x86/app-crypt/tpm-emulator/tpm-emulator-0.5.1.ebuild,v 1.3 2012/05/31 03:31:59 zmedico Exp $
 
 EAPI=2
-inherit cmake-utils linux-mod eutils
+inherit cmake-utils eutils
 
 MY_P=${P/-/_}
 DESCRIPTION="Emulator driver for tpm"
@@ -14,7 +14,7 @@ SRC_URI="mirror://berlios/tpm-emulator/${MY_P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="modules"
+IUSE=""
 DEPEND="dev-libs/gmp"
 RDEPEND=""
 S="${WORKDIR}"/${P/-/_}
@@ -23,19 +23,7 @@ S="${WORKDIR}"/${P/-/_}
 #https://developer.berlios.de/feature/index.php?func=detailfeature&feature_id=3304&group_id=2491
 
 pkg_setup() {
-	use modules && linux-mod_pkg_setup
-	MODULE_NAMES="tpmd_dev(crypt::${S}/tpmd_dev)"
-	BUILD_TARGETS="all"
-	BUILD_PARAMS="CC=$(tc-getCC)"
 	enewuser tss -1 -1 /var/lib/tpm tss
-}
-
-src_compile() {
-	cmake-utils_src_compile
-
-	if use modules; then
-		linux-mod_src_compile || die "Failed to build kernelspace"
-	fi
 }
 
 src_install() {
@@ -47,8 +35,6 @@ src_install() {
 		[ -z "$(/usr/bin/scanelf -qs __stack_smash_handler tpm_emulator.ko)" ] || \
 			die 'cannot have gmp compiled with hardened flags'
 	fi
-
-	use modules && linux-mod_src_install
 
 	newinitd "${FILESDIR}"/${PN}.initd-0.5.1 ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd-0.5.1 ${PN}
