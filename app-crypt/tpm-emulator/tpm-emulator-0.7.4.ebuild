@@ -3,7 +3,7 @@
 # $Header: /var/cvsroot/gentoo-x86/app-crypt/tpm-emulator/tpm-emulator-0.5.1.ebuild,v 1.3 2012/05/31 03:31:59 zmedico Exp $
 
 EAPI=2
-inherit toolchain-funcs linux-mod eutils multilib user
+inherit cmake-utils linux-mod eutils
 
 MY_P=${P/-/_}
 DESCRIPTION="Emulator driver for tpm"
@@ -15,9 +15,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="modules"
-DEPEND="
-	dev-libs/gmp
-	dev-util/cmake"
+DEPEND="dev-libs/gmp"
 RDEPEND=""
 S="${WORKDIR}"/${P/-/_}
 
@@ -33,13 +31,16 @@ pkg_setup() {
 }
 
 src_compile() {
-	emake 
+	cmake-utils_src_compile
+
 	if use modules; then
 		linux-mod_src_compile || die "Failed to build kernelspace"
 	fi
 }
 
 src_install() {
+	cmake-utils_src_install
+
 	if [ -x /usr/bin/scanelf -a -f tpm_emulator.ko ]; then
 		[ -z "$(/usr/bin/scanelf -qs __guard tpm_emulator.ko)" ] || \
 			die 'cannot have gmp compiled with hardened flags'
@@ -48,9 +49,6 @@ src_install() {
 	fi
 
 	use modules && linux-mod_src_install
-
-	#emake install DESTDIR="${D}" LIBDIR="/usr/$(get_libdir)" \
-	emake install 
 
 	newinitd "${FILESDIR}"/${PN}.initd-0.5.1 ${PN}
 	newconfd "${FILESDIR}"/${PN}.confd-0.5.1 ${PN}
