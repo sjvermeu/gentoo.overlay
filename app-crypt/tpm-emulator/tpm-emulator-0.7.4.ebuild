@@ -36,8 +36,8 @@ src_install() {
 			die 'cannot have gmp compiled with hardened flags'
 	fi
 
-	newinitd "${FILESDIR}"/${PN}.initd-0.5.1 ${PN}
-	newconfd "${FILESDIR}"/${PN}.confd-0.5.1 ${PN}
+	newinitd "${FILESDIR}"/${PN}.initd ${PN}
+	newconfd "${FILESDIR}"/${PN}.confd ${PN}
 
 	insinto /etc/udev/rules.d
 	newins "${FILESDIR}"/${PN}.udev 60-${PN}.rules
