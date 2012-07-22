@@ -11,10 +11,18 @@ HOMEPAGE="http://ltp.sourceforge.net/"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~x86"
-IUSE=""
+IUSE="perl python apm rt"
 
 MY_P="${PN}-full-${PV}"
 S="${WORKDIR}/${MY_P}"
 
 SRC_URI="mirror://sourceforge/project/ltp/LTP%20Source/${P}/${MY_P}.bz2 -> ${MY_P}.tar.bz2"
 
+src_configure() {
+	local myconf
+
+	econf $(use_enable perl) \
+		$(use_enable python) \
+		$(use_enable apm power-management-testsuite) \
+		$(use_enable rt realtime-testsuite)
+}
