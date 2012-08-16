@@ -5,7 +5,7 @@ EAPI="4"
 
 IUSE=""
 MODS="jbossas"
-BASEPOL="2.20120215-r8"
+BASEPOL="2.20120725-r4"
 POLICY_FILES="jbossas.te jbossas.fc jbossas.if"
 
 inherit selinux-policy-2
