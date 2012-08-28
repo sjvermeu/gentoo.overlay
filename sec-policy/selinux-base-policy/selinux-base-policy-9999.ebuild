@@ -11,7 +11,7 @@ DESCRIPTION="SELinux policy for core modules"
 IUSE=""
 BASEPOL="9999"
 
-RDEPEND="sec-policy/selinux-base-9999"
+RDEPEND="=sec-policy/selinux-base-9999"
 DEPEND=""
 EGIT_REPO_URI="git://git.overlays.gentoo.org/proj/hardened-refpolicy.git"
 EGIT_SOURCEDIR="${WORKDIR}/refpolicy"
