@@ -14,6 +14,7 @@ BASEPOL="9999"
 RDEPEND="sec-policy/selinux-base-9999"
 DEPEND=""
 EGIT_REPO_URI="git://git.overlays.gentoo.org/proj/hardened-refpolicy.git"
+EGIT_SOURCEDIR="${WORKDIR}/refpolicy"
 KEYWORDS=""
 
 MODS="application authlogin bootloader clock consoletype cron dmesg fstools getty hostname hotplug init iptables libraries locallogin logging lvm miscfiles modutils mount mta netutils nscd portage raid rsync selinuxutil ssh staff storage su sysadm sysnetwork udev userdomain usermanage unprivuser xdg unconfined"
