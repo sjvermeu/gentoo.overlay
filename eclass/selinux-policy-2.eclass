@@ -111,7 +111,12 @@ EXPORT_FUNCTIONS ${SELINUX_EXPF}
 # Unpack the policy sources as offered by upstream (refpolicy). In case of EAPI
 # older than 2, call src_prepare too.
 selinux-policy-2_src_unpack() {
-	unpack ${A}
+	if [[ "${BASEPOL}" != "9999" ]];
+	then
+		unpack ${A}
+	else
+		git-2_src_unpack
+	fi
 
 	# Call src_prepare explicitly for EAPI 0 or 1
 	has "${EAPI:-0}" 0 1 && selinux-policy-2_src_prepare
