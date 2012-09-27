@@ -20,7 +20,7 @@ IUSE="audit pam dbus sesandbox"
 DESCRIPTION="SELinux core utilities"
 HOMEPAGE="http://userspace.selinuxproject.org"
 SRC_URI="http://userspace.selinuxproject.org/releases/20120924/${P}.tar.gz
-	http://dev.gentoo.org/~swift/patches/policycoreutils/patchbundle-${P}-gentoo-r3.tar.gz
+	http://dev.gentoo.org/~swift/patches/policycoreutils/patchbundle-${P}-gentoo-r1.tar.gz
 	mirror://gentoo/policycoreutils-extra-${EXTRAS_VER}.tar.bz2"
 
 LICENSE="GPL-2"
