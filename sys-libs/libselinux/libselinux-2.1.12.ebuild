@@ -55,12 +55,12 @@ src_prepare() {
 }
 
 src_compile() {
-	emake AR="$(tc-getAR)" CC="$(tc-getCC)" LDFLAGS="-fPIC ${LDFLAGS}" all || die
+	emake AR="$(tc-getAR)" CC="$(tc-getCC)" LDFLAGS="-fPIC -lpcre ${LDFLAGS}" all || die
 
 	if use python; then
 		python_copy_sources src
 		building() {
-			emake CC="$(tc-getCC)" PYINC="-I$(python_get_includedir)" PYTHONLIBDIR="$(python_get_library -l)" PYPREFIX="python-$(python_get_version)" LDFLAGS="-fPIC ${LDFLAGS}" pywrap
+			emake CC="$(tc-getCC)" PYINC="-I$(python_get_includedir)" PYTHONLIBDIR="$(python_get_library -l)" PYPREFIX="python-$(python_get_version)" LDFLAGS="-fPIC -lpcre ${LDFLAGS}" pywrap
 		}
 		python_execute_function -s --source-dir src building
 	fi
