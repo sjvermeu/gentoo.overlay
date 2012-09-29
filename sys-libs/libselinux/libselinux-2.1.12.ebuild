@@ -23,6 +23,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE="python ruby"
 
 RDEPEND=">=sys-libs/libsepol-${SEPOL_VER}
+	>=dev-libs/libpcre-8.30-r2
 	ruby? ( $(ruby_implementations_depend) )"
 DEPEND="${RDEPEND}
 	ruby? ( dev-lang/swig )
