@@ -1,10 +1,10 @@
 diff -ur libselinux-2.1.12.orig/src/load_policy.c libselinux-2.1.12/src/load_policy.c
---- libselinux-2.1.12.orig/src/load_policy.c	2012-05-05 10:33:06.130719282 +0200
-+++ libselinux-2.1.12/src/load_policy.c	2012-05-05 10:43:45.024720646 +0200
+--- libselinux-2.1.12.orig/src/load_policy.c	2012-09-29 09:32:18.374170451 +0200
++++ libselinux-2.1.12/src/load_policy.c	2012-09-29 09:34:05.130172917 +0200
 @@ -370,8 +370,16 @@
  	 * mount it if present for use in the calls below.  
  	 */
- 	char *mntpoint = NULL;
+ 	const char *mntpoint = NULL;
 -	if (mount(SELINUXFS, SELINUXMNT, SELINUXFS, 0, 0) == 0 || errno == EBUSY) {
 -		mntpoint = SELINUXMNT;
 +	/* First make sure /sys is mounted */
