@@ -50,7 +50,7 @@ src_prepare() {
 		|| die "Fix for multilib LIBDIR failed."
 	sed -i -e "/^SHLIBDIR/s/lib/$(get_libdir)/" "${S}/src/Makefile" \
 		|| die "Fix for multilib SHLIBDIR failed."
-	epatch "${FILESDIR}/${PN}-2.1.9-mountsys.patch"
+	epatch "${FILESDIR}/${P}-mountsys.patch"
 }
 
 src_compile() {
