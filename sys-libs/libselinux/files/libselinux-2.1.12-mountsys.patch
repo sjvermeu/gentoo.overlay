@@ -1,6 +1,6 @@
-diff -ur libselinux-2.1.9.orig/src/load_policy.c libselinux-2.1.9/src/load_policy.c
---- libselinux-2.1.9.orig/src/load_policy.c	2012-05-05 10:33:06.130719282 +0200
-+++ libselinux-2.1.9/src/load_policy.c	2012-05-05 10:43:45.024720646 +0200
+diff -ur libselinux-2.1.12.orig/src/load_policy.c libselinux-2.1.12/src/load_policy.c
+--- libselinux-2.1.12.orig/src/load_policy.c	2012-05-05 10:33:06.130719282 +0200
++++ libselinux-2.1.12/src/load_policy.c	2012-05-05 10:43:45.024720646 +0200
 @@ -370,8 +370,16 @@
  	 * mount it if present for use in the calls below.  
  	 */
