@@ -1,0 +1,10 @@
+# ChangeLog for sec-policy/selinux-chromium
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-chromium/ChangeLog,v 1.1 2012/09/22 09:27:10 swift Exp $
+
+*selinux-chromium-2.20120725-r5 (21 Sep 2012)
+
+  21 Sep 2012; <swift@gentoo.org> +selinux-chromium-2.20120725-r5.ebuild,
+  +metadata.xml:
+  Introducing policy for 2.20120725, rev5
+
