@@ -13,6 +13,6 @@ DESCRIPTION="SELinux policy for chromium"
 
 KEYWORDS="~amd64 ~x86"
 DEPEND="${DEPEND}
-        sec-policy/selinux-xdg
+        sec-policy/selinux-xserver
 "
 RDEPEND="${DEPEND}"
