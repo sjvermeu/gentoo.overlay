@@ -12,3 +12,7 @@ inherit selinux-policy-2
 DESCRIPTION="SELinux policy for bitlbee"
 
 KEYWORDS="~amd64 ~x86"
+DEPEND="${DEPEND}
+		sec-policy/selinux-inetd
+"
+RDEPEND="${DEPEND}"
