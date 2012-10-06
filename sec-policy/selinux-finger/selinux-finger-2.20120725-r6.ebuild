@@ -12,3 +12,7 @@ inherit selinux-policy-2
 DESCRIPTION="SELinux policy for finger"
 
 KEYWORDS="~amd64 ~x86"
+DEPEND="
+	sec-policy/selinux-inetd
+"
+RDEPEND="${DEPEND}"
