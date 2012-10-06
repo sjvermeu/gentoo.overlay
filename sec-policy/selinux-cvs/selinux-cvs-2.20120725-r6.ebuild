@@ -14,5 +14,6 @@ DESCRIPTION="SELinux policy for cvs"
 KEYWORDS="~amd64 ~x86"
 DEPEND="${DEPEND}
 	sec-policy/selinux-apache
+	sec-policy/selinux-inetd
 "
 RDEPEND="${DEPEND}"
