@@ -14,5 +14,6 @@ DESCRIPTION="SELinux policy for telnet"
 KEYWORDS="~amd64 ~x86"
 DEPEND="${DEPEND}
 	sec-policy/selinux-remotelogin
+	sec-policy/selinux-inetd
 "
 RDEPEND="${DEPEND}"
