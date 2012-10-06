@@ -14,5 +14,6 @@ DESCRIPTION="SELinux policy for modemmanager"
 KEYWORDS="~amd64 ~x86"
 DEPEND="${DEPEND}
 	sec-policy/selinux-dbus
+	sec-policy/selinux-networkmanager
 "
 RDEPEND="${DEPEND}"
