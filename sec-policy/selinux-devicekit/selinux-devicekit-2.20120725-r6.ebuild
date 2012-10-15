@@ -12,3 +12,7 @@ inherit selinux-policy-2
 DESCRIPTION="SELinux policy for devicekit"
 
 KEYWORDS="~amd64 ~x86"
+DEPEND="${DEPEND}
+	sec-policy/selinux-dbus
+"
+RDEPEND="${DEPEND}"

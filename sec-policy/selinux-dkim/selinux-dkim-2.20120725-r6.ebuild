@@ -12,3 +12,7 @@ inherit selinux-policy-2
 DESCRIPTION="SELinux policy for dkim"
 
 KEYWORDS="~amd64 ~x86"
+DEPEND="
+	sec-policy/selinux-milter
+"
+RDEPEND="${DEPEND}"

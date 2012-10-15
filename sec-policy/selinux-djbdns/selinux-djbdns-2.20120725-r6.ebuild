@@ -14,5 +14,6 @@ DESCRIPTION="SELinux policy for djbdns"
 KEYWORDS="~amd64 ~x86"
 DEPEND="${DEPEND}
 	sec-policy/selinux-daemontools
+	sec-policy/selinux-ucspitcp
 "
 RDEPEND="${DEPEND}"
