@@ -2,6 +2,11 @@
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-kerberos/ChangeLog,v 1.25 2012/06/27 20:33:56 swift Exp $
 
+*selinux-kerberos-2.20120725-r7 (14 Nov 2012)
+
+  14 Nov 2012; <swift@gentoo.org> +selinux-kerberos-2.20120725-r7.ebuild:
+  Pushing out r7
+
 *selinux-kerberos-2.20120215-r1 (27 Jun 2012)
 
   27 Jun 2012; <swift@gentoo.org> +selinux-kerberos-2.20120215-r1.ebuild:

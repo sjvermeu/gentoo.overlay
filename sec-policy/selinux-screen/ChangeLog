@@ -2,6 +2,11 @@
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-screen/ChangeLog,v 1.27 2012/06/27 20:34:05 swift Exp $
 
+*selinux-screen-2.20120725-r7 (14 Nov 2012)
+
+  14 Nov 2012; <swift@gentoo.org> +selinux-screen-2.20120725-r7.ebuild:
+  Pushing out r7
+
 *selinux-screen-2.20120215-r1 (27 Jun 2012)
 
   27 Jun 2012; <swift@gentoo.org> +selinux-screen-2.20120215-r1.ebuild:
