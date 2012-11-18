@@ -5,7 +5,7 @@
 EAPI="2"
 PYTHON_DEPEND="python? *"
 SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="*-jython *-pypy-*"
+RESTRICT_PYTHON_ABIS="*-jython *-pypy-* 3.*"
 
 inherit autotools java-pkg-opt-2 python eutils
 
