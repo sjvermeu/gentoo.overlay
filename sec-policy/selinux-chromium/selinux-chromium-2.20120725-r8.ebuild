@@ -12,7 +12,3 @@ inherit selinux-policy-2
 DESCRIPTION="SELinux policy for chromium"
 
 KEYWORDS="~amd64 ~x86"
-DEPEND="${DEPEND}
-	sec-policy/selinux-xdg
-"
-RDEPEND="${DEPEND}"
