@@ -26,7 +26,7 @@ IUSE="python ruby static-libs"
 
 RDEPEND=">=sys-libs/libsepol-${SEPOL_VER}
 	>=dev-libs/libpcre-8.30-r2[static-libs?]
-	ruby? ( dev-lang/ruby )"
+	ruby? ( $(ruby_implementations_depend) )"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
 	ruby? ( dev-lang/swig )
@@ -76,7 +76,7 @@ src_compile() {
 	fi
 }
 
-all_ruby_compile() {
+each_ruby_compile() {
 	emake CC="$(tc-getCC)" AR="$(tc-getAR)" RANLIB="$(tc-getRANLIB)" rubywrap || die
 }
 
