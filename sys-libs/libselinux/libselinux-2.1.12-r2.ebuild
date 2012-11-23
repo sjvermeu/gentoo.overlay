@@ -6,7 +6,7 @@ EAPI="4"
 PYTHON_DEPEND="python? *"
 SUPPORT_PYTHON_ABIS="1"
 RESTRICT_PYTHON_ABIS="2.5 *-jython *-pypy-*"
-USE_RUBY="ruby19"
+USE_RUBY="ruby18 ruby19"
 
 inherit multilib python toolchain-funcs eutils ruby-ng
 
@@ -30,7 +30,7 @@ DEPEND="${RDEPEND}
 	ruby? ( dev-lang/swig )
 	python? ( dev-lang/swig )"
 
-S="${WORKDIR}/${P}"
+#S="${WORKDIR}/${P}"
 
 pkg_setup() {
 	if use python; then
@@ -74,7 +74,7 @@ src_compile() {
 	fi
 
 	if use ruby; then
-		emake CC="$(tc-getCC)" rubywrap || die
+		emake CC="$(tc-getCC)" RUBY="$()" rubywrap || die
 	fi
 }
 
