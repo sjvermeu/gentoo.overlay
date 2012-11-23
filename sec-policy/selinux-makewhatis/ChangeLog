@@ -1,0 +1,10 @@
+# ChangeLog for sec-policy/selinux-makewhatis
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/sec-policy/selinux-makewhatis/ChangeLog,v 1.1 2012/11/18 08:16:49 swift Exp $
+
+*selinux-makewhatis-9999 (18 Nov 2012)
+
+  18 Nov 2012; <swift@gentoo.org> +selinux-makewhatis-9999.ebuild,
+  +metadata.xml:
+  Adding makewhatis SELinux policy (live ebuild)
+
