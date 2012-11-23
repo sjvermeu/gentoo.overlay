@@ -81,6 +81,7 @@ src_compile() {
 }
 
 each_ruby_compile() {
+	cd "${WORKDIR}/${S}/src"
 	emake CC="$(tc-getCC)" AR="$(tc-getAR)" RANLIB="$(tc-getRANLIB)" rubywrap || die
 }
 
@@ -102,6 +103,7 @@ src_install() {
 }
 
 each_ruby_install() {
+	cd "${WORKDIR}/${S}/src"
 	emake DESTDIR="${D}" install-rubywrap || die
 }
 
