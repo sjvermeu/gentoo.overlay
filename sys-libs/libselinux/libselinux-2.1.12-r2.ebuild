@@ -6,9 +6,7 @@ EAPI="4"
 PYTHON_DEPEND="python? *"
 SUPPORT_PYTHON_ABIS="1"
 RESTRICT_PYTHON_ABIS="2.5 *-jython *-pypy-*"
-
-USE_RUBY="ruby18 ruby19"
-RUBY_OPTIONAL="yes"
+USE_RUBY="ruby19"
 
 inherit multilib python toolchain-funcs eutils ruby-ng
 
@@ -61,10 +59,10 @@ src_prepare() {
 }
 
 src_compile() {
+	tc-export RANLIB
 	emake \
 		AR="$(tc-getAR)" \
 		CC="$(tc-getCC)" \
-		RANLIB="$(tc-getRANLIB)" \
 		LDFLAGS="-fPIC $($(tc-getPKG_CONFIG) libpcre --libs) ${LDFLAGS}" all || die
 
 	if use python; then
@@ -76,12 +74,8 @@ src_compile() {
 	fi
 
 	if use ruby; then
-		ruby-ng_src_compile
+		emake CC="$(tc-getCC)" rubywrap || die
 	fi
-}
-
-each_ruby_compile() {
-	emake CC="$(tc-getCC)" AR="$(tc-getAR)" RANLIB="$(tc-getRANLIB)" rubywrap || die
 }
 
 src_install() {
@@ -95,15 +89,10 @@ src_install() {
 	fi
 
 	if use ruby; then
-		ruby-ng_src_install
+		emake DESTDIR="${D}" install-rubywrap || die
 	fi
 
 	use static-libs || rm "${D}"/usr/lib*/*.a
-}
-
-each_ruby_install() {
-	cd "${S}/src"
-	emake DESTDIR="${D}" install-rubywrap || die
 }
 
 pkg_postinst() {
