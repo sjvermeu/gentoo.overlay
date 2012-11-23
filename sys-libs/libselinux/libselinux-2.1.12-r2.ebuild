@@ -30,7 +30,7 @@ DEPEND="${RDEPEND}
 	ruby? ( dev-lang/swig )
 	python? ( dev-lang/swig )"
 
-#S="${WORKDIR}/${P}"
+S="${WORKDIR}/${P}"
 
 pkg_setup() {
 	if use python; then
