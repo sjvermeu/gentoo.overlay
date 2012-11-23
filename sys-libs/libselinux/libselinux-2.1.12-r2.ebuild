@@ -74,6 +74,10 @@ src_compile() {
 		}
 		python_execute_function -s --source-dir src building
 	fi
+
+	if use ruby; then
+		ruby-ng_src_compile
+	fi
 }
 
 each_ruby_compile() {
@@ -88,6 +92,10 @@ src_install() {
 			emake DESTDIR="${D}" PYLIBVER="python$(python_get_version)" PYPREFIX="python-$(python_get_version)" install-pywrap
 		}
 		python_execute_function -s --source-dir src installation
+	fi
+
+	if use ruby; then
+		ruby-ng_src_install
 	fi
 
 	use static-libs || rm "${D}"/usr/lib*/*.a
