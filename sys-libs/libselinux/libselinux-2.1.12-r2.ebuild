@@ -32,7 +32,7 @@ DEPEND="${RDEPEND}
 	ruby? ( dev-lang/swig )
 	python? ( dev-lang/swig )"
 
-S="${WORKDIR}/${P}"
+#S="${WORKDIR}/${P}"
 
 pkg_setup() {
 	if use python; then
@@ -81,7 +81,6 @@ src_compile() {
 }
 
 each_ruby_compile() {
-	cd "${S}/src"
 	emake CC="$(tc-getCC)" AR="$(tc-getAR)" RANLIB="$(tc-getRANLIB)" rubywrap || die
 }
 
