@@ -8,16 +8,11 @@ inherit eutils
 HOMEPAGE="http://www.gentoo.org/proj/en/hardened/selinux/"
 DESCRIPTION="SELinux policy for core modules"
 
-IUSE=""
+IUSE="unconfined"
 BASEPOL="${PVR}"
 
-RDEPEND=">=sec-policy/selinux-base-${PVR}"
-if [[ "${POLICY_TYPES}" == *"targeted"* ]];
-then
-	RDEPEND="${RDEPEND}
-		sec-policy/selinux-unconfined
-	"
-fi
+RDEPEND=">=sec-policy/selinux-base-${PVR}
+		unconfined? ( sec-policy/selinux-unconfined )"
 DEPEND=""
 SRC_URI="http://oss.tresys.com/files/refpolicy/refpolicy-${PV}.tar.bz2
 		http://dev.gentoo.org/~swift/patches/${PN}/patchbundle-${PN}-${BASEPOL}.tar.bz2"

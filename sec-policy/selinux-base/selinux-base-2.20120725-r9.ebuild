@@ -5,7 +5,7 @@ EAPI="4"
 
 inherit eutils
 
-IUSE="+peer_perms +open_perms +ubac doc"
+IUSE="+peer_perms +open_perms +ubac unconfined doc"
 
 DESCRIPTION="Gentoo base policy for SELinux"
 HOMEPAGE="http://www.gentoo.org/proj/en/hardened/selinux/"
@@ -92,6 +92,12 @@ src_configure() {
 			sed -i -e '/root/d' -e 's/user_u/unconfined_u/' \
 			"${S}/${i}/config/appconfig-standard/seusers" \
 			|| die "targeted seusers setup failed."
+		fi
+		
+		if [ "${i}" != "targeted" ] && [ "${i}" != "strict" ] && use unconfined; then
+			sed -i -e '/root/d' -e 's/user_u/unconfined_u/' \
+			"${S}/${i}/config/appconfig-${i}/seusers" \
+			|| die "policy seusers setup failed."
 		fi
 	done
 }
