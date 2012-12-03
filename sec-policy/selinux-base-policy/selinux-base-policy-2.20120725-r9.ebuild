@@ -12,12 +12,18 @@ IUSE=""
 BASEPOL="${PVR}"
 
 RDEPEND=">=sec-policy/selinux-base-${PVR}"
+if [[ "${POLICY_TYPES}" == *"targeted"* ]];
+then
+	RDEPEND="${RDEPEND}
+		sec-policy/selinux-unconfined
+	"
+fi
 DEPEND=""
 SRC_URI="http://oss.tresys.com/files/refpolicy/refpolicy-${PV}.tar.bz2
 		http://dev.gentoo.org/~swift/patches/${PN}/patchbundle-${PN}-${BASEPOL}.tar.bz2"
 KEYWORDS="~amd64 ~x86"
 
-MODS="application authlogin bootloader clock consoletype cron dmesg fstools getty hostname hotplug init iptables libraries locallogin logging lvm miscfiles modutils mount mta netutils nscd portage raid rsync selinuxutil ssh staff storage su sysadm sysnetwork udev userdomain usermanage unprivuser xdg unconfined"
+MODS="application authlogin bootloader clock consoletype cron dmesg fstools getty hostname hotplug init iptables libraries locallogin logging lvm miscfiles modutils mount mta netutils nscd portage raid rsync selinuxutil ssh staff storage su sysadm sysnetwork udev userdomain usermanage unprivuser xdg"
 LICENSE="GPL-2"
 SLOT="0"
 S="${WORKDIR}/"
@@ -104,19 +110,10 @@ pkg_postinst() {
 	done
 
 	for i in ${POLICY_TYPES}; do
-		local LOCCOMMAND
-		local LOCMODS
-		if [[ "${i}" != "targeted" ]]; then
-			LOCCOMMAND=$(echo "${COMMAND}" | sed -e 's:-i unconfined.pp::g');
-			LOCMODS=$(echo "${MODS}" | sed -e 's: unconfined::g');
-		else
-			LOCCOMMAND="${COMMAND}"
-			LOCMODS="${MODS}"
-		fi
-		einfo "Inserting the following modules, with base, into the $i module store: ${LOCMODS}"
+		einfo "Inserting the following modules, with base, into the $i module store: ${MODS}"
 
 		cd /usr/share/selinux/${i} || die "Could not enter /usr/share/selinux/${i}"
 
-		semodule -s ${i} -b base.pp ${LOCCOMMAND} || die "Failed to load in base and modules ${LOCMODS} in the $i policy store"
+		semodule -s ${i} -b base.pp ${COMMAND} || die "Failed to load in base and modules ${MODS} in the $i policy store"
 	done
 }
