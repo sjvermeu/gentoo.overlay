@@ -93,7 +93,7 @@ src_configure() {
 			"${S}/${i}/config/appconfig-standard/seusers" \
 			|| die "targeted seusers setup failed."
 		fi
-		
+
 		if [ "${i}" != "targeted" ] && [ "${i}" != "strict" ] && use unconfined; then
 			sed -i -e '/root/d' -e 's/user_u/unconfined_u/' \
 			"${S}/${i}/config/appconfig-${i}/seusers" \
