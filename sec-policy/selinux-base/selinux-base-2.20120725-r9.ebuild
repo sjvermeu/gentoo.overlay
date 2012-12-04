@@ -67,13 +67,15 @@ src_configure() {
 
 	echo "DISTRO = gentoo" >> "${S}/refpolicy/build.conf"
 
+	# Prepare initial configuration
+	cd "${S}/refpolicy";
+	make conf || die "Make conf failed"
+
 	# Setup the policies based on the types delivered by the end user.
 	# These types can be "targeted", "strict", "mcs" and "mls".
 	for i in ${POLICY_TYPES}; do
 		cp -a "${S}/refpolicy" "${S}/${i}"
-
 		cd "${S}/${i}";
-		make conf || die "Make conf in ${i} failed"
 
 		#cp "${FILESDIR}/modules-2.20120215.conf" "${S}/${i}/policy/modules.conf"
 		sed -i -e "/= module/d" "${S}/${i}/policy/modules.conf"
