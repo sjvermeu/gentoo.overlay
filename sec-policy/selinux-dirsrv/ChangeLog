@@ -1,0 +1,10 @@
+# ChangeLog for sec-policy/selinux-dirsrv
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+*selinux-dirsrv-2.20120725-r9 (04 Dec 2012)
+
+  04 Dec 2012; <swift@gentoo.org> +selinux-dirsrv-2.20120725-r9.ebuild,
+  +metadata.xml:
+  Adding initial policy package for dirsrv module
+
