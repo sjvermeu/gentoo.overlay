@@ -24,17 +24,17 @@ RDEPEND=""
 RESTRICT="test"
 
 src_prepare() {
-	# fix up paths for multilib
-	sed -i -e "/^LIBDIR/s/lib/$(get_libdir)/" src/Makefile \
-		|| die "Fix for multilib LIBDIR failed."
-	sed -i -e "/^SHLIBDIR/s/lib/$(get_libdir)/" src/Makefile \
-		|| die "Fix for multilib SHLIBDIR failed."
-
 	EPATCH_MULTI_MSG="Applying libsepol patches ... " \
 	EPATCH_SUFFIX="patch" \
 	EPATCH_SOURCE="${WORKDIR}/gentoo-patches" \
 	EPATCH_FORCE="yes" \
 	epatch
+
+	# fix up paths for multilib
+	sed -i -e "/^LIBDIR/s/lib/$(get_libdir)/" src/Makefile \
+		|| die "Fix for multilib LIBDIR failed."
+	sed -i -e "/^SHLIBDIR/s/lib/$(get_libdir)/" src/Makefile \
+		|| die "Fix for multilib SHLIBDIR failed."
 
 	epatch_user
 }
