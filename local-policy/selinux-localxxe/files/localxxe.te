@@ -1,0 +1,7 @@
+policy_module(localxxe, 0.1)
+
+type xxe_t;
+type xxe_exec_t;
+application_domain(xxe_t, xxe_exec_t)
+
+userdom_use_user_terminals(xxe_t)

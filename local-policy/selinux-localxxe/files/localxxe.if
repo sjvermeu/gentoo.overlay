@@ -1,0 +1,45 @@
+## <summary>XMLMind XML Editor</summary>
+
+#########################################
+## <summary>
+##	Execute xxe in the xxe domain
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to transition
+##	</summary>
+## </param>
+#
+interface(`xxe_domtrans',`
+	gen_require(`
+		type xxe_t, xxe_exec_t;
+	')
+
+	domtrans_pattern($1, xxe_exec_t, xxe_t)
+')
+
+#########################################
+## <summary>
+##	Execute xxe application in the xxe domain
+##	and allow the specified role the xxe domain
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to transition
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	Role allowed access
+##	</summary>
+## </param>
+#
+interface(`xxe_run',`
+	gen_require(`
+		type xxe_t;
+	')
+
+	xxe_domtrans($1)
+
+	role $2 types xxe_t;
+')
