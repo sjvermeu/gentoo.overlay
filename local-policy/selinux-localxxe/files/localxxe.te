@@ -4,4 +4,65 @@ type xxe_t;
 type xxe_exec_t;
 application_domain(xxe_t, xxe_exec_t)
 
+type xxe_home_t;
+userdom_user_home_content(xxe_home_t)
+
+type xxe_tmp_t;
+files_tmp_file(xxe_tmp_t)
+
+type xxe_tmpfs_t;
+files_tmp_file(xxe_tmpfs_t)
+
+###############################################
+#
+# XXE local policy
+#
+
+allow xxe_t self:process { execmem getsched };
+allow xxe_t self:fifo_file rw_fifo_file_perms;
+allow xxe_t self:unix_stream_socket create_stream_socket_perms;
+
+manage_dirs_pattern(xxe_t, xxe_home_t, xxe_home_t)
+manage_files_pattern(xxe_t, xxe_home_t, xxe_home_t)
+manage_lnk_files_pattern(xxe_t, xxe_home_t, xxe_home_t)
+userdom_user_home_dir_filetrans(xxe_t, xxe_home_t, dir)
+
+manage_dirs_pattern(xxe_t, xxe_tmp_t, xxe_tmp_t)
+manage_files_pattern(xxe_t, xxe_tmp_t, xxe_tmp_t)
+files_tmp_filetrans(xxe_t, xxe_tmp_t, { dir file })
+
+manage_dirs_pattern(xxe_t, xxe_tmpfs_t, xxe_tmpfs_t)
+manage_files_pattern(xxe_t, xxe_tmpfs_t, xxe_tmpfs_t)
+#fs_tmpfs_filetrans(xxe_t, xxe_tmpfs_t, { dir file })
+
+kernel_read_system_state(xxe_t)
+
+dev_read_rand(xxe_t)
+dev_read_urand(xxe_t)
+
+corecmd_exec_bin(xxe_t)
+corecmd_exec_shell(xxe_t)
+
+files_read_etc_files(xxe_t)
+files_read_usr_files(xxe_t)
+files_read_usr_symlinks(xxe_t)
+files_search_home(xxe_t)
+files_search_pids(xxe_t)
+files_search_var(xxe_t)
+
+miscfiles_read_fonts(xxe_t)
+miscfiles_read_localization(xxe_t)
+
+userdom_manage_user_home_content_files(xxe_t)
+userdom_read_user_home_content_symlinks(xxe_t)
+userdom_search_user_home_content(xxe_t)
 userdom_use_user_terminals(xxe_t)
+
+optional_policy(`
+	java_exec(xxe_t)
+')
+
+optional_policy(`
+	xserver_read_user_xauth(xxe_t)
+	xserver_ro_session(xxe_t, xxe_tmpfs_t)
+')
