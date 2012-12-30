@@ -17,7 +17,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
 RDEPEND=">=sys-apps/policycoreutils-2.1.10
-	>=sys-fs/udev-151
+	virtual/udev
 	!<=sec-policy/selinux-base-policy-2.20120725"
 DEPEND="${RDEPEND}
 	sys-devel/m4
