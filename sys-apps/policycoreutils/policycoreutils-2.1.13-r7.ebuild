@@ -10,7 +10,7 @@ RESTRICT_PYTHON_ABIS="*-jython *-pypy-* 3.*"
 
 inherit multilib python toolchain-funcs eutils
 
-EXTRAS_VER="1.23"
+EXTRAS_VER="1.24"
 SEMNG_VER="2.1.9"
 SELNX_VER="2.1.12"
 SEPOL_VER="2.1.8"
