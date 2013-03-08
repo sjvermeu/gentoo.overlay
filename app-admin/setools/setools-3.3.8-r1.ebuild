@@ -28,10 +28,10 @@ DEPEND=">=sys-libs/libsepol-2.1.4
 	dev-libs/libxml2:2
 	virtual/pkgconfig
 	java? (
-		dev-lang/swig
+		<dev-lang/swig-2.0
 		>=virtual/jdk-1.4
 	)
-	python? ( dev-lang/swig )
+	python? ( <dev-lang/swig-2.0 )
 	X? (
 		>=dev-lang/tk-8.4.9
 		>=gnome-base/libglade-2.0
