@@ -78,6 +78,8 @@ src_prepare() {
 
 	# Disable broken check for SWIG version.
 	sed -e "s/AC_PROG_SWIG(2.0.0)/AC_PROG_SWIG/" -i configure.ac || die "sed failed"
+	# Use swig1.3
+	sed -e 's/AC_PATH_PROG(\[SWIG\],\[swig\])/AC_PATH_PROG([SWIG],[swig1.3])/' -i m4/ac_pkg_swig.m4 || die "failed to set swig1.3"
 	# Fix build failure due to double __init__.py installation
 	sed -e "s/^wrappedpy_DATA = qpol.py \$(pkgpython_PYTHON)/wrappedpy_DATA = qpol.py/" -i libqpol/swig/python/Makefile.am || die
 
@@ -118,14 +120,14 @@ src_configure() {
 }
 
 src_compile() {
-	emake SWIG=swig1.3 || die "Failed to build setools"
+	emake || die "Failed to build setools"
 
 	if use python; then
 		local dir
 		for dir in ${PYTHON_DIRS}; do
 			python_copy_sources ${dir}
 			building() {
-				emake SWIG=swig1.3 \
+				emake \
 					SWIG_PYTHON_CPPFLAGS="-I$(python_get_includedir)" \
 					PYTHON_LDFLAGS="$(python_get_library -l)" \
 					pyexecdir="$(python_get_sitedir)" \
@@ -141,14 +143,14 @@ src_compile() {
 }
 
 src_install() {
-	emake SWIG=swig1.3 DESTDIR="${D}" install || die "emake install failed"
+	emake DESTDIR="${D}" install || die "emake install failed"
 
 	if use python; then
 		local dir
 		for dir in ${PYTHON_DIRS}; do
 			installation() {
 				emake \
-					DESTDIR="${D}" SWIG=swig1.3 \
+					DESTDIR="${D}" \
 					pyexecdir="$(python_get_sitedir)" \
 					pythondir="$(python_get_sitedir)" \
 					install
