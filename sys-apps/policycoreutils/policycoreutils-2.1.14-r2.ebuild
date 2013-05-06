@@ -10,7 +10,7 @@ RESTRICT_PYTHON_ABIS="*-jython *-pypy-* 3.*"
 
 inherit multilib python toolchain-funcs eutils
 
-EXTRAS_VER="1.26"
+EXTRAS_VER="1.28"
 SEMNG_VER="2.1.10"
 SELNX_VER="2.1.13"
 SEPOL_VER="2.1.9"
@@ -20,7 +20,7 @@ IUSE="audit pam dbus sesandbox"
 DESCRIPTION="SELinux core utilities"
 HOMEPAGE="http://userspace.selinuxproject.org"
 SRC_URI="http://userspace.selinuxproject.org/releases/20130423/${P}.tar.gz
-http://dev.gentoo.org/~swift/patches/policycoreutils/patchbundle-${P}-gentoo-r1.tar.gz
+http://dev.gentoo.org/~swift/patches/policycoreutils/patchbundle-${P}-gentoo-r2.tar.gz
 	mirror://gentoo/policycoreutils-extra-${EXTRAS_VER}.tar.bz2"
 
 LICENSE="GPL-2"
@@ -69,9 +69,9 @@ src_prepare() {
 	epatch
 
 	# Overwrite gl.po, id.po and et.po with valid PO file
-	cp "${S}/po/sq.po" "${S}/po/gl.po" || die "failed to copy ${S}/po/sq.po to gl.po"
-	cp "${S}/po/sq.po" "${S}/po/id.po" || die "failed to copy ${S}/po/sq.po to id.po"
-	cp "${S}/po/sq.po" "${S}/po/et.po" || die "failed to copy ${S}/po/sq.po to et.po"
+	#cp "${S}/po/sq.po" "${S}/po/gl.po" || die "failed to copy ${S}/po/sq.po to gl.po"
+	#cp "${S}/po/sq.po" "${S}/po/id.po" || die "failed to copy ${S}/po/sq.po to id.po"
+	#cp "${S}/po/sq.po" "${S}/po/et.po" || die "failed to copy ${S}/po/sq.po to et.po"
 
 	epatch_user
 }

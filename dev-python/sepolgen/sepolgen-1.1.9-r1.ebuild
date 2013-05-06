@@ -5,14 +5,14 @@
 EAPI="3"
 PYTHON_DEPEND="*"
 SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="*-jython *-pypy-*"
+RESTRICT_PYTHON_ABIS="*-jython *-pypy-* 3.*"
 
 inherit python eutils
 
 DESCRIPTION="SELinux policy generation library"
 HOMEPAGE="http://userspace.selinuxproject.org"
-SRC_URI="http://userspace.selinuxproject.org/releases/20120924/${P}.tar.gz
-	http://dev.gentoo.org/~swift/patches/sepolgen/patchbundle-${P}-r1.tar.gz"
+SRC_URI="http://userspace.selinuxproject.org/releases/20130423/${P}.tar.gz"
+#	http://dev.gentoo.org/~swift/patches/sepolgen/patchbundle-${P}-r1.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -27,16 +27,14 @@ src_prepare() {
 	# fix up default paths to not be RH specific
 	sed -i -e 's:/usr/share/selinux/devel:/usr/share/selinux/strict:' \
 		"${S}/src/sepolgen/defaults.py" || die
-	sed -i -e 's:/usr/share/selinux/devel:/usr/share/selinux/strict/include:' \
-		"${S}/src/sepolgen/module.py" || die
 
-	EPATCH_MULTI_MSG="Applying sepolgen patches ... " \
-	EPATCH_SUFFIX="patch" \
-	EPATCH_SOURCE="${WORKDIR}/gentoo-patches" \
-	EPATCH_FORCE="yes" \
-	epatch
-
-	epatch_user
+#	EPATCH_MULTI_MSG="Applying sepolgen patches ... " \
+#	EPATCH_SUFFIX="patch" \
+#	EPATCH_SOURCE="${WORKDIR}/gentoo-patches" \
+#	EPATCH_FORCE="yes" \
+#	epatch
+#
+#	epatch_user
 }
 
 src_compile() {
@@ -56,6 +54,11 @@ src_install() {
 		emake DESTDIR="${D}" PYTHONLIBDIR="$(python_get_sitedir)" install
 	}
 	python_execute_function installation
+
+	# Create sepolgen.conf with different devel location definition
+	local selinuxtype
+	selinuxtype = $(awk -F'=' '/^SELINUXTYPE/ {print $2}' /etc/selinux/config);
+	echo "SELINUX_DEVEL_PATH=/usr/share/selinux/${selinuxtype}/include" > "${D}/etc/selinux/sepolgen.conf";
 }
 
 pkg_postinst() {

@@ -66,9 +66,9 @@ each_ruby_compile() {
 	cd src-ruby-${RUBYLIBVER}
 
 	if [[ "${RUBYLIBVER}" == "1.8" ]]; then
-		emake CC="$(tc-getCC)" RUBY="${RUBY}" RUBYINC="-I$(ruby_get_hdrdir)" LDFLAGS="-fPIC $($(tc-getPKG_CONFIG) libpcre --libs) ${LDFLAGS}" rubywrap || die
+		emake CC="$(tc-getCC)" RUBY="${RUBY}" RUBYINC="-I$(ruby_get_hdrdir)" LDFLAGS="-fPIC $($(tc-getPKG_CONFIG) libpcre --libs) -lpthread ${LDFLAGS}" rubywrap || die
 	else
-		emake CC="$(tc-getCC)" RUBY="${RUBY}" LDFLAGS="-fPIC $($(tc-getPKG_CONFIG) libpcre --libs) ${LDFLAGS}" rubywrap || die
+		emake CC="$(tc-getCC)" RUBY="${RUBY}" LDFLAGS="-fPIC $($(tc-getPKG_CONFIG) libpcre --libs) ${LDFLAGS} -lpthread" rubywrap || die
 	fi
 }
 
@@ -77,12 +77,12 @@ src_compile() {
 	emake \
 		AR="$(tc-getAR)" \
 		CC="$(tc-getCC)" \
-		LDFLAGS="-fPIC $($(tc-getPKG_CONFIG) libpcre --libs) ${LDFLAGS}" all || die
+		LDFLAGS="-fPIC $($(tc-getPKG_CONFIG) libpcre --libs) ${LDFLAGS} -lpthread" all || die
 
 	if use python; then
 		python_copy_sources src
 		building() {
-			emake CC="$(tc-getCC)" PYINC="-I$(python_get_includedir)" PYTHONLIBDIR="$(python_get_library -l)" PYPREFIX="python-$(python_get_version)" LDFLAGS="-fPIC $($(tc-getPKG_CONFIG) libpcre --libs) ${LDFLAGS}" pywrap
+			emake CC="$(tc-getCC)" PYINC="-I$(python_get_includedir)" PYTHONLIBDIR="$(python_get_library -l)" PYPREFIX="python-$(python_get_version)" LDFLAGS="-fPIC $($(tc-getPKG_CONFIG) libpcre --libs) ${LDFLAGS} -lpthread" pywrap
 		}
 		python_execute_function -s --source-dir src building
 	fi
