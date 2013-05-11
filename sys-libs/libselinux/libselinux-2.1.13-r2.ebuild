@@ -16,7 +16,7 @@ SEPOL_VER="2.1.9"
 DESCRIPTION="SELinux userland library"
 HOMEPAGE="http://userspace.selinuxproject.org"
 SRC_URI="http://userspace.selinuxproject.org/releases/20130423/${P}.tar.gz
-	http://dev.gentoo.org/~swift/patches/${PN}/patchbundle-${P}-r1.tar.gz"
+	http://dev.gentoo.org/~swift/patches/${PN}/patchbundle-${P}-r2.tar.gz"
 
 LICENSE="public-domain"
 SLOT="0"
