@@ -1,0 +1,7 @@
+# ChangeLog for app-admin/cvechecker
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+  16 Sep 2013; Sven Vermeulen <swift@gentoo.org> Manifest:
+  Adding 3.3 release
+
