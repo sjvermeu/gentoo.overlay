@@ -4,7 +4,7 @@
 
 EAPI=3
 
-inherit eutils user
+inherit eutils
 
 DESCRIPTION="Tool to match installed software against the list of CVE entries"
 HOMEPAGE="http://cvechecker.sourceforge.net"
