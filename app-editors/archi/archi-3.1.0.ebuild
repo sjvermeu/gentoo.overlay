@@ -3,7 +3,7 @@
 # $Header: /var/cvsroot/gentoo-x86/app-editors/xxe/xxe-4.5.0.ebuild,v 1.1 2009/11/21 12:36:16 patrick Exp $
 
 EAPI="5"
-S="${WORKDIR}/${PN}"
+S="${WORKDIR}/Archi"
 
 DESCRIPTION="The Archi ArchiMate modelling tool"
 
