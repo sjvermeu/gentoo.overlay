@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Exec=/opt/Archi/Archi64
+Icon=/opt/Archi/icon.xpm
+Name=Archi ArchiMate modelling tool
+GenericName=ArchiMate modelling tool
+Comment=ArchiMate modelling tool
+Categories=Graphics;
