@@ -25,4 +25,4 @@ src_install() {
 
 	insinto /usr/share/applications
 	doins "${FILESDIR}"/Archi.desktop
-
+}
