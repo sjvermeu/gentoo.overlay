@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer>
+		<email>swift@gentoo.org</email>
+		<name>Sven Vermeulen</name>
+	</maintainer>
+	<longdescription>AIMS is a set of scripts to manage technology components in a uniform manner</longdescription>
+</pkgmetadata>
