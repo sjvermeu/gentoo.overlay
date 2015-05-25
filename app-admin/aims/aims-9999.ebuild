@@ -8,7 +8,7 @@ DESCRIPTION="Automatic Infrastructure Management System"
 HOMEPAGE="http://localhost/"
 SRC_URI=""
 
-LICENSE=""
+LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="amd64"
 IUSE=""
