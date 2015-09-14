@@ -17,7 +17,7 @@ KEYWORDS="amd64"
 IUSE="selinux"
 
 DEPEND="
-	virtual/jdk:1.7
+	virtual/jdk
 "
 RDEPEND="
 	${DEPEND}

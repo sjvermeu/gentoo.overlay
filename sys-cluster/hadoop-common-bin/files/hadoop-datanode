@@ -13,13 +13,14 @@ depend() {
 }
 
 start() {
-	ebegin "Starting Hadoop Yarn Nodemanager"
-	start-stop-daemon --start --background --wait 100 --pidfile /run/${SVCNAME}.pid -1 /var/log/hadoop/${SVCNAME}.log -2 /var/log/hadoop/${SVCNAME}.log --make-pidfile --user yarn --group hadoop --exec /usr/bin/yarn -- nodemanager
+	ebegin "Starting Hadoop Datanode"
+	start-stop-daemon --start --background --wait 100 --pidfile /run/${SVCNAME}.pid --make-pidfile --user hdfs --group hadoop --exec /usr/bin/hdfs -- datanode
+
 	eend $?
 }
 
 stop() {
-	ebegin "Stopping Hadoop Yarn Nodemanager"
+	ebegin "Stopping Hadoop Datanode"
 	start-stop-daemon --stop --pidfile /run/${SVCNAME}.pid
 	eend $?
 }

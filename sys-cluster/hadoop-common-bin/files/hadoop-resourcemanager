@@ -14,7 +14,7 @@ depend() {
 
 start() {
 	ebegin "Starting Hadoop Yarn Resourcemanager"
-	start-stop-daemon --start --background --wait 100 --pidfile /run/${SVCNAME}.pid -1 /var/log/hadoop/${SVCNAME}.log -2 /var/log/hadoop/${SVCNAME}.log --make-pidfile --user yarn --group hadoop --exec /usr/bin/yarn -- resourcemanager
+	start-stop-daemon --start --background --wait 100 --pidfile /run/${SVCNAME}.pid --make-pidfile --user yarn --group hadoop --exec /usr/bin/yarn -- resourcemanager
 	eend $?
 }
 

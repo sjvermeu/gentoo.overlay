@@ -17,7 +17,7 @@ depend() {
 
 start() {
 	ebegin "Starting Hadoop Namenode"
-	start-stop-daemon --start --background --wait 100 --pidfile /run/${SVCNAME}.pid -1 /var/log/hadoop/${SVCNAME}.log -2 /var/log/hadoop/${SVCNAME}.log --make-pidfile --user hdfs --group hadoop --exec /usr/bin/hdfs -- namenode
+	start-stop-daemon --start --background --wait 100 --pidfile /run/${SVCNAME}.pid --make-pidfile --user hdfs --group hadoop --exec /usr/bin/hdfs -- namenode
 
 	eend $?
 }
