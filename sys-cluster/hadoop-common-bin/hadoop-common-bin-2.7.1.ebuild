@@ -51,7 +51,7 @@ src_install() {
 	# Install the service specific scripts
 	newinitd "${FILESDIR}/hadoop-namenode" hadoop-namenode
 	newinitd "${FILESDIR}/hadoop-datanode" hadoop-datanode
-	newinitd "${FILESDIR}/hadoop-resourcemanager" hadoop-datanode
-	newinitd "${FILESDIR}/hadoop-nodemanager" hadoop-datanode
+	newinitd "${FILESDIR}/hadoop-resourcemanager" hadoop-resourcemanager
+	newinitd "${FILESDIR}/hadoop-nodemanager" hadoop-nodemanager
 	newconfd "${FILESDIR}/hadoop" hadoop
 }
