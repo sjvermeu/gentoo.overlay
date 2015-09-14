@@ -1,0 +1,3 @@
+HADOOP_LOG_DIR=/var/log/hadoop
+YARN_LOG_DIR=/var/log/hadoop
+HADOOP_CONF_DIR=/etc/hadoop

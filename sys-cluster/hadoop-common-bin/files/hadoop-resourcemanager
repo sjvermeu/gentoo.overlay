@@ -1,0 +1,25 @@
+#!/sbin/runscript
+# Copyright 1999-2015 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+# Source hadoop settings
+. /etc/conf.d/hadoop
+
+export HADOOP_CONF_DIR HADOOP_LOG_DIR YARN_LOG_DIR
+
+depend() {
+	use net
+}
+
+start() {
+	ebegin "Starting Hadoop Yarn Resourcemanager"
+	start-stop-daemon --start --background --wait 100 --pidfile /run/${SVCNAME}.pid -1 /var/log/hadoop/${SVCNAME}.log -2 /var/log/hadoop/${SVCNAME}.log --make-pidfile --user yarn --group hadoop --exec /usr/bin/yarn -- resourcemanager
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping Hadoop Yarn Resourcemanager"
+	start-stop-daemon --stop --pidfile /run/${SVCNAME}.pid
+	eend $?
+}

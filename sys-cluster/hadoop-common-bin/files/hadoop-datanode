@@ -1,0 +1,26 @@
+#!/sbin/runscript
+# Copyright 1999-2015 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+# Source hadoop settings
+. /etc/conf.d/hadoop
+
+export HADOOP_CONF_DIR HADOOP_LOG_DIR YARN_LOG_DIR
+
+depend() {
+	use net
+}
+
+start() {
+	ebegin "Starting Hadoop Datanode"
+	start-stop-daemon --start --background --wait 100 --pidfile /run/${SVCNAME}.pid -1 /var/log/hadoop/${SVCNAME}.log -2 /var/log/hadoop/${SVCNAME}.log --make-pidfile --user hdfs --group hadoop --exec /usr/bin/hdfs -- datanode
+
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping Hadoop Datanode"
+	start-stop-daemon --stop --pidfile /run/${SVCNAME}.pid
+	eend $?
+}
