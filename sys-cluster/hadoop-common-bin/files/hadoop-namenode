@@ -6,7 +6,10 @@
 # Source hadoop settings
 . /etc/conf.d/hadoop
 
-export HADOOP_CONF_DIR HADOOP_LOG_DIR YARN_LOG_DIR
+export HADOOP_CONF_DIR HADOOP_LOG_DIR YARN_LOG_DIR JAVA_HOME
+
+# Operational commands
+extra_commands="format"
 
 depend() {
 	use net
@@ -22,5 +25,11 @@ start() {
 stop() {
 	ebegin "Stopping Hadoop Namenode"
 	start-stop-daemon --stop --pidfile /run/${SVCNAME}.pid
+	eend $?
+}
+
+format() {
+	ebegin "Formatting HDFS"
+	su hdfs -c "hdfs namenode -format"
 	eend $?
 }
