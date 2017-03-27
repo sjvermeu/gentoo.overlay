@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-text/lv/lv-4.51-r1.ebuild,v 1.7 2010/01/23 11:29:38 aballier Exp $
 
-EAPI=3
+EAPI=5
 
-inherit eutils
+inherit eutils user
 
 DESCRIPTION="Tool to match installed software against the list of CVE entries"
 HOMEPAGE="http://cvechecker.sourceforge.net"
