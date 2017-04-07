@@ -1,4 +1,6 @@
 HADOOP_LOG_DIR=/var/log/hadoop
+HADOOP_ROOT_LOGGER="INFO,DRFA"
 YARN_LOG_DIR=/var/log/hadoop
+YARN_ROOT_LOGGER="INFO,DRFA"
 HADOOP_CONF_DIR=/etc/hadoop
 JAVA_HOME=/etc/java-config-2/current-system-vm

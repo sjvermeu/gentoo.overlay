@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
@@ -17,7 +17,7 @@ KEYWORDS="amd64"
 IUSE="selinux"
 
 DEPEND="
-	virtual/jdk
+	virtual/jdk:*
 "
 RDEPEND="
 	${DEPEND}
@@ -37,16 +37,16 @@ src_install() {
 	diropts -m770 -o root -g hadoop
 	dodir /var/log/"${MY_PN}"
 	dodir /var/lib/"${MY_PN}"
-	
+
 	diropts -m770 -o hdfs -g hadoop
 	dodir /var/lib/"${MY_PN}"/hdfs
 
-	diropts -m755 -o root 
+	diropts -m755 -o root
 	dodir /usr
 
 	# Now install Hadoop binaries all over the place
-	mv "${S}"/{bin,include,lib,libexec,sbin,share} ${ED}/usr || die "Installation of Apache Hadoop files failed"
-	mv "${S}"/etc ${ED}/ || die "Installation of Hadoop configuration failed"
+	mv "${S}"/{bin,include,lib,libexec,sbin,share} "${ED}/usr" || die "Installation of Apache Hadoop files failed"
+	mv "${S}"/etc "${ED}/" || die "Installation of Hadoop configuration failed"
 
 	# Install the service specific scripts
 	newinitd "${FILESDIR}/hadoop-namenode" hadoop-namenode

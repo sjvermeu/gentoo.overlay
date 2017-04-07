@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<maintainer>
+<email>tokiclover@somewhere.net</email>
+<name>Tokiclover</name>
+</maintainer>
+<longdescription lang="en">
+Source: https://github.com/tokiclover/bar-overlay/blob/master/sys-firmware/iucode-tool/iucode-tool-1.3.ebuild
+</longdescription>
+</pkgmetadata>

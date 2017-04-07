@@ -6,7 +6,7 @@
 # Source hadoop settings
 . /etc/conf.d/hadoop
 
-export HADOOP_CONF_DIR HADOOP_LOG_DIR YARN_LOG_DIR JAVA_HOME
+export HADOOP_CONF_DIR HADOOP_LOG_DIR YARN_LOG_DIR JAVA_HOME HADOOP_ROOT_LOGGER YARN_ROOT_LOGGER
 
 depend() {
 	use net
