@@ -1,0 +1,9 @@
+DEFINED_PHASES=install
+DESCRIPTION=Simple hex/checksum output to string convertor
+EAPI=3
+HOMEPAGE=http://swift.siphos.be/tools-hex2passwd.html
+KEYWORDS=~amd64 ~x86
+LICENSE=GPL-3
+SLOT=0
+SRC_URI=http://swift.siphos.be/tools/hex2passwd/hex2passwd-1.tar.gz
+_md5_=3d18c1146c88800c1ad831b9f8572b67

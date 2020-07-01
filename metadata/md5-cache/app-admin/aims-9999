@@ -1,0 +1,9 @@
+DEFINED_PHASES=install prepare unpack
+DESCRIPTION=Automatic Infrastructure Management System
+EAPI=5
+HOMEPAGE=http://localhost/
+KEYWORDS=amd64
+LICENSE=GPL-3
+RDEPEND=sys-apps/mlocate
+SLOT=0
+_md5_=640b2cd7713de14881d41d2773eb8234

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-	<maintainer>
-		<email>swift@gentoo.org</email>
+	<maintainer type="person">
+		<email>sven.vermeulen@siphos.be</email>
 		<name>Sven Vermeulen</name>
 	</maintainer>
 	<longdescription>CVEchecker is a tool that fetches the latest CVE details and checks it against the existing system</longdescription>

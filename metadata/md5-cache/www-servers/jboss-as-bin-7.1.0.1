@@ -1,0 +1,12 @@
+DEFINED_PHASES=install unpack
+DEPEND=selinux? ( sec-policy/selinux-jbossas )
+DESCRIPTION=Binary installation of JBoss Application Server
+EAPI=4
+HOMEPAGE=http://www.jboss.org/jbossas
+IUSE=selinux
+KEYWORDS=~amd64 ~x86
+LICENSE=LGPL
+RDEPEND=selinux? ( sec-policy/selinux-jbossas ) virtual/jdk
+SLOT=0
+SRC_URI=http://download.jboss.org/jbossas/7.1/jboss-as-7.1.0.CR1b/jboss-as-7.1.0.CR1b.tar.gz
+_md5_=32086fe7576b11c2a89bfb219ac1791e
