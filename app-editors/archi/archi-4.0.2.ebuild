@@ -1,6 +1,5 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-editors/xxe/xxe-4.5.0.ebuild,v 1.1 2009/11/21 12:36:16 patrick Exp $
 
 EAPI="5"
 S="${WORKDIR}/Archi"
@@ -13,7 +12,7 @@ HOMEPAGE="http://www.archimatetool.com"
 
 SLOT="0"
 LICENSE="MIT"
-KEYWORDS="~x86 ~amd64"
+KEYWORDS="~amd64 ~x86"
 
 RDEPEND=">=virtual/jre-1.7.0"
 DEPEND=""
