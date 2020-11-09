@@ -3,13 +3,13 @@
 
 EAPI=7
 
-inherit eutils user
+inherit eutils user autotools
 
 DESCRIPTION="Tool to match installed software against the list of CVE entries"
 HOMEPAGE="http://cvechecker.sourceforge.net"
 if [[ $PV == 9999 ]]; then
 	EGIT_REPO_URI="https://github.com/sjvermeu/cvechecker.git"
-	inherit autotools git-r3
+	inherit git-r3
 else
 	SRC_URI="https://github.com/sjvermeu/cvechecker/archive/v${PV}.tar.gz"
 fi
@@ -20,7 +20,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE="sqlite mysql"
 
 DEPEND="sqlite? ( >=dev-db/sqlite-3.6.23.1 )
-	mysql? ( >=dev-db/mysql-5.1.51 )
+	mysql? ( >=dev-db/mysql-5.1.51:* )
 	>=dev-libs/libconfig-1.3.2"
 RDEPEND="${DEPEND}
 	>=dev-libs/libxslt-1.1.26
@@ -31,11 +31,8 @@ pkg_setup() {
 }
 
 src_prepare() {
-	if [[ $PV == 9999 ]]; then
-		eautoreconf
-	fi
-
 	default
+	eautoreconf
 }
 
 src_configure() {
@@ -50,5 +47,8 @@ src_compile() {
 
 src_install() {
 	emake DESTDIR="${D}" install || die
+	keepdir "/var/lib/cvechecker/cache"
+	keepdir "/var/lib/cvechecker/local"
+
 	emake DESTDIR="${D}" postinstall || die
 }
